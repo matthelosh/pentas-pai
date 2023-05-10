@@ -4,8 +4,9 @@ import { Link } from '@inertiajs/vue3';
 import PCard from '@/Components/General/PCard.vue';
 import PImage from '../General/PImage.vue';
 import axios from 'axios';
-import { DoughnutChart, PieChart } from 'vue-chart-3';
+import { DoughnutChart, PieChart, LineChart, BarChart, PolarAreaChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 Chart.register(...registerables);
 
 const lombas = ref([])
@@ -18,6 +19,22 @@ const chartByBidang = ref({
           backgroundColor: ['#545863', '#2AA0B0', '#00E8FC', '#7DABA1', '#F96E46', '#F99B46', '#F9C846', '#FCD695', '#FFE3E3'],
         },
       ],
+})
+
+const chartByBidangOptions = ref({
+    
+    plugins: {
+        datalabels: {
+            color: '#ffffff'
+        },
+        legend: {
+            position: 'right',
+        },
+        title: {
+            display: true,
+            text: 'Grafik Peserta Berdasarkan Bidang Lomba'
+        }
+    }
 })
 
 const listLomba = async () => {
@@ -57,8 +74,7 @@ onMounted(() => {
 <template>
 <div class="w-full md:w-2/4 mx-auto bg-white shadow p-5 rounded">
     <h1 class="text-center text-2xl">{{lombas.label}}</h1>
-    <h1 class="text-center text-lg">Grafik Peserta Berdasarkan Bidang Lomba</h1>
-    <PieChart :chartData="chartByBidang" />
+    <PolarAreaChart :chartData="chartByBidang" :plugins="[ChartDataLabels]" :options="chartByBidangOptions" />
 </div>
 <div class="grid grid-cols-2 md:grid-cols-3 gap-2 z-0 md:px-5">
     <div class="w-full h-52 flex items-center justify-center col-span-2 md:col-span-3">
