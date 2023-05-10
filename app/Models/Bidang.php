@@ -19,8 +19,12 @@ class Bidang extends Model
         return $this->belongsToMany(Lomba::class, 'bidang_lomba');
     }
 
+    // public function pesertas()
+    // {
+    //     return $this->hasMany(Peserta::class, 'lomba_id','kode');
+    // }
     public function pesertas()
     {
-        return $this->hasMany(Peserta::class, 'lomba_id','kode');
+        return $this->belongsToMany(Peserta::class, 'lomba_peserta','lomba_id', 'peserta_id');
     }
 }

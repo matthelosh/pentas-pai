@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bidang;
 use App\Models\Peserta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -62,21 +63,55 @@ class PesertaController extends Controller
                 $file = Storage::putFileAs('public/img/peserta', $foto, $data->nisn.'.jpg');
             }
             // dd($file);
-            Peserta::create(
-                [
-                    'nisn' => $data->nisn,
-                    'nama' => $data->nama,
-                    'jk' => $data->jk,
-                    'sekolah_id' => $data->sekolah_id,
-                    'foto' => isset($file) ? 'img/peserta/'.$data->nisn.'.jpg' : '',
-                    'hp' => $data->hp,
-                    'lomba_id' => implode(",",$data->lomba_id)
-                ]
-                );
+            $bidangs = [];
+            foreach($data->lomba_id as $kode) {
+                $bidang = Bidang::where('kode', $kode)->select('id')->first();
+                array_push($bidangs, $bidang->id);
+            }
+            // dd($bidangs);
+            $peserta = new Peserta();
+            $peserta->nisn = $data->nisn;
+            $peserta->nama = $data->nama;
+            $peserta->jk = $data->jk;
+            $peserta->foto = isset($file) ? 'img/peserta/'.$data->nisn.'.jpg' : '';
+            $peserta->hp = $data->hp;
+            $peserta->lomba_id = implode(",", $data->lomba_id);
+            $peserta->sekolah_id = $data->sekolah_id;
+            $peserta->save();
+            $peserta->bidangs()->attach($bidangs[0]);
+            // Peserta::create(
+            //     [
+            //         'nisn' => $data->nisn,
+            //         'nama' => $data->nama,
+            //         'jk' => $data->jk,
+            //         'sekolah_id' => $data->sekolah_id,
+            //         'foto' => isset($file) ? 'img/peserta/'.$data->nisn.'.jpg' : '',
+            //         'hp' => $data->hp,
+            //         'lomba_id' => implode(",",$data->lomba_id)
+            //     ]
+            //     );
                 response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
         } catch(\Exception $e) {
             return response()->json(['status' => 'fail', 'msg' => $e->getMessage(), 'errCode' => $e->getCode()], 500);
         }
+    }
+
+    public function attach(Peserta $peserta, Request $request)
+    {
+        $pesertas = json_decode($request->pesertas);
+        foreach($pesertas as $data) {
+            $lombas = explode(",", $data->lomba_id);
+            $bidangs = [];
+            foreach($lombas as $kode) {
+                $bidang = Bidang::where('kode', $kode)->select('id')->first();
+                array_push($bidangs, $bidang->id);
+            }
+
+            // $peserta::findOrFail($data->id);
+            $peserta->find($data->id)->bidangs()->attach($bidangs);
+        }
+
+        response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
     }
 
     /**

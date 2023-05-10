@@ -28,4 +28,9 @@ class Peserta extends Model
     {
         return $this->belongsTo(Bidang::class, 'lomba_id', 'kode');
     }
+
+    public function bidangs()
+    {
+        return $this->belongsToMany(Bidang::class, 'lomba_peserta', 'peserta_id','lomba_id');
+    }
 }

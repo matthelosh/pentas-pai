@@ -30,9 +30,7 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::prefix('lomba')->group(function() {
     Route::post('/', [LombaController::class, 'index'])->name('lomba.index');
@@ -57,7 +55,18 @@ Route::prefix('peserta')->group(function() {
     Route::get('/{id}/detail', [PesertaController::class, 'show'])->name('peserta.show');
 });
 
-Route::middleware('auth')->group(function () {
+Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::prefix('peserta')->group(function() {
+        Route::inertia('/', 'Dashboard/Peserta', [
+            'pesertas' => Peserta::with('sekolah','bidangs')->get(),
+        ])->name('dashboard.peserta');
+        Route::post('/attach', [PesertaController::class, 'attach'])->name('dashboard.peserta.attach');
+    });
+
     Route::prefix('administrasi')->group(function() {
         Route::inertia('/', 'Dashboard/Administrasi')->name('administrasi');
     });

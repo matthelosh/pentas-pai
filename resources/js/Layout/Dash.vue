@@ -64,7 +64,7 @@ onMounted(() => {
     <div id="sidebar" class="sidebar h-full w-2/4 z-20 md:w-2/12 bg-teal-400 md:rounded-s-lg fixed top-0 md:top-3 md:fixed md:block md:col-span-2 -translate-x-[100%] md:-translate-x-0 transition-all duration-300 shadow-lg md:shadow-none overflow-x-hidden print:hidden">
         <div class="w-full p-3 flex md:hidden items-center bg-teal-100 top-0">Pentas PAIS</div>
         <div class="w-full mt-3 md:mt-0 bg-gray-100 py-5">
-            <img src="img/peserta.png" alt="Avatar" class="rounded-full bg-white w-[100px] mx-auto shadow">
+            <img src="/img/peserta.png" alt="Avatar" class="rounded-full bg-white w-[100px] mx-auto shadow">
             <h3 class="text-center text-teal-800">@{{ page.props.auth.user.name }}</h3>
         </div>
         <ul class="mt-2">
@@ -78,7 +78,7 @@ onMounted(() => {
                 Utama
                 </a>
                     <ul class="child-menu hidden duration-500 transition-all ease-in-out bg-white bg-opacity-25">
-                        <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">A</a></li>
+                        <li><a :href="route('dashboard.peserta')" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">Data Peserta</a></li>
                         <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">B</a></li>
                         <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">C</a></li>
                     </ul>
