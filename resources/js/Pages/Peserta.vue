@@ -1,6 +1,7 @@
 <script setup>
 import { Head, usePage } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+// import { Inertia } from '@inertiajs/vue3';
 import Front from '@/Layout/Front.vue';
 import _ from 'lodash';
 import Pagination from '@/Components/General/Pagination.vue';
@@ -16,6 +17,15 @@ const parseImg = (url) => {
     }
 }
 
+const search = ref('')
+
+watch(search, (value) => {
+    axios.get("/peserta?filter="+value, {
+        preserveState: true,
+        replace: true
+    })
+})
+
 // const pesertas = computed(() => {
 //     return _.orderBy(page.props.pesertas.data, 'lomba_id')
 // })
@@ -24,6 +34,12 @@ const parseImg = (url) => {
 <Head title="Data Peserta" />
 <Front>
     <div class="bg-white w-full p-2 md:p-5 rounded shadow overflow-x-scroll">
+        <div class="flex justify-end">
+            <form action="/peserta" method="get">
+                <input type="text" placeholder="Cari" class="rounded shadow print:hidden;" name="filter" v-model="search
+            " >
+            </form>
+        </div>
         <table class="table-auto w-full border-collapse">
             <caption class="mb-5">
                 <h2 class=" font-extrabold text-lg">Data Peserta Lomba Pentas PAIS</h2>

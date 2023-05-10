@@ -13,6 +13,11 @@ const tes = (e) => {
 <Front>
     <Halo />
 </Front>
+<div class="w-full p-10">
+    <div class="w-auto bg-white p-8 shadow relative rounded-lg">
+        <img src="img/foto-gpai.jpg" alt="Foto GPAI" class="shadow-lg object-cover mx-auto">
+    </div>
+</div>
 </template>
 
 <style scoped>
