@@ -68,14 +68,14 @@ class PesertaController extends Controller
                     'nama' => $data->nama,
                     'jk' => $data->jk,
                     'sekolah_id' => $data->sekolah_id,
-                    'foto' => $file ? 'img/peserta/'.$data->nisn.'.jpg' : '',
+                    'foto' => isset($file) ? 'img/peserta/'.$data->nisn.'.jpg' : '',
                     'hp' => $data->hp,
-                    'lomba_id' => $data->lomba_id
+                    'lomba_id' => implode(",",$data->lomba_id)
                 ]
                 );
                 response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
         } catch(\Exception $e) {
-            return response()->json(['status' => 'fail', 'msg' => $e->getMessage()], 500);
+            return response()->json(['status' => 'fail', 'msg' => $e->getMessage(), 'errCode' => $e->getCode()], 500);
         }
     }
 

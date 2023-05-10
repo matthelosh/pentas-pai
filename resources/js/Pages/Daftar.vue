@@ -18,7 +18,7 @@ const onFotoPicked = (e) => {
     // console.log(file)
 }
 
-const peserta = ref({})
+const peserta = ref({lomba_id:[]})
 const bidangs = ref([])
 
 const formRegistrasi = ref()
@@ -36,8 +36,13 @@ const kirim = async () => {
                     loading.value = false
                     Object.assign(peserta, {})
                 }).catch(err => {
-                    console.log(err)
+                    if(err.response.data.errCode == 23000) {
+                        alert('Peserta dengan NISN tersebut sudah terdaftar. ;)')
+                    } else {
+                        alert('Maaf ada kesalahan di pihak kami.')
+                    }
                     loading.value = false
+                    return false
                 })
 }
 
@@ -85,7 +90,7 @@ const kirim = async () => {
                 </div>
                 <div class="flex justify-between mb-3">
                     <label for="lomba">Lomba</label>
-                    <select name="lomba" class="rounded-lg w-3/4 p-1 placeholder:text-blue-500 focus:border-blue-500 bg-gray-100" placeholder="Pilih" v-model="peserta.lomba_id">
+                    <select name="lomba" class="rounded-lg w-3/4 p-1 placeholder:text-blue-500 focus:border-blue-500 bg-gray-100" placeholder="Pilih" v-model="peserta.lomba_id" multiple>
                         <!-- <option value="0" selected>Pilih</option> -->
                         <option v-for="(lomba,l) in page.props.bidangs" :key="l" :value="lomba.kode" :selected="lomba.kode == peserta.lomba_id">{{ lomba.label }}</option>
                         

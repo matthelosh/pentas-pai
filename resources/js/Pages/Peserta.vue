@@ -26,6 +26,8 @@ watch(search, (value) => {
     })
 })
 
+// const lomba = (lomba_id) => {}
+
 // const pesertas = computed(() => {
 //     return _.orderBy(page.props.pesertas.data, 'lomba_id')
 // })
@@ -66,7 +68,7 @@ watch(search, (value) => {
                     </td>
                     <td class="border px-2 py-2">{{ peserta.jk }}</td>
                     <td class="border px-2 py-2">{{peserta.sekolah.nama}}</td>
-                    <td class="border px-2 py-2">{{peserta.bidang.label}}</td>
+                    <td class="border px-2 py-2">{{peserta.lomba_id}}</td>
                 </tr>
                 <!-- <p>{{ page.props.pesertas }}</p> -->
             </tbody>

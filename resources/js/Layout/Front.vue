@@ -25,6 +25,9 @@ const tes = (e) => {
                 <a href="#" class="p-2 hover:text-white duration-300 block">Tentang</a>
             </li>
             <li class=" max-0 my-0 md:mx-1 md:my-0 hover:bg-green-400  hover:rounded duration-300">
+                <Link :href="route('peserta')" class="p-2 hover:text-white duration-300 block">Data Peserta</Link>
+            </li>
+            <li class=" max-0 my-0 md:mx-1 md:my-0 hover:bg-green-400  hover:rounded duration-300">
                 <Link :href="route('daftar')" class="p-2 hover:text-white duration-300 block">Registrasi</Link>
             </li>
         </ul>
