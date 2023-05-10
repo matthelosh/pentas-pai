@@ -1,6 +1,7 @@
 <script setup>
 import { XCircleIcon } from '@heroicons/vue/20/solid';
 import VueQrcode from '@chenfengyuan/vue-qrcode';
+import { imgUrl } from '@/Plugins/misc';
 const props = defineProps({
     lomba: Object
 })
@@ -37,15 +38,15 @@ const sideBg = (kode) => {
     return bg+' bg-opacity-90'
 }
 
-const parseImg = (url) => {
+// const parseImg = (url) => {
     
-    if (url.includes('=')) {
-        let splited = url.split('=')
-        return `https://drive.google.com/uc?export=view&id=${splited[splited.length-1]}`
-    } else {
-        return url
-    }
-}
+//     if (url.includes('=')) {
+//         let splited = url.split('=')
+//         return `https://drive.google.com/uc?export=view&id=${splited[splited.length-1]}`
+//     } else {
+//         return url
+//     }
+// }
 </script>
 
 <template>
@@ -74,7 +75,7 @@ const parseImg = (url) => {
                     </div>
                 </div>
                 <div class="foto w-full my-4">
-                    <img :src="parseImg(peserta.foto)" alt="Foto" class=" aspect-square object-cover rounded-full w-[150px] mx-auto object-center">
+                    <img :src="imgUrl(peserta.foto)" alt="Foto" class=" aspect-square object-cover rounded-full w-[150px] mx-auto object-center">
                 </div>
                 <div class="identitas w-full px-2">
                     <h2 class="uppercase text-center leading-4 font-bold">{{ peserta.nama }}</h2>

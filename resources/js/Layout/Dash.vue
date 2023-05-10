@@ -40,12 +40,20 @@ const handleScroll = (e) => {
     let sidebar = document.querySelector('#sidebar')
     let sidePos = sidebar.getBoundingClientRect() 
 
-    if(sidePos.top !== scrollY) {
-        sidebar.style.position = 'sticky!important'
-    }
-    console.log(scrollY, sidePos.top)
+    // if(sidePos.top !== scrollY) {
+    //     sidebar.style.position = 'sticky!important'
+    // }
+    // console.log(scrollY, sidePos.top)
 } 
 
+const expandChild = (e) => {
+    const li = e.target.closest('li')
+    li.querySelector('ul').classList.toggle('hidden')
+    // li.querySelector('ul').classList.toggle('h-0')
+    
+    // li.querySelector('ul').classList.toggle('hidden')
+    
+}
 onMounted(() => {
     window.addEventListener('scroll', handleScroll)
 })
@@ -53,22 +61,28 @@ onMounted(() => {
 
 <template>
 <div class="h-min-full h-screen relative grid grid-cols-12 gap-3">
-    <div id="sidebar" class="sidebar h-screen w-2/4 z-50 md:w-2/12 bg-teal-400 md:rounded-s-lg fixed top-0 md:top-3 md:fixed md:block md:col-span-2 -translate-x-[100%] md:-translate-x-0 transition-all duration-300 shadow-lg md:shadow-none overflow-x-hidden print:hidden">
+    <div id="sidebar" class="sidebar h-full w-2/4 z-20 md:w-2/12 bg-teal-400 md:rounded-s-lg fixed top-0 md:top-3 md:fixed md:block md:col-span-2 -translate-x-[100%] md:-translate-x-0 transition-all duration-300 shadow-lg md:shadow-none overflow-x-hidden print:hidden">
         <div class="w-full p-3 flex md:hidden items-center bg-teal-100 top-0">Pentas PAIS</div>
         <div class="w-full mt-3 md:mt-0 bg-gray-100 py-5">
             <img src="img/peserta.png" alt="Avatar" class="rounded-full bg-white w-[100px] mx-auto shadow">
             <h3 class="text-center text-teal-800">@{{ page.props.auth.user.name }}</h3>
         </div>
         <ul class="mt-2">
-            <li><Link :href="route('dashboard')" class="flex items-center py-2 px-3 md:hover:bg-opacity-70 md:hover:bg-white md:hover:shadow md:hover:pl-5 transition-all duration-500 " @mouseover="imTouched" @mouseleave="leftBehind">
-                <ArrowRightCircleIcon class="ikon hidden h-5 transition-all duration-500" />
+            <li><Link :href="route('dashboard')" class="flex items-center py-2 px-3 md:hover:bg-opacity-70 md:hover:bg-white md:hover:shadow md:hover:pl-5 transition-all duration-500 " @mouseover="imTouched" @mouseleave="leftBehind" :class="route().current() == 'dashboard' ? 'active' : ''">
+                <ArrowRightCircleIcon class="ikon h-5 transition-all duration-500" :class="route().current() == 'dashboard' ? '' : 'hidden'" />
                 Dashboard
-                <SvgIcon type="mdil" :path="mdilAccount" />
             </Link></li>
-            <li><a href="#" class="flex items-center py-2 px-3 md:hover:bg-opacity-70 md:hover:bg-white md:hover:shadow md:hover:pl-5 transition-all duration-500" @mouseover="imTouched" @mouseleave="leftBehind">
+            <li>
+                <a href="#" class="parent flex items-center py-2 px-3 md:hover:bg-opacity-70 md:hover:bg-white md:hover:shadow md:hover:pl-5 transition-all duration-500" @mouseover="imTouched" @mouseleave="leftBehind" @click.prevent="expandChild">
                 <ArrowRightCircleIcon class="ikon hidden h-5 transition-all duration-500" />
-                Tentang
-            </a></li>
+                Utama
+                </a>
+                    <ul class="child-menu hidden duration-500 transition-all ease-in-out bg-white bg-opacity-25">
+                        <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">A</a></li>
+                        <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">B</a></li>
+                        <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">C</a></li>
+                    </ul>
+                </li>
             <li>
                 <Link :href="route('administrasi')" class="flex items-center py-2 px-3 md:hover:bg-opacity-70 md:hover:bg-white md:hover:shadow md:hover:pl-5 transition-all duration-500 active:bg-white" @mouseover="imTouched" @mouseleave="leftBehind" :class="route().current() == 'administrasi' ? 'active' : ''">
                 <ArrowRightCircleIcon class="ikon h-5 transition-all duration-500" :class="route().current() == 'administrasi' ? '' : 'hidden'" />
@@ -93,5 +107,22 @@ onMounted(() => {
 <style>
 li > a.active {
     background: white;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.child-menu {
+    transition: all .35s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.child-menu.hidden {
+    transition: all .35s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 </style>

@@ -4,6 +4,9 @@ import axios from 'axios';
 import PBtn from '@/Components/General/PBtn.vue';
 import {printContsCard} from '@/Plugins/printKartu';
 
+const props = defineProps({
+    dokumen: String
+})
 
 // const emit = defineEmits(['close', 'cetak'])
 const dialog = ref(false)
@@ -34,7 +37,7 @@ onMounted(() => {
 })
 </script>
 <template>
-<div class="overlay bg-blend-overlay fixed top-0 right-0 bottom-0 left-0 bg-[#333333cc] z-20 flex justify-center items-center" @click.self="$emit('close')">
+<div class="fixed top-0 right-0 bottom-0 bg-[#333333de] z-50 h-screen w-full flex justify-center items-center" @click.self="$emit('close')">
     <div class=" w-6/12 grid grid-cols-3 gap-3" v-if="loading">
         <div class="w-full h-36 bg-white rounded shadow grid grid-cols-4 overflow-hidden" v-for="i in 6" :key="i">
             <div class="h-full w-3/4 bg-gray-200"></div>
@@ -50,7 +53,7 @@ onMounted(() => {
                 <p>{{ lomba.label }}</p>
                 <h1 class="text-4xl">{{ lomba.pesertas.length }} <small class="text-sm">Orang</small></h1>
                 <!-- <p-btn color="sky" class="mt-16" @click="tes(lomba)">Cetak</p-btn> -->
-                <p-btn color="sky" class="mt-16" @click="$emit('cetakKartu', lomba)">Cetak</p-btn>
+                <p-btn color="sky" class="mt-16" @click="$emit('cetakKartu', {lomba:lomba, dokumen:props.dokumen})">Cetak</p-btn>
             </div>
             
         </div>
