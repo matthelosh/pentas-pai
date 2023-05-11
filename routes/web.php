@@ -71,6 +71,10 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
         Route::post('/attach', [PesertaController::class, 'attach'])->name('dashboard.peserta.attach');
     });
 
+    Route::prefix('panitia')->group(function() {
+        Route::inertia('/', 'Dashboard/Panitia')->name('dashboard.panitia');
+    });
+
     Route::prefix('surat')->group(function() {
         Route::post('/', [SuratController::class, 'index'])->name('surat.index');
         Route::post('/store', [SuratController::class, 'store'])->name('surat.store');

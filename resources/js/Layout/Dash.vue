@@ -78,8 +78,8 @@ onMounted(() => {
                 Utama
                 </a>
                     <ul class="child-menu hidden duration-500 transition-all ease-in-out bg-white bg-opacity-25">
-                        <li><a :href="route('dashboard.peserta')" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">Data Peserta</a></li>
-                        <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">B</a></li>
+                        <li><Link :href="route('dashboard.peserta')" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">Data Peserta</Link></li>
+                        <li><Link :href="route('dashboard.panitia')" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">Data Panitia</Link></li>
                         <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">C</a></li>
                     </ul>
                 </li>

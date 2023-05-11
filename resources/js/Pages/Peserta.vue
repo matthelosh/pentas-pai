@@ -23,14 +23,16 @@ const datas = computed(() => {
         datas = pesertas.value
     } else {
         datas = pesertas.value.filter((peserta) => {
+            return peserta.nama.toLowerCase().includes(search.value.toLowerCase()) || peserta.sekolah.nama.toLowerCase().includes(search.value.toLowerCase()) || peserta.nisn.toLowerCase().includes(search.value.toLowerCase())
+            // if (peserta.nama.toLowerCase().includes(search.value.toLowerCase())) {
+            //     return peserta
+            // } else {
+            //     if (peserta.sekolah.nama.toLowerCase().includes(search.value.toLowerCase())) {
+            //         return peserta
+            //     } else if (peserta.nisn.toLowerCase().includes(search.value.toLowerCase())) {
 
-            if (peserta.nama.toLowerCase().includes(search.value.toLowerCase())) {
-                return peserta
-            } else {
-                if (peserta.sekolah.nama.toLowerCase().includes(search.value.toLowerCase())) {
-                    return peserta
-                }
-            }
+            //     }
+            // }
 
         })
     }
