@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import Front from '@/Layout/Front.vue';
 import axios from 'axios';
+import AlertBox from '@/Components/General/AlertBox.vue';
 
 import { ArrowPathIcon } from '@heroicons/vue/20/solid';
 
@@ -32,27 +33,38 @@ const kirim = async () => {
     }
     await axios.post('/registrasi', fd)
                 .then(res => {
-                    console.log(res)
+                    // console.log(res)
                     loading.value = false
-                    Object.assign(peserta, {})
+                    alertBox.value.open('Ok', res.data.msg)
+                    peserta.value = {lomba_id:[]}
                 }).catch(err => {
+                    let msg = 'Error'
                     if(err.response.data.errCode == 23000) {
-                        alert('Peserta dengan NISN tersebut sudah terdaftar. ;)')
+                       msg = `${peserta.value.nama}, NISN: ${peserta.value.nisn} sudah terdaftar`
                     } else {
-                        alert('Maaf ada kesalahan di pihak kami.')
+                        msg = 'Maaf ada kesalahan di pihak kami.'
                     }
                     loading.value = false
+                    alertBox.value.open('Error', msg)
                     return false
                 })
 }
 
+const alertBox = ref(null)
+// const tes = () => {
+//     alertBox.value.open('Ok', 'Berhasil')
+// }
+
 </script>
 
 <template>
+<AlertBox ref="alertBox" />
 <Head title="Mendaftar Lomba" />
 <Front>
     <div class="w-full rounded bg-white shadow p-3">
-        <h1 class="text-lg font-bold">Formulir Pendaftaran</h1>
+        <h1 class="text-lg font-bold">Formulir Pendaftaran
+            <!-- <button class="outline rounded px-2 hover:bg-gray-200 active:bg-gray-400" @click="tes">Tes</button> -->
+        </h1>
         <div class="columns-1 md:columns-2 md:p-10 gap-5 relative">
             <div class="w-full bg-gray-100 p-3 mb-3 rounded">
                 <img :src="urlFoto" alt="Peserta" class="w-1/2 rounded-full mx-auto shadow transition-all duration-500 hover:shadow-lg hover:shadow-lime-600 cursor-pointer bg-[#fefefe]" @click="$refs.foto.click()">

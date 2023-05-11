@@ -24,8 +24,8 @@ const login = async () => {
     <div class="container bg-white w-full rounded shadow-lg columns-1 md:columns-2 gap-4 md:w-9/12 mx-auto">
         <div class="w-full h-96 flex items-center justify-center bg-teal-700">
             <div>
-                <img src="img/peserta.png" alt="Avatar" class="mx-auto rounded-full aspect-square shadow-xl" width="100">
-                <h3 class="text-center">Selamat Datang!</h3>
+                <img src="img/peserta.png" alt="Avatar" class="mx-auto rounded-full aspect-square shadow-md border p-1 bg-gray-200" width="100">
+                <h3 class="text-center text-white">Selamat Datang!</h3>
             </div>
         </div>
         <div class="w-full h-96 flex items-center justify-center">

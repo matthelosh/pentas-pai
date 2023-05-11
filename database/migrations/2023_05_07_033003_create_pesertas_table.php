@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('sekolah_id', 30);
             $table->string('foto', 191);
             $table->string('hp', 16)->nullable();
-            $table->string('lomba_id', 10);
+            $table->string('lomba_id', 60);
             $table->timestamps();
         });
     }

@@ -35,18 +35,15 @@ class PesertaController extends Controller
     {
         try {
             $data = json_decode($request->data);
-            // dd($request->file('foto'));
             if ( $request->file('foto')) {
                 $foto = $request->file('foto');
                 $file = Storage::putFileAs('public/img/peserta', $foto, $data->nisn.'.jpg');
             }
-            // dd($file);
             $bidangs = [];
             foreach($data->lomba_id as $kode) {
                 $bidang = Bidang::where('kode', $kode)->select('id')->first();
                 array_push($bidangs, $bidang->id);
             }
-            // dd($bidangs);
             $peserta = new Peserta();
             $peserta->nisn = $data->nisn;
             $peserta->nama = $data->nama;
@@ -57,18 +54,7 @@ class PesertaController extends Controller
             $peserta->sekolah_id = $data->sekolah_id;
             $peserta->save();
             $peserta->bidangs()->attach($bidangs[0]);
-            // Peserta::create(
-            //     [
-            //         'nisn' => $data->nisn,
-            //         'nama' => $data->nama,
-            //         'jk' => $data->jk,
-            //         'sekolah_id' => $data->sekolah_id,
-            //         'foto' => isset($file) ? 'img/peserta/'.$data->nisn.'.jpg' : '',
-            //         'hp' => $data->hp,
-            //         'lomba_id' => implode(",",$data->lomba_id)
-            //     ]
-            //     );
-                response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
+            return response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
         } catch(\Exception $e) {
             return response()->json(['status' => 'fail', 'msg' => $e->getMessage(), 'errCode' => $e->getCode()], 500);
         }

@@ -3,8 +3,7 @@ import {onMounted } from 'vue';
 import { Bars3CenterLeftIcon, ArrowRightCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid';
 import { Link, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
-import SvgIcon from '@jamescoyle/vue-icon';
-import {mdilAccount} from '@mdi/light-js';
+
 
 const page = usePage()
 
