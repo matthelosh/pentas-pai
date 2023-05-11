@@ -22,7 +22,7 @@
             }
         </style>
     </head>
-    <body class="font-sans antialiased bg-gradient-to-l from-teal-400  to-lime-300 md:p-3 print:bg-white">
+    <body class="font-sans antialiased bg-gradient-to-l from-teal-400  to-lime-300 md:p-3 print:bg-white print:p-0 print:m-0">
         @inertia
     </body>
 </html>

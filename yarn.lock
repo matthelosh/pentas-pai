@@ -647,6 +647,31 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-strike/-/extension-strike-2.0.3.tgz#4ec0001db5f51f86d06da22364114f20f073d4b3"
   integrity sha512-RO4/EYe2iPD6ifDHORT8fF6O9tfdtnzxLGwZIKZXnEgtweH+MgoqevEzXYdS+54Wraq4TUQGNcsYhe49pv7Rlw==
 
+"@tiptap/extension-table-cell@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-table-cell/-/extension-table-cell-2.0.3.tgz#44369bafdad3bb5b4f96296a8e93701673079b3a"
+  integrity sha512-d0vpwQfRIOhqKJdoiOJybwWhjnug3QA4Mkgccp378moDRyOer3hPKavG1Ljgz087qHrN4WfdUlMGEvasYsWE7w==
+
+"@tiptap/extension-table-header@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-table-header/-/extension-table-header-2.0.3.tgz#bb35953da353f757202efab6e0c0d5d390a70f51"
+  integrity sha512-SnGl1U6usRRS6LyAjSdhaCYLF6NWbGhjVFSmiPrjb0pOzsiVeDOiUNCyUAIYaDNnjAF2pfK6+H+uHzYPqTi+/w==
+
+"@tiptap/extension-table-row@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-table-row/-/extension-table-row-2.0.3.tgz#fb7fd381435b06942dfbc2ba475072c25bf0a478"
+  integrity sha512-tyqeXmQLNSBsYyiNsnQuJMxNbz6dYt+P5W58+h10mjbt+hERA5+alQQyP06O2DggsT3Z0LPt7QRAlNmOBe7cyQ==
+
+"@tiptap/extension-table@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-table/-/extension-table-2.0.3.tgz#780b946ca8526ac8a4044bdec4c9c720ad8ba89a"
+  integrity sha512-8swHqm8vRM1w9WzaAhLmY24gGoTozctz4KHKBjvFY/Ka0yXabT0+hoCCdkZLnXWi15H3pbHs2HnDBaTGL9bZTw==
+
+"@tiptap/extension-text-align@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-text-align/-/extension-text-align-2.0.3.tgz#00a7ce067cb033aa54edb82e8c2a023c73d7ef3c"
+  integrity sha512-VlLgqncKdjMjVjbU60/ALYhFs0wUdjAyvjDXnH1OoM/HuzbILvufPMYz4DUieJIWVJOYUKHQgg4XwBWceAM2Tw==
+
 "@tiptap/extension-text@^2.0.3":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-text/-/extension-text-2.0.3.tgz#12b6400a31ac6d35cbaf1822600f4c425457902f"
@@ -1018,7 +1043,7 @@ chartjs-plugin-datalabels@^2.2.0:
   resolved "https://registry.yarnpkg.com/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-2.2.0.tgz#369578e131d743c2e34b5fbe2d3f9335f6639b8f"
   integrity sha512-14ZU30lH7n89oq+A4bWaJPnAG8a7ZTk7dKf48YAzMvJjQtjrgg5Dpk9f+LbjCF6bpx3RAGTeL13IXpKQYyRvlw==
 
-chokidar@^3.5.3:
+"chokidar@>=3.0.0 <4.0.0", chokidar@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
   integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
@@ -1362,6 +1387,11 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+immutable@^4.0.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.3.0.tgz#eb1738f14ffb39fd068b1dbe1296117484dd34be"
+  integrity sha512-0AOCmOip+xgJwEVTQj1EfiDDOkPmuyllDuTuEX+DDXUgapLAsBIfkg3sxCYyCEA8mQqZrrxPUGjcOQ2JS3WLkg==
+
 inflight@^1.0.4:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/inflight/-/inflight-1.0.6.tgz#49bd6331d7d02d0c09bc910a1075ba8165b56df9"
@@ -1573,6 +1603,16 @@ minimatch@^3.0.4:
   integrity sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==
   dependencies:
     brace-expansion "^1.1.7"
+
+moment-with-locales-es6@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/moment-with-locales-es6/-/moment-with-locales-es6-1.0.1.tgz#c2eec19c902f98baa959afeacc34275bb61a3336"
+  integrity sha512-aKHuk7hHGVGk1X86rhu4aVwSEpBEwL3Lo5BEvZnqGueZeVK9pfpTrlLT3qN4A64vMkiKkxWpwQCcyg2YpoZGaQ==
+
+moment@^2.29.4:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 ms@2.1.2:
   version "2.1.2"
@@ -2010,6 +2050,15 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
+sass@^1.62.1:
+  version "1.62.1"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.62.1.tgz#caa8d6bf098935bc92fc73fa169fb3790cacd029"
+  integrity sha512-NHpxIzN29MXvWiuswfc1W3I0N8SXBd8UR26WntmDlRYf0bSADnwnOjsyMZ3lMezSlArD33Vs3YFhp7dWvL770A==
+  dependencies:
+    chokidar ">=3.0.0 <4.0.0"
+    immutable "^4.0.0"
+    source-map-js ">=0.6.2 <2.0.0"
+
 semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
@@ -2029,7 +2078,7 @@ side-channel@^1.0.4:
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
 
-source-map-js@^1.0.2:
+"source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==

@@ -12,7 +12,7 @@ const login = async () => {
     loading.value = true
     await axios.post('/login', user.value)
             .then(res => {
-                window.location.href = '/dashboard'
+                window.location.href = '/panitia'
             })
 }
 

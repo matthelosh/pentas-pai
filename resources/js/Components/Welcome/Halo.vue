@@ -1,15 +1,16 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import PCard from '@/Components/General/PCard.vue';
-import PImage from '../General/PImage.vue';
 import axios from 'axios';
 import { DoughnutChart, PieChart, LineChart, BarChart, PolarAreaChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 Chart.register(...registerables);
 
+import * as _ from 'lodash-es'
+
 const lombas = ref([])
+const sekolahs = ref([])
 
 const chartByBidang = ref({
     labels: [],
@@ -22,13 +23,12 @@ const chartByBidang = ref({
 })
 
 const chartByBidangOptions = ref({
-    
     plugins: {
         datalabels: {
             color: '#ffffff'
         },
         legend: {
-            position: 'right',
+            position: 'bottom',
         },
         title: {
             display: true,
@@ -36,6 +36,14 @@ const chartByBidangOptions = ref({
         }
     }
 })
+
+
+const listSekolah = async () => {
+    await axios.post(route('sekolah.index'))
+                .then(res => {
+                    sekolahs.value = res.data.sekolahs
+                }).catch( err => console.log(err))
+} 
 
 const listLomba = async () => {
     await axios.post('/lomba')
@@ -54,6 +62,8 @@ const listLomba = async () => {
         }).catch(err => console.log(err))
 }
 
+
+
 const jml = computed(() => {
     if(lombas.value.bidangs) {
         let jml = lombas.value.bidangs.reduce(
@@ -66,16 +76,43 @@ const jml = computed(() => {
     // return lombas.value
 })
 
+const sekolahPage = ref(1)
+const dataSekolahs = computed(() => {
+    let pages = _.chunk(sekolahs.value, 5)
+    return {current: pages[sekolahPage.value-1], pageCount: pages.length}
+})
+
 onMounted(() => {
     listLomba()
+    listSekolah()
 })
 </script>
 
 <template>
-<div class="w-full md:w-2/4 mx-auto bg-white shadow p-5 rounded">
+<div class="w-full md:w-3/4 mx-auto">
     <h1 class="text-center text-2xl">{{lombas.label}}</h1>
-    <PolarAreaChart :chartData="chartByBidang" :plugins="[ChartDataLabels]" :options="chartByBidangOptions" />
+    <div class="w-full grid grid-cols-1 gap-3">
+        <PolarAreaChart :chartData="chartByBidang" :plugins="[ChartDataLabels]" :options="chartByBidangOptions" class="bg-white" />
+        <div class="w-full md:w-2/4 md:mx-auto">
+            <div class="h-12 text-white flex items-center px-2 my-1 border"  
+                v-for="(sekolah, s) in dataSekolahs.current" 
+                :key="s" 
+                :style="`width: 100%;
+                background-image: linear-gradient(to right, #307845 ${ Math.ceil(((sekolah.pesertas ? sekolah.pesertas.length : 0)/17)*100) }%, transparent ${100 - Math.ceil(((sekolah.pesertas ? sekolah.pesertas.length : 0)/17)*100)}%);
+                background-repeat: no-repeat
+                background-size: ${ Math.ceil(((sekolah.pesertas ? sekolah.pesertas.length : 0)/17)*100) }% 100%;`"
+            >
+                {{ sekolah.nama }}: {{ sekolah.pesertas.length }} Orang    
+                ({{Math.ceil(((sekolah.pesertas ? sekolah.pesertas.length : 0)/17)*100) }}%)
+            </div>
+            <div class="flex justify-between">
+                <button class="bg-white px-5 py-1" @click="sekolahPage = sekolahPage > 1 ? (sekolahPage - 1) : 1">&lt;</button>
+                <button class="bg-white px-5 py-1" @click="sekolahPage = sekolahPage < dataSekolahs.pageCount ? (sekolahPage + 1) : dataSekolahs.pageCount">&gt;</button>
+            </div>
+        </div>
+    </div>
 </div>
+
 <div class="grid grid-cols-2 md:grid-cols-3 gap-2 z-0 md:px-5">
     <div class="w-full h-52 flex items-center justify-center col-span-2 md:col-span-3">
         <Link as="span" class="text-center relative cursor-pointer" :href="route('peserta')">

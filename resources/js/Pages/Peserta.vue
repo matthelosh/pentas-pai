@@ -23,7 +23,15 @@ const datas = computed(() => {
         datas = pesertas.value
     } else {
         datas = pesertas.value.filter((peserta) => {
-            return peserta.nama.toLowerCase().includes(search.value.toLowerCase())
+
+            if (peserta.nama.toLowerCase().includes(search.value.toLowerCase())) {
+                return peserta
+            } else {
+                if (peserta.sekolah.nama.toLowerCase().includes(search.value.toLowerCase())) {
+                    return peserta
+                }
+            }
+
         })
     }
     let pages =  _.chunk(datas, 10)
@@ -43,37 +51,39 @@ const datas = computed(() => {
             <input type="text" placeholder="Cari" class="h-8 rounded" v-model="search" />
         </div>
     </div>
-    <div class="content w-full bg-white p-3 mt-2">
-        <table class="table w-full border-collapse">
-            <thead>
-                <tr>
-                    <th class="border text-center">No</th>
-                    <th class="border text-center">NISN</th>
-                    <th class="border text-center">Nama</th>
-                    <th class="border text-center">JK</th>
-                    <th class="border text-center">Sekolah</th>
-                    <th class="border text-center">Lomba</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="odd:bg-gray-50" v-for="(data,d) in datas.current" :key="d">
-                    <td class="border p-2">{{ d+1 }}</td>
-                    <td class="border p-2">{{ data.nisn }}</td>
-                    <td class="border p-2">{{ data.nama }}</td>
-                    <td class="border p-2">{{ data.jk }}</td>
-                    <td class="border p-2">{{ data.sekolah.nama }}</td>
-                    <td class="border p-2">
-                        <ul>
-                            <li v-for="(bidang,b) in data.bidangs" :key="b"> {{ bidang.label }}</li>
-                        </ul>
-                        <!-- | {{ data.lomba_id }} -->
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="w-full bg-gray-200 flex items-center justify-between pl-3">
+    <div class="content w-full bg-white p-3 mt-2 overflow-x-hidden">
+        <div class="table-responsive w-full overflow-x-scroll">
+            <table class="table w-full border-collapse bg-white overflow-x-auto">
+                <thead>
+                    <tr>
+                        <th class="border text-center">No</th>
+                        <th class="border text-center">NISN</th>
+                        <th class="border text-center">Nama</th>
+                        <th class="border text-center">JK</th>
+                        <th class="border text-center">Sekolah</th>
+                        <th class="border text-center">Lomba</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="odd:bg-gray-50" v-for="(data,d) in datas.current" :key="d">
+                        <td class="border p-2">{{ d+1 }}</td>
+                        <td class="border p-2">{{ data.nisn }}</td>
+                        <td class="border p-2">{{ data.nama }}</td>
+                        <td class="border p-2">{{ data.jk }}</td>
+                        <td class="border p-2">{{ data.sekolah.nama }}</td>
+                        <td class="border p-2">
+                            <ul>
+                                <li v-for="(bidang,b) in data.bidangs" :key="b"> {{ bidang.label }}</li>
+                            </ul>
+                            <!-- | {{ data.lomba_id }} -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bg-gray-200 flex items-center justify-between pl-3 flex-wrap">
             Jml Halaman: {{ datas.pageCount }}
-            <div class="flex items-center h-full ">
+            <div class="flex items-center h-full flex-wrap">
                 <button @click="currentPage-=1" class="flex justify-center w-8 border border-gray-500">&lt;</button>
                 <button v-for="b in datas.pageCount" :key="b" class="flex justify-center w-8 border border-gray-500" :class="b == currentPage ? 'bg-sky-600 text-white': ''" @click="currentPage=b">{{ b }}</button>
                 <button @click="currentPage+=1" class="flex justify-center w-8 border border-gray-500">&gt;</button>

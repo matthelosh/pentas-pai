@@ -25,6 +25,17 @@
         "@mdi/js": "^7.2.96",
         "@mdi/light-js": "^0.2.63",
         "@tiptap/extension-bubble-menu": "^2.0.3",
+        "@tiptap/extension-bullet-list": "^2.0.3",
+        "@tiptap/extension-document": "^2.0.3",
+        "@tiptap/extension-gapcursor": "^2.0.3",
+        "@tiptap/extension-list-item": "^2.0.3",
+        "@tiptap/extension-paragraph": "^2.0.3",
+        "@tiptap/extension-table": "^2.0.3",
+        "@tiptap/extension-table-cell": "^2.0.3",
+        "@tiptap/extension-table-header": "^2.0.3",
+        "@tiptap/extension-table-row": "^2.0.3",
+        "@tiptap/extension-text": "^2.0.3",
+        "@tiptap/extension-text-align": "^2.0.3",
         "@tiptap/pm": "^2.0.3",
         "@tiptap/starter-kit": "^2.0.3",
         "@tiptap/vue-3": "^2.0.3",
@@ -33,7 +44,10 @@
         "chartjs-plugin-datalabels": "^2.2.0",
         "lodash": "^4.17.21",
         "lodash-es": "^4.17.21",
+        "moment": "^2.29.4",
+        "moment-with-locales-es6": "^1.0.1",
         "qrcode": "1",
+        "sass": "^1.62.1",
         "vue-chart-3": "^3.1.8"
     }
 }

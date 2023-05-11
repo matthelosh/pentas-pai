@@ -97,7 +97,7 @@ onMounted(() => {
             <Bars3CenterLeftIcon class="h-6 cursor-pointer md:hidden" @click="toggleSide" />
             <XCircleIcon class="h-8 hidden md:block cursor-pointer text-red-600 hover:text-red-500 hover:shadow rounded-full" @click="logout" />
         </nav>
-        <main class="mt-14 md:mt-3 px-3 md:px-0  md:rounded-br-lg md:translate-x-[263px]">
+        <main class="mt-14 md:mt-3 px-3 md:px-0 print:p-0 print:m-0 md:rounded-br-lg md:translate-x-[263px]">
             <slot />
         </main>
     </div>

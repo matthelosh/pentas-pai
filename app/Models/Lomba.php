@@ -12,11 +12,17 @@ class Lomba extends Model
     protected $fillable = [
         'kode',
         'label',
-        'tahun'
+        'tahun',
+        'lokasi_id'
     ];
 
     public function bidangs()
     {
         return $this->belongsToMany(Bidang::class, 'bidang_lomba');
+    }
+
+    public function sekolah()
+    {
+        return $this->belongsTo(Sekolah::class, 'lokasi_id', 'npsn');
     }
 }

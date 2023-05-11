@@ -27,9 +27,6 @@ const listBidang = async () => {
         }).catch(err => console.log(err))
 }
 
-const tes = (lomba) => {
-    console.log(lomba)
-}
 
 onMounted(() => {
     dialog.value = true
@@ -52,7 +49,6 @@ onMounted(() => {
             <div class="w-full h-full py-4 pr-3 col-span-3">
                 <p>{{ lomba.label }}</p>
                 <h1 class="text-4xl">{{ lomba.pesertas.length }} <small class="text-sm">Orang</small></h1>
-                <!-- <p-btn color="sky" class="mt-16" @click="tes(lomba)">Cetak</p-btn> -->
                 <p-btn color="sky" class="mt-16" @click="$emit('cetakKartu', {lomba:lomba, dokumen:props.dokumen})">Cetak</p-btn>
             </div>
             

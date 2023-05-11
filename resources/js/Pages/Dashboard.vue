@@ -59,7 +59,7 @@ onMounted(() => {
 <template>
 <Head title="Dashboard" />
 <Dash>
-    <div class="w-full bg-white shadow p-5 rounded">
+    <div class="w-full bg-white shadow p-5 print:p-0 rounded">
         <h1 class="text-center text-2xl">{{lombas.label}}</h1>
         <h1 class="text-center text-lg">Grafik Peserta Berdasarkan Bidang Lomba</h1>
         <PieChart :chartData="testData" />

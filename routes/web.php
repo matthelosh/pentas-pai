@@ -36,6 +36,10 @@ Route::prefix('lomba')->group(function() {
     Route::post('/', [LombaController::class, 'index'])->name('lomba.index');
 });
 
+Route::prefix('sekolah')->group(function() {
+    Route::post('/', [SekolahController::class, 'index'])->name('sekolah.index');
+});
+
 Route::post('/registrasi', [PesertaController::class, 'store'])->name('peserta.store');
 
 Route::prefix('daftar')->group(function() {
@@ -56,7 +60,7 @@ Route::prefix('peserta')->group(function() {
 });
 
 Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
@@ -65,6 +69,12 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
             'pesertas' => Peserta::with('sekolah','bidangs')->get(),
         ])->name('dashboard.peserta');
         Route::post('/attach', [PesertaController::class, 'attach'])->name('dashboard.peserta.attach');
+    });
+
+    Route::prefix('surat')->group(function() {
+        Route::post('/', [SuratController::class, 'index'])->name('surat.index');
+        Route::post('/store', [SuratController::class, 'store'])->name('surat.store');
+        Route::post('/{id}/lampiran/store', [SuratController::class, 'storeAttachment'])->name('surat.lampiran.store');
     });
 
     Route::prefix('administrasi')->group(function() {

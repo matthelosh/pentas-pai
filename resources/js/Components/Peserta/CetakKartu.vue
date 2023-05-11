@@ -68,7 +68,7 @@ const sideBg = (kode) => {
             </div>
             <div class="col-span-3">
                 <div class="logo flex gap-1 items-end justify-center mt-6">
-                    <img src="img/kkg.png" alt="Logo KKG" class="h-10">
+                    <img src="/img/kkg.png" alt="Logo KKG" class="h-10">
                     <div class="logo--text">
                         <h3 class="my-0 leading-4 font-bold text-sm">PENTAS PAIS 2023</h3>
                         <h2 class="my-0 lh leading-4 text-xs">KKG PAI KECAMATAN WAGIR</h2>
