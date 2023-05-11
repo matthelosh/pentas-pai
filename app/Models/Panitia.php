@@ -10,10 +10,25 @@ class Panitia extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama',
-        'nip',
-        'jk',
+        'lomba_id',
+        'guru_id',
+        'user_id',
         'jabatan'
     ];
+
+    public function lomba()
+    {
+        return $this->belongsTo(Lomba::class);
+    }
+
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

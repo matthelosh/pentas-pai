@@ -42,4 +42,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function panitias()
+    {
+        return $this->hasMany(Panitia::class);
+    }
+
+    public function guru()
+    {
+        return $this->hasOneThrough(Guru::class, Panitia::class);
+    }
 }

@@ -25,4 +25,14 @@ class Lomba extends Model
     {
         return $this->belongsTo(Sekolah::class, 'lokasi_id', 'npsn');
     }
+
+    public function gurus()
+    {
+        return $this->hasManyThrough(Guru::class, Panitia::class);
+    }
+
+    public function panitias()
+    {
+        return $this->hasMany(Panitia::class);
+    }
 }

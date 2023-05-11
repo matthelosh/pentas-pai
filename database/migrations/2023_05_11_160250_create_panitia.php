@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('panitias', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 60);
-            $table->string('nip', 30)->nullable();
-            $table->string('jabatan', 30);
-            $table->enum('jk', ['Laki-laki','Perempuan']);
+            $table->integer('lomba_id');
+            $table->integer('guru_id');
+            $table->integer('user_id');
+            $table->string('jabatan', 30)->default('Umum');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('panitias');
+        Schema::dropIfExists('panitia');
     }
 };
