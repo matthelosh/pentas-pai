@@ -1,104 +1,95 @@
 <script setup>
 import { Head, usePage } from '@inertiajs/vue3';
-import { ref, computed, watch } from 'vue';
-// import { Inertia } from '@inertiajs/vue3';
 import Front from '@/Layout/Front.vue';
-import _ from 'lodash';
-import Pagination from '@/Components/General/Pagination.vue';
+import { ref, computed, onMounted, watch } from 'vue';
+import * as _ from 'lodash-es';
+import axios from 'axios';
+const $page = usePage()
+const currentPage = ref(1)
+const search = ref(null)
+const pesertas = ref($page.props.pesertas)
 
-const page = usePage()
-const mode = ref('list')
-const parseImg = (url) => {
-    let splited = url.split('=')
-    if (splited.length > 0) {
-        return `https://drive.google.com/uc?export=view&id=${splited[splited.length-1]}`
+// const filter = () => {
+//     console.log(search.value    )
+//     pesertas.value = $page.props.pesertas.filter((peserta) => {
+//         return peserta.nama.toLowerCase().includes(search.value.toLowerCase())
+//     })
+// }
+const datas = computed(() => {
+    let length = pesertas.value.length
+    let datas = []
+
+    if (search.value == null) {
+        datas = pesertas.value
     } else {
-        return url
+        datas = pesertas.value.filter((peserta) => {
+            return peserta.nama.toLowerCase().includes(search.value.toLowerCase())
+        })
     }
-}
+    let pages =  _.chunk(datas, 10)
 
-const search = ref('')
-
-const selectedPeserta = ref({})
-
-const detail = (siswa) => {
-    selectedPeserta.value = siswa
-    mode.value = 'detail'
-    console.log(selectedPeserta.value)
-}
-
-watch(search, (value) => {
-    axios.get("/peserta?filter="+value, {
-        preserveState: true,
-        replace: true
-    })
+    return {current: pages[currentPage.value-1], pageCount: pages.length}
 })
+const fixData = async () => {
+    await axios.post(route('dashboard.peserta.attach'), {pesertas: JSON.stringify($page.props.pesertas)})
+            .then(res => {
+                window.location.reload()
+            })
+}
 
-// const lomba = (lomba_id) => {}
+</script> 
 
-// const pesertas = computed(() => {
-//     return _.orderBy(page.props.pesertas.data, 'lomba_id')
-// })
-</script>
 <template>
 <Head title="Data Peserta" />
 <Front>
-<TransitionGroup type="slide">
-    <div class="bg-white w-full p-2 md:p-5 rounded shadow overflow-x-scroll" key="list" v-if="mode == 'list'">
-        <div class="flex justify-end">
-            <form action="/peserta" method="get">
-                <input type="text" placeholder="Cari" class="rounded shadow print:hidden;" name="filter" v-model="search
-            " >
-            </form>
+<div class="w-full bg-white">
+    <div class="toolbar w-full h-12 bg-gray-50 rounded shadow flex items-center px-3 justify-between">
+        <h1>Data Peserta</h1>
+        <div class="toolbar-items flex items-center gap-2">
+            <input type="text" placeholder="Cari" class="h-8 rounded" v-model="search" />
+            <button class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800" @click="fixData">perbaikan</button>
         </div>
-        <table class="table-auto w-full border-collapse">
-            <caption class="mb-5">
-                <h2 class=" font-extrabold text-lg">Data Peserta Lomba Pentas PAIS</h2>
-                <h1 class="text-2xl font-extrabold">{{ new Date().getFullYear() }}</h1>
-            </caption>
-            <thead class=" bg-sky-200">
+    </div>
+    <div class="content w-full bg-white p-3 mt-2">
+        <table class="table w-full border-collapse">
+            <thead>
                 <tr>
-                    <th class="border px-2 py-2">No</th>
-                    <th class="border px-2 py-2">NISN</th>
-                    <th class="border px-2 py-2">Nama</th>
-                    <th class="border px-2 py-2">JK</th>
-                    <th class="border px-2 py-2">Sekolah</th>
-                    <th class="border px-2 py-2">Bidang Lomba</th>
+                    <th class="border text-center">No</th>
+                    <th class="border text-center">NISN</th>
+                    <th class="border text-center">Nama</th>
+                    <th class="border text-center">JK</th>
+                    <th class="border text-center">Sekolah</th>
+                    <th class="border text-center">Lomba</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(peserta,p) in page.props.pesertas.data" :key="p">
-                    <td class="border px-2 py-2 text-center">{{ p+1 }}</td>
-                    <td class="border px-2 py-2">{{peserta.nisn}}</td>
-                    <td class="border px-2 py-2 flex items-center">
-                        <img :src="parseImg(peserta.foto)" alt="Foto" class="rounded-full aspect-square w-10 shadow object-cover mr-1 cursor-pointer" @click="detail(peserta)" />
-                        <!-- {{ peserta.foto }} -->
-                        <span @click="detail(peserta)" class="cursor-pointer">{{peserta.nama}}</span>
+                <tr class="odd:bg-gray-50" v-for="(data,d) in datas.current" :key="d">
+                    <td class="border p-2">{{ d+1 }}</td>
+                    <td class="border p-2">{{ data.nisn }}</td>
+                    <td class="border p-2">{{ data.nama }}</td>
+                    <td class="border p-2">{{ data.jk }}</td>
+                    <td class="border p-2">{{ data.sekolah.nama }}</td>
+                    <td class="border p-2">
+                        <ul>
+                            <li v-for="(bidang,b) in data.bidangs" :key="b"> {{ bidang.label }}</li>
+                        </ul>
+                        <!-- | {{ data.lomba_id }} -->
                     </td>
-                    <td class="border px-2 py-2">{{ peserta.jk }}</td>
-                    <td class="border px-2 py-2">{{peserta.sekolah.nama}}</td>
-                    <td class="border px-2 py-2">{{peserta.lomba_id}}</td>
                 </tr>
-                <!-- <p>{{ page.props.pesertas }}</p> -->
             </tbody>
         </table>
-        <Pagination class="mt-6" :links="page.props.pesertas.links" />
-    </div>
-    <div v-if="mode == 'detail'" key="detail" class="w-full">
-        <div class="w-full flex justify-end my-5 px-10">
-            <button class="py-2 px-3 bg-white rounded shadow" @click="mode = 'list'">Tutup</button>
-        </div>
-        <div class="md:mx-10 bg-white shadow rounded-lg p-8 flex  flex-wrap gap-5">
-            <img :src="parseImg(selectedPeserta.foto)" alt="Foto" class="rounded flex-grow md:flex-grow-0 border border-gray-300 w-64 shadow object-cover mr-1" />
-            <div class="bg-[#fefefe] shadow flex-grow p-5 md:p-10">
-                <h1>NAMA: {{ selectedPeserta.nama }}</h1>
-                <h1>NISN: {{ selectedPeserta.nisn }}</h1>
-                <h1>ASAL SEKOLAH: {{ selectedPeserta.sekolah.nama }}</h1>
-                <h1>LOMBA: {{ selectedPeserta.lomba_id }}</h1>
+        <div class="w-full bg-gray-200 flex items-center justify-between pl-3">
+            Jml Halaman: {{ datas.pageCount }}
+            <div class="flex items-center h-full ">
+                <button @click="currentPage-=1" class="flex justify-center w-8 border border-gray-500">&lt;</button>
+                <button v-for="b in datas.pageCount" :key="b" class="flex justify-center w-8 border border-gray-500" :class="b == currentPage ? 'bg-sky-600 text-white': ''" @click="currentPage=b">{{ b }}</button>
+                <button @click="currentPage+=1" class="flex justify-center w-8 border border-gray-500">&gt;</button>
             </div>
         </div>
-        
     </div>
-    </TransitionGroup>
+    <!-- <div class="w-full bg-gray-200">
+        {{ pesertas }}
+    </div> -->
+</div>
 </Front>
 </template>
