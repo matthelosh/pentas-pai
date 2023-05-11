@@ -30,12 +30,6 @@ const datas = computed(() => {
 
     return {current: pages[currentPage.value-1], pageCount: pages.length}
 })
-const fixData = async () => {
-    await axios.post(route('dashboard.peserta.attach'), {pesertas: JSON.stringify($page.props.pesertas)})
-            .then(res => {
-                window.location.reload()
-            })
-}
 
 </script> 
 
@@ -47,7 +41,6 @@ const fixData = async () => {
         <h1>Data Peserta</h1>
         <div class="toolbar-items flex items-center gap-2">
             <input type="text" placeholder="Cari" class="h-8 rounded" v-model="search" />
-            <button class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800" @click="fixData">perbaikan</button>
         </div>
     </div>
     <div class="content w-full bg-white p-3 mt-2">
