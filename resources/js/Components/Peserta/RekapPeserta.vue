@@ -5,6 +5,7 @@ import axios from 'axios';
 import * as _ from 'lodash-es';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiClose } from '@mdi/js';
+import { imgUrl } from '@/Plugins/misc';
 
 const items = ref([])
 const list = async () => {
@@ -54,8 +55,9 @@ onMounted(() => {
                             <!-- <div class="bg-gray-50 p-2 w-[30%] flex items-center">{{ peserta.length > 0 ? peserta[0].bidangs[0].label: '' }}</div> -->
                             <div class="bg-teal-50 w-[70%] flex items-center px-2 flex-grow-1">
                                 <ul class="w-full" v-if="peserta">
-                                    <li v-for="(item, it) in peserta" :key="it"> 
-                                        {{ it+1 }}. {{ item.nama }} [ NISN: {{ item.nisn }} ]
+                                    <li v-for="(item, it) in peserta" :key="it" class="flex items-center gap-1"> 
+                                        {{it+1}} . {{ item.nama }} [ NISN: {{ item.nisn }} ]
+                                        <img :src="imgUrl(item.foto)" alt="" class="w-12 aspect-square rounded-full object-cover object-top">
                                     </li>
                                 </ul>
                             </div>
