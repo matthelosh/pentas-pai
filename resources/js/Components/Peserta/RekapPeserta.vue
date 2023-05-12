@@ -50,10 +50,10 @@ onMounted(() => {
                     <td class="border border-black w-[25%]">{{ data.nama }}</td>
                     <td class="border border-black p-1 text-cent">
                         <span class="w-full flex my-2 gap-2 border" v-for="(peserta, pe) in perBidangs(data.pesertas)" :key="pe" >
-                            <div class="bg-gray-50 p-2 w-[30%] flex items-center">{{ peserta ? peserta[0].bidangs[0].label: '' }}</div>
+                            <div class="bg-gray-50 p-2 w-[30%] flex items-center">{{ peserta.length > 0 ? peserta[0].bidangs[0].label: '' }}</div>
                             <div class="bg-teal-50 w-[70%] flex items-center px-2 flex-grow-1">
                                 <ul class="w-full" v-if="peserta">
-                                    <li v-for="(item, it) in peserta" :key="it">
+                                    <li v-for="(item, it) in peserta" :key="it"> 
                                         {{ it+1 }}. {{ item.nama }} [ NISN: {{ item.nisn }} ]
                                     </li>
                                 </ul>
