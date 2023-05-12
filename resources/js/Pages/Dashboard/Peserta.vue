@@ -66,13 +66,13 @@ const checked = (nisn) => {
     let found = selected.value.filter(item => item.nisn == nisn)
     return found.length > 0 ? true : false
 } 
-const selectOne = ($event, nisn) => {
+const selectOne = ($event, selectedPeserta) => {
     if ($event.target.checked) {
-        let foundIndex = pesertas.value.findIndex(el => el.nisn == nisn)
-        selected.value.splice(foundIndex,0, pesertas.value[foundIndex])
+        // let foundIndex = pesertas.value.findIndex(el => el.nisn == nisn)
+        // selected.value.splice(foundIndex,0, pesertas.value[foundIndex])
+        selected.value.push(selectedPeserta)
     } else {
-        let foundIndex = selected.value.findIndex(el => el.nisn == nisn)
-        selected.value.splice(foundIndex, 1)
+        selected.value = _.remove(selected.value, el => el.nisn == selectedPeserta.nisn)
     }
 }
 
@@ -85,9 +85,7 @@ const hapus = async (id) => {
                 let dataId = id
                 axios.delete(route('dashboard.peserta.destroy', {id: id}))
                     .then(res => {
-                        _.remove(pesertas.value, (current) => {
-                            return current.id == dataId
-                        })
+                        router.reload({only: ['pesertas']})
                     })
            }
         })
@@ -136,7 +134,7 @@ const hapus = async (id) => {
                 <tr class="odd:bg-gray-50" v-for="(data,d) in datas.current" :key="d">
                     <td class="border p-2">
                         <span v-show="!select">{{ d+1 }}</span>
-                        <input type="checkbox" name="select" id="select" class="rounded"  :checked="checked(data.nisn)" v-if="select" @change="selectOne($event, data.nisn)" />
+                        <input type="checkbox" name="select" id="select" class="rounded"  :checked="checked(data.nisn)" v-if="select" @change="selectOne($event, data)" />
                     </td>
                     <td class="border p-2">{{ data.nisn }}</td>
                     <td class="border p-2">{{ data.nama }}</td>
@@ -144,7 +142,7 @@ const hapus = async (id) => {
                     <td class="border p-2">{{ data.sekolah.nama }}</td>
                     <td class="border p-2">
                         <ul>
-                            <li v-for="(bidang,b) in data.bidangs" :key="b"> {{ bidang.label }}</li>
+                            <li v-for="(bidang,b) in data.bidangs" :key="b">{{ b+1 }}. {{ bidang.label }}</li>
                         </ul>
                         <!-- | {{ data.lomba_id }} -->
                     </td>

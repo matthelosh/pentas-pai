@@ -67,15 +67,27 @@ class PesertaController extends Controller
             $lombas = explode(",", $data->lomba_id);
             $bidangs = [];
             foreach($lombas as $kode) {
-                $bidang = Bidang::where('kode', $kode)->select('id')->first();
-                array_push($bidangs, $bidang->id);
+                $bidang = Bidang::where('kode', str_replace(" ","",$kode))->select('id')->first();
+                // if($bidang !== null) {
+                    array_push($bidangs, $bidang->id);
+                // }
+                // if($bidang == null) {
+                //     dd($data);
+                // }
             }
-
+            // dd($data);
             // $peserta::findOrFail($data->id);
-            $peserta->find($data->id)->bidangs()->attach($bidangs);
+
+            $peserta = $peserta->where('id', $data->id)->with('bidangs')->first();
+            if(count($peserta->bidangs) < 1) {
+                $peserta->bidangs()->attach($bidangs);
+            }
+            // dd($peserta);
+            // $peserta->doesntHave('bidangs')->bidangs()->attach($bidangs);
+            // $peserta->find($data->id)->bidangs()->attach($bidangs);
         }
 
-        response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
+        return response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
     }
 
     public function impor(Request $request)
