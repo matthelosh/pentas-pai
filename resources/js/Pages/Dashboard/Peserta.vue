@@ -82,13 +82,13 @@ const hapus = async (id) => {
         .then(ok => {
             if (ok) {
                 let dataId = id
-                axios.delete(route('dashboard.peserta.destroy'), {id: id})
+                axios.delete(route('dashboard.peserta.destroy', {id: id}))
                     .then(res => {
                         _.remove(pesertas.value, (current) => {
                             return current.id == dataId
                         })
                     })
-            }
+           }
         })
     
 }
