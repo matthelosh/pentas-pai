@@ -90,7 +90,7 @@ class PesertaController extends Controller
                     'nama' => $data['nama'],
                     'jk' => $data['jk'],
                     'sekolah_id' => $data['sekolah_id'],
-                    'foto' => $data['foto'],
+                    'foto' => $data['foto'] ?? '/img/peserta.png',
                     'hp' => $data['hp'],
                     'lomba_id' => $data['lomba_id']
                 ]

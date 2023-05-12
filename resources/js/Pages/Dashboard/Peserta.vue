@@ -45,9 +45,10 @@ const onFilePicked = async (ev) => {
     reader.onload = async (e) => {
         let wb = await read(e.target.result)
         let calons = await utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
-        // console.log(utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]))
-        const resp = await importTable.value.open("Cek Calon Peserta", calons).then(res => console.log(res))
-        // console.log(resp)
+        await importTable.value.open("Cek Calon Peserta", calons)
+                                .then(res => {
+                                    router.reload({only: ['pesertas']})
+                                })
                             
     }
     reader.readAsArrayBuffer(file)

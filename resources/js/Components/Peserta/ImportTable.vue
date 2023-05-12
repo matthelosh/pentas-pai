@@ -1,17 +1,21 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, defineEmits } from 'vue';
 import * as _ from 'lodash-es'
 import axios from 'axios';
 const show = ref(false)
-const res = ref(null)
-const reject = ref(null)
+const resolved = ref(null)
+const rejected = ref(null)
 const message = ref('')
 const tes = ref('Halo')
 const loading = ref(false)
 
+
 const impor = async() => {
     await axios.post(route('dashboard.peserta.impor'), {data: items.value})
-                .then(res => console.log(res))
+                .then(res => {
+                    show.value = false
+                    resolved.value(true)
+                })
                 .catch(err => console.log(err))
 }
 
@@ -21,6 +25,10 @@ const open = async (text, datas) => {
     show.value = true
     items.value = datas
     message.value = text
+    return new Promise((resolve, reject) => {
+        resolved.value = resolve
+        rejected.value = reject
+    })
 }
 
 const oke = async () => {
