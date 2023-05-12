@@ -120,8 +120,15 @@ class PesertaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Peserta $peserta)
+    public function destroy($id)
     {
-        //
+        try {
+            $peserta = Peserta::find($id);
+            $peserta->bidangs()->detach();
+            // $peserta->delete();
+            return 'OK';
+        } catch(\Exception $e) {
+            dd($e->getMEssage());
+        }
     }
 }

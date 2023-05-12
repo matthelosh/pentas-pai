@@ -70,6 +70,7 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
         ])->name('dashboard.peserta');
         Route::post('/attach', [PesertaController::class, 'attach'])->name('dashboard.peserta.attach');
         Route::post('/impor', [PesertaController::class, 'impor'])->name('dashboard.peserta.impor');
+        Route::delete('/{id}', [PesertaController::class, 'destroy'])->name('dashboard.peserta.destroy');
     });
 
     Route::prefix('panitia')->group(function() {
