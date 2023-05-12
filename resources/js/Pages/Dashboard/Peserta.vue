@@ -1,5 +1,5 @@
 <script setup>
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, usePage, router } from '@inertiajs/vue3';
 import Dash from '@/Layout/Dash.vue';
 import { ref, computed, onMounted, watch } from 'vue';
 import * as _ from 'lodash-es';
@@ -25,12 +25,12 @@ const datas = computed(() => {
     let length = pesertas.value.length
     let pages =  _.chunk(pesertas.value, 10)
 
-    return {current: pages[currentPage.value-1], pageCount: pages.length}
+    return {current: pages[currentPage.value-1], pageCount: pages.length, total: length}
 })
 const fixData = async () => {
     await axios.post(route('dashboard.peserta.attach'), {pesertas: JSON.stringify($page.props.pesertas)})
             .then(res => {
-                window.location.reload()
+                router.reload({only: ['pesertas']})
             })
 }
 
@@ -81,9 +81,12 @@ const hapus = async (id) => {
     await dialog.value.open("Hapus")
         .then(ok => {
             if (ok) {
+                let dataId = id
                 axios.delete(route('dashboard.peserta.destroy', {id: id}))
                     .then(res => {
-                        console.log(res)
+                        _.remove(pesertas.value, (current) => {
+                            return current.id == dataId
+                        })
                     })
             }
         })
@@ -153,6 +156,9 @@ const hapus = async (id) => {
             </tbody>
         </table>
         <div class="w-full bg-gray-200 flex items-center justify-between pl-3 print:hidden">
+            <div class="flex items-center gap-1">
+                Total: {{ datas.total }}
+            </div>
             Jml Halaman: {{ datas.pageCount }}
             <div class="flex items-center h-full ">
                 <button @click="currentPage-=1" class="flex justify-center w-8 border border-gray-500">&lt;</button>

@@ -125,7 +125,7 @@ class PesertaController extends Controller
         try {
             $peserta = Peserta::find($id);
             $peserta->bidangs()->detach();
-            // $peserta->delete();
+            $peserta->delete();
             return 'OK';
         } catch(\Exception $e) {
             dd($e->getMEssage());
