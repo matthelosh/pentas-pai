@@ -4,41 +4,23 @@ import Dash from '@/Layout/Dash.vue';
 import { ref, computed, onMounted, watch } from 'vue';
 import * as _ from 'lodash-es';
 import axios from 'axios';
+import {read, utils} from 'xlsx'
+
+import DialogBox from '@/Components/General/DialogBox.vue';
+import ImportTable from '@/Components/Peserta/ImportTable.vue';
+
 const $page = usePage()
 const currentPage = ref(1)
 const search = ref(null)
-// const pesertas = computed(() => {
-//     if (search.value == null) {
-//         return $page.props.pesertas
-//     } else {
-//         let pattern = new RegExp(search.value, "i")
-//         let items = $page.props.pesertas.filter((peserta) => {
-//             return peserta.nama.includes(search.value)
-//         })
-//         return items
-//     }
-// })
 const pesertas = ref($page.props.pesertas)
 
-// watch(search, (value, oldValue) => {
-//     let tes = $page.props.pesertas.filter((peserta) => {
-//         if( peserta.nama.toLowerCase().includes(value.toLowerCase())) {
-//             return peserta
-//         }
-//     })
-//     pesertas.value = tes
-//     // console.log(tes)
-// })
 const filter = () => {
-    // console.log(pesertas.value)
     pesertas.value = $page.props.pesertas.filter((peserta) => {
-        return peserta.nama.toLowerCase().includes(search.value.toLowerCase())
+        return peserta.nama.toLowerCase().includes(search.value.toLowerCase()) || peserta.nisn.toLowerCase().includes(search.value.toLowerCase()) || peserta.sekolah.nama.toLowerCase().includes(search.value.toLowerCase())
     })
-    // console.log(pesertas.value)
 }
 const datas = computed(() => {
     let length = pesertas.value.length
-    // let chunks = length > 10 ? Math.ceil(length / (length / 10)) : 1
     let pages =  _.chunk(pesertas.value, 10)
 
     return {current: pages[currentPage.value-1], pageCount: pages.length}
@@ -50,17 +32,44 @@ const fixData = async () => {
             })
 }
 
+// Impor
+const calonPesertas = ref([])
+const btnImporText = ref('Ambil File')
+const onFilePicked = async (ev) => {
+    let file = ev.target.files[0]
+    btnImporText.value = file.name
+
+    let reader = new FileReader()
+
+    reader.onload = async (e) => {
+        let wb = await read(e.target.result)
+        let calons = await utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
+        // console.log(utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]))
+        const resp = await importTable.value.open("Cek Calon Peserta", calons).then(res => console.log(res))
+        // console.log(resp)
+                            
+    }
+    reader.readAsArrayBuffer(file)
+}
+
+const importTable = ref(null)
+
+
+
 </script> 
 
 <template>
+<ImportTable ref="importTable" />
 <Head title="Data Peserta" />
 <Dash>
 <div class="w-full bg-white">
     <div class="toolbar w-full h-12 bg-gray-50 rounded shadow flex items-center px-3 justify-between">
         <h1>Data Peserta</h1>
         <div class="toolbar-items flex items-center gap-2">
-            <input type="text" placeholder="Cari" class="h-8 rounded" v-model="search" @keyup.enter="filter" />
+            <input type="file" name="filePeserta" id="filePeserta" ref="filePeserta" @change="onFilePicked" class="hidden" accept=".xlsx, .xls, .ods, .csv" />
+            <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 rounded" @click="$refs.filePeserta.click()">{{ btnImporText }}</button>
             <button class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800" @click="fixData">perbaikan</button>
+            <input type="text" placeholder="Cari" class="h-8 rounded" v-model="search" @keyup.enter="filter" />
         </div>
     </div>
     <div class="content w-full bg-white p-3 mt-2">
@@ -100,9 +109,8 @@ const fixData = async () => {
             </div>
         </div>
     </div>
-    <!-- <div class="w-full bg-gray-200">
-        {{ pesertas }}
-    </div> -->
+
+    
 </div>
 </Dash>
 </template>

@@ -8,6 +8,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 Chart.register(...registerables);
 
 import * as _ from 'lodash-es'
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/vue/20/solid';
+
 
 const lombas = ref([])
 const sekolahs = ref([])
@@ -89,8 +91,8 @@ onMounted(() => {
 </script>
 
 <template>
-<div class="w-full md:w-3/4 mx-auto">
-    <h1 class="text-center text-2xl">{{lombas.label}}</h1>
+<div class="w-full md:w-3/4 mx-auto relative">
+    <h1 class="text-center text-2xl md:text-4xl my-4 font-extrabold">{{lombas.label}}</h1>
     <div class="w-full grid grid-cols-1 gap-3">
         <PolarAreaChart :chartData="chartByBidang" :plugins="[ChartDataLabels]" :options="chartByBidangOptions" class="bg-white" />
         <div class="w-full md:w-2/4 md:mx-auto">
@@ -106,8 +108,12 @@ onMounted(() => {
                 ({{Math.ceil(((sekolah.pesertas ? sekolah.pesertas.length : 0)/17)*100) }}%)
             </div>
             <div class="flex justify-between">
-                <button class="bg-white px-5 py-1" @click="sekolahPage = sekolahPage > 1 ? (sekolahPage - 1) : 1">&lt;</button>
-                <button class="bg-white px-5 py-1" @click="sekolahPage = sekolahPage < dataSekolahs.pageCount ? (sekolahPage + 1) : dataSekolahs.pageCount">&gt;</button>
+                <button class="bg-white px-5 py-1" @click="sekolahPage = sekolahPage > 1 ? (sekolahPage - 1) : 1">
+                    <ArrowLeftIcon class="h-8 text-gray-400 hover:text-gray-200 active:text-gray-600"  />
+                </button>
+                <button class="bg-white px-5 py-1" @click="sekolahPage = sekolahPage < dataSekolahs.pageCount ? (sekolahPage + 1) : dataSekolahs.pageCount">
+                    <ArrowRightIcon class="h-8 text-gray-400 hover:text-gray-200 active:text-gray-600" />
+                </button>
             </div>
         </div>
     </div>

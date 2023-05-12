@@ -9,12 +9,6 @@ const currentPage = ref(1)
 const search = ref(null)
 const pesertas = ref($page.props.pesertas)
 
-// const filter = () => {
-//     console.log(search.value    )
-//     pesertas.value = $page.props.pesertas.filter((peserta) => {
-//         return peserta.nama.toLowerCase().includes(search.value.toLowerCase())
-//     })
-// }
 const datas = computed(() => {
     let length = pesertas.value.length
     let datas = []
@@ -24,16 +18,6 @@ const datas = computed(() => {
     } else {
         datas = pesertas.value.filter((peserta) => {
             return peserta.nama.toLowerCase().includes(search.value.toLowerCase()) || peserta.sekolah.nama.toLowerCase().includes(search.value.toLowerCase()) || peserta.nisn.toLowerCase().includes(search.value.toLowerCase())
-            // if (peserta.nama.toLowerCase().includes(search.value.toLowerCase())) {
-            //     return peserta
-            // } else {
-            //     if (peserta.sekolah.nama.toLowerCase().includes(search.value.toLowerCase())) {
-            //         return peserta
-            //     } else if (peserta.nisn.toLowerCase().includes(search.value.toLowerCase())) {
-
-            //     }
-            // }
-
         })
     }
     let pages =  _.chunk(datas, 10)

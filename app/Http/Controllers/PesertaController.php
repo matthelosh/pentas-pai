@@ -78,18 +78,29 @@ class PesertaController extends Controller
         response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Peserta $peserta, $id)
+    public function impor(Request $request)
     {
-        try {
-            return response()->json(['status' => 'ok', 'peserta' => $peserta->where('nisn',$id)->first()], 200);
-        } catch(\Exception $e) {
-
+       try {
+        foreach($request->data as $data) {
+            Peserta::updateOrCreate(
+                [
+                    'nisn' => $data['nisn'] ?? null
+                ],
+                [
+                    'nama' => $data['nama'],
+                    'jk' => $data['jk'],
+                    'sekolah_id' => $data['sekolah_id'],
+                    'foto' => $data['foto'],
+                    'hp' => $data['hp'],
+                    'lomba_id' => $data['lomba_id']
+                ]
+                );
+            return response()->json(['status' => 'ok', 'msg' => "Calon peserta disimpan"], 200);
         }
+       } catch(\Exception $e) {
+        return response()->json(['status' => 'fail', 'msg' => $e->getMessage()], 500);
+       }
     }
-
     /**
      * Show the form for editing the specified resource.
      */

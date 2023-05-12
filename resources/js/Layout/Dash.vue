@@ -60,7 +60,7 @@ onMounted(() => {
 
 <template>
 <div class="h-min-full h-screen relative grid grid-cols-12 gap-3">
-    <div id="sidebar" class="sidebar h-full w-2/4 z-20 md:w-2/12 bg-teal-400 md:rounded-s-lg fixed top-0 md:top-3 md:fixed md:block md:col-span-2 -translate-x-[100%] md:-translate-x-0 transition-all duration-300 shadow-lg md:shadow-none overflow-x-hidden print:hidden">
+    <div id="sidebar" class="sidebar h-[100vh] md:h-[95vh] overflow-y-auto w-2/4 z-20 md:w-2/12 bg-teal-400 md:rounded-xl fixed top-0 md:top-3 md:fixed md:block md:col-span-2 -translate-x-[100%] md:-translate-x-0 transition-all duration-300 shadow-lg md:shadow-lg overflow-x-hidden print:hidden">
         <div class="w-full p-3 flex md:hidden items-center bg-teal-100 top-0">Pentas PAIS</div>
         <div class="w-full mt-3 md:mt-0 bg-gray-100 py-5">
             <img src="/img/peserta.png" alt="Avatar" class="rounded-full bg-white w-[100px] mx-auto shadow">
@@ -91,7 +91,7 @@ onMounted(() => {
         </ul>
     </div>
     <div class="main-wrap col-span-12 md:col-span-10 md:px-3">
-        <nav class="bg-white p-3 md:rounded-tr-lg shadow sticky md:sticky z-20 top-0 right-0 left-0 flex justify-between items-center print:hidden md:translate-x-[263px]">
+        <nav class="bg-white p-3 md:rounded-xl shadow sticky md:sticky z-20 top-0 right-0 left-0 flex justify-between items-center print:hidden md:translate-x-[263px]">
             Navbar
             <Bars3CenterLeftIcon class="h-6 cursor-pointer md:hidden" @click="toggleSide" />
             <XCircleIcon class="h-8 hidden md:block cursor-pointer text-red-600 hover:text-red-500 hover:shadow rounded-full" @click="logout" />

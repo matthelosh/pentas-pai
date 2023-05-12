@@ -69,10 +69,11 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
             'pesertas' => Peserta::with('sekolah','bidangs')->get(),
         ])->name('dashboard.peserta');
         Route::post('/attach', [PesertaController::class, 'attach'])->name('dashboard.peserta.attach');
+        Route::post('/impor', [PesertaController::class, 'impor'])->name('dashboard.peserta.impor');
     });
 
     Route::prefix('panitia')->group(function() {
-        Route::inertia('/', 'Dashboard/Panitia')->name('dashboard.panitia');
+        Route::get('/', [PanitiaController::class, 'index'])->name('dashboard.panitia');
     });
 
     Route::prefix('surat')->group(function() {
