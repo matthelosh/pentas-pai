@@ -44,9 +44,10 @@ class SekolahController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Sekolah $sekolah)
+    public function show(Sekolah $sekolah, $id)
     {
-        //
+        $sekolah =  $sekolah::where('id',$id)->with('pesertas.bidangs')->first();
+        return response()->json(['status' => 'ok', 'sekolah' => $sekolah], 200);
     }
 
     /**

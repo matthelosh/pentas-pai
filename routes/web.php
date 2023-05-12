@@ -38,6 +38,7 @@ Route::prefix('lomba')->group(function() {
 
 Route::prefix('sekolah')->group(function() {
     Route::post('/', [SekolahController::class, 'index'])->name('sekolah.index');
+    Route::post('/{id}', [SekolahController::class, 'show'])->name('sekolah.show');
 });
 
 Route::post('/registrasi', [PesertaController::class, 'store'])->name('peserta.store');
@@ -56,7 +57,7 @@ Route::prefix('daftar')->group(function() {
 Route::prefix('peserta')->group(function() {
     
     Route::get('/', [PesertaController::class, 'index'])->name('peserta');
-    Route::get('/{id}/detail', [PesertaController::class, 'show'])->name('peserta.show');
+    Route::post('/{id}/detail', [PesertaController::class, 'show'])->name('peserta.show');
 });
 
 Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
