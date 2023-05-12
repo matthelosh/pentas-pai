@@ -95,8 +95,9 @@ class PesertaController extends Controller
                     'lomba_id' => $data['lomba_id']
                 ]
                 );
-            return response()->json(['status' => 'ok', 'msg' => "Calon peserta disimpan"], 200);
+            
         }
+        return response()->json(['status' => 'ok', 'msg' => "Calon peserta disimpan"], 200);
        } catch(\Exception $e) {
         return response()->json(['status' => 'fail', 'msg' => $e->getMessage()], 500);
        }
