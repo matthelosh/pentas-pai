@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lomba;
+use App\Models\Sekolah;
 use Illuminate\Http\Request;
 
 class LombaController extends Controller
@@ -19,6 +20,12 @@ class LombaController extends Controller
         }
         
         return response()->json(['status' => 'ok', 'lombas' => $lombas], 200);
+    }
+
+    public function rekap(Request $request)
+    {
+        $datas = Sekolah::with('pesertas.bidangs')->get();
+        return response()->json(['status' => 'ok', 'sekolahs' => $datas], 200);
     }
 
     /**

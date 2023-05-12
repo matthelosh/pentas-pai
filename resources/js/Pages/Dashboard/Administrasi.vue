@@ -6,6 +6,7 @@ import Kartu from '@/Components/Kartu.vue'
 import CetakKartu from '@/Components/Peserta/CetakKartu.vue';
 import PresensiPeserta from '@/Components/Peserta/PresensiPeserta.vue'
 import Surat from '@/Components/Panitia/Surat.vue'
+import RekapPeserta from '@/Components/Peserta/RekapPeserta.vue';
 
 const mode = ref('list')
 const dialog = ref(false)
@@ -34,6 +35,11 @@ const cetak = (args) => {
   mode.value = args.dokumen
   selectedLomba.value = args.lomba
 }
+
+// Rekap
+const showRekap = () => {
+  mode.value = 'rekap'
+}
 </script>
 
 <template>
@@ -46,6 +52,7 @@ const cetak = (args) => {
               <div class="toolbar grid grid-cols-2 gap-2 p-3">
                 <button class="bg-sky-600 text-white py-1 px-3 rounded hover:bg-teal-500 duration-200 transition-all hover:shadow-lg" @click="showContestantCard">Kartu Peserta</button>
                 <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded hover:shadow-lg" @click="showPresensiPeserta">Presensi</button>
+                <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded hover:shadow-lg" @click="showRekap">Rekap</button>
               </div>
             </div>
             <div class="bg-white kartu-peserta rounded shadow">
@@ -71,6 +78,7 @@ const cetak = (args) => {
         <CetakKartu :lomba="selectedLomba" v-if="mode == 'kartu-peserta'" @close="mode = 'list'" />
         <PresensiPeserta :lomba="selectedLomba" v-if="mode == 'presensi-peserta'" @close="mode = 'list'" />
         <Surat v-if="mode == 'persuratan'" @close="mode = 'list'" />
+        <RekapPeserta v-if="mode == 'rekap'" @close="mode = 'list'" />
     </transition-group>
 </Dash>
 </template>

@@ -78,6 +78,11 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
         Route::get('/', [PanitiaController::class, 'index'])->name('dashboard.panitia');
     });
 
+    Route::prefix('lomba')->group(function() {
+        Route::post('/', [LombaController::class, 'index'])->name('lomba.inndex');
+    });
+
+    Route::post('/rekap', [LombaController::class, 'rekap'])->name('rekap');
     Route::prefix('surat')->group(function() {
         Route::post('/', [SuratController::class, 'index'])->name('surat.index');
         Route::post('/store', [SuratController::class, 'store'])->name('surat.store');

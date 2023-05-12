@@ -12,7 +12,7 @@ const tes = (e) => {
 
 <template>
 <div class="relative min-h-screen bg-white bg-opacity-5">
-    <nav class="p-3 fixed md:absolute shadow w-full bg-white md:flex md:items-center md:justify-between rounded-b-lg z-10 md:rounded">
+    <nav class="p-3 fixed md:sticky md:top-0  shadow w-full bg-white md:flex md:items-center md:justify-between rounded-b-lg z-10 md:rounded">
         <div class="logo flex items-center justify-between md:justify-start md:items-end md:w-72 ">
             <img src="img/kkg.png" alt="Logo" class="h-9 inline">
             <span class="text-lg hidden md:inline">Pentas PAIS</span>
