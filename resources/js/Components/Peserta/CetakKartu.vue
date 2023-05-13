@@ -63,7 +63,7 @@ const sideBg = (kode) => {
     <div class="w-full grid grid-cols-3 gap-1 print:gap-2 print:p-0 p-3 relative">
         <div v-for="(peserta,p) in props.lomba.pesertas" :key="p" class=" border-gray-800 border shadow print:shadow-none  print:break-inside-avoid print:my-8 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[500px] print:h-[350px]" >
             <div class="left h-full relative block pt-5" :class="sideBg(lomba.kode)">
-                <h1 class="absolute text-uppercase whitespace-nowrap uppercase mt-6 font-extrabold text-4xl rotate-90 text-black">{{ lomba.label }}</h1>
+                <h1 class="absolute text-uppercase whitespace-nowrap uppercase top-12 font-extrabold w-[100%] text-4xl rotate-90 text-black">{{ lomba.label }}</h1>
                 <h1 class="text-4xl font-extrabold absolute bg-white aspect-square w-16 text-center  rounded-lg bottom-2 -right-6 border-2 border-black flex justify-center items-center">{{ p+1 }}</h1>
             </div>
             <div class="col-span-3 ">
