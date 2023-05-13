@@ -147,7 +147,8 @@ const hapus = async (id) => {
                     <td class="border p-2">{{ data.nama }}</td>
                     <td class="border p-2">{{ data.jk }}</td>
                     <td class="border p-2">{{ data.sekolah.nama }}</td>
-                    <td class="border p-2">
+                    <td class="border p-2 flex gap-2">
+                        <div class="bg-teal-200 px-2 py-1 rounded">{{ data.lomba_id }}</div>
                         <ul>
                             <li v-for="(bidang,b) in data.bidangs" :key="b">{{ b+1 }}. {{ bidang.label }}</li>
                         </ul>

@@ -68,7 +68,9 @@ class PesertaController extends Controller
             $bidangs = [];
             foreach($lombas as $kode) {
                 $bidang = Bidang::where('kode', str_replace(" ","",$kode))->select('id')->first();
+                if($bidang !== null) {
                     array_push($bidangs, $bidang->id);
+                }
             }
 
             $peserta = $peserta->where('id', $data->id)->with('bidangs')->first();
