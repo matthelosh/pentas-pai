@@ -10,11 +10,13 @@ import { mdiDelete } from '@mdi/js';
 
 import DialogBox from '@/Components/General/DialogBox.vue';
 import ImportTable from '@/Components/Peserta/ImportTable.vue';
+import { ArrowPathIcon } from '@heroicons/vue/20/solid';
 
 const $page = usePage()
 const currentPage = ref(1)
 const search = ref(null)
 const pesertas = ref($page.props.pesertas)
+const loading = ref(false)
 
 const filter = () => {
     pesertas.value = $page.props.pesertas.filter((peserta) => {
@@ -28,9 +30,11 @@ const datas = computed(() => {
     return {current: pages[currentPage.value-1], pageCount: pages.length, total: length}
 })
 const fixData = async () => {
+    loading.value = true
     await axios.post(route('dashboard.peserta.attach'), {pesertas: JSON.stringify($page.props.pesertas)})
             .then(res => {
                 router.reload({only: ['pesertas']})
+                loading.value = false
             })
 }
 
@@ -108,7 +112,10 @@ const hapus = async (id) => {
                 Pilih Data
             </label>
             <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 rounded" @click="$refs.filePeserta.click()">{{ btnImporText }}</button>
-            <button class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800" @click="fixData">perbaikan</button>
+            <button class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800" :disabled="loading" @click="fixData">
+                <span v-if="!loading">Daftarkan BIdang Lomba</span>
+                <ArrowPathIcon class="w-6 text-white animate-spin" v-if="loading" />
+            </button>
             <input type="text" placeholder="Cari" class="h-8 rounded" v-model="search" @keyup.enter="filter" />
         </div>
     </div>

@@ -68,23 +68,13 @@ class PesertaController extends Controller
             $bidangs = [];
             foreach($lombas as $kode) {
                 $bidang = Bidang::where('kode', str_replace(" ","",$kode))->select('id')->first();
-                // if($bidang !== null) {
                     array_push($bidangs, $bidang->id);
-                // }
-                // if($bidang == null) {
-                //     dd($data);
-                // }
             }
-            // dd($data);
-            // $peserta::findOrFail($data->id);
 
             $peserta = $peserta->where('id', $data->id)->with('bidangs')->first();
             if(count($peserta->bidangs) < 1) {
                 $peserta->bidangs()->attach($bidangs);
             }
-            // dd($peserta);
-            // $peserta->doesntHave('bidangs')->bidangs()->attach($bidangs);
-            // $peserta->find($data->id)->bidangs()->attach($bidangs);
         }
 
         return response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
