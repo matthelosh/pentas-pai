@@ -12,6 +12,10 @@ import DialogBox from '@/Components/General/DialogBox.vue';
 import ImportTable from '@/Components/Peserta/ImportTable.vue';
 import { ArrowPathIcon } from '@heroicons/vue/20/solid';
 
+import {imgUrl} from '@/Plugins/misc';
+import FormPeserta from '@/Components/Peserta/FormPeserta.vue';
+
+
 const $page = usePage()
 const currentPage = ref(1)
 const search = ref(null)
@@ -95,9 +99,16 @@ const hapus = async (id) => {
         })
     
 }
+
+// Edit
+const formPeserta = ref(null)
+const edit = (peserta) => {
+    formPeserta.value.open(peserta)
+}
 </script> 
 
 <template>
+<FormPeserta ref="formPeserta" />
 <DialogBox ref="dialog" />
 <ImportTable ref="importTable" />
 <Head title="Data Peserta" />
@@ -144,7 +155,13 @@ const hapus = async (id) => {
                         <input type="checkbox" name="select" id="select" class="rounded"  :checked="checked(data.nisn)" v-if="select" @change="selectOne($event, data)" />
                     </td>
                     <td class="border p-2">{{ data.nisn }}</td>
-                    <td class="border p-2">{{ data.nama }}</td>
+                    <td class="border p-2">
+                        <div class="h-full flex items-center gap-2 cursor-pointer" @click="edit(data)">
+                            <img :src="imgUrl(data.foto)" alt="Foto" class="h-8 aspect-square object-cover object-top rounded-full" />
+                        {{ data.nama }}
+                        </div>
+                        
+                    </td>
                     <td class="border p-2">{{ data.jk }}</td>
                     <td class="border p-2">{{ data.sekolah.nama }}</td>
                     <td class="border p-2 flex gap-2">

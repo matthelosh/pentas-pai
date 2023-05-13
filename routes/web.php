@@ -72,7 +72,12 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
         Route::post('/attach', [PesertaController::class, 'attach'])->name('dashboard.peserta.attach');
         Route::post('/impor', [PesertaController::class, 'impor'])->name('dashboard.peserta.impor');
         Route::delete('/{id}', [PesertaController::class, 'destroy'])->name('dashboard.peserta.destroy');
+        Route::post('/{id}', [PesertaController::class, 'update'])->name('dashboard.peserta.update');
     });
+
+    Route::post('/bidang', function() {
+        return response()->json(['bidangs' => Bidang::all()], 200);
+    })->name('bidang.index');
 
     Route::prefix('panitia')->group(function() {
         Route::get('/', [PanitiaController::class, 'index'])->name('dashboard.panitia');

@@ -87,10 +87,11 @@ defineExpose({
                                 <td class="border p-2">{{ data.jk }}</td>
                                 <td class="border p-2">{{ data.sekolah_id }}</td>
                                 <td class="border p-2">
+                                    | {{ data.lomba_id }}
                                     <ul>
                                         <li v-for="(bidang,b) in data.bidangs" :key="b"> {{ bidang.label }}</li>
                                     </ul>
-                                    <!-- | {{ data.lomba_id }} -->
+                                    
                                 </td>
                             </tr>
                         </tbody>
