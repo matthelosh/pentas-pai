@@ -24,8 +24,8 @@ const props = defineProps({
             <thead class="bg-gray-50">
                 <tr>
                     <th class="border px-2 py-3">No</th>
-                    <th class="border px-2 py-3">Nama</th>
                     <th class="border px-2 py-3">NISN</th>
+                    <th class="border px-2 py-3">Nama</th>
                     <th class="border px-2 py-3">JK</th>
                     <th class="border px-2 py-3">Sekolah</th>
                     <th class="border px-2 py-3" style="width: 20%">TTD / Paraf</th>
