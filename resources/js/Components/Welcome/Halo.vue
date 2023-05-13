@@ -112,7 +112,7 @@ onMounted(() => {
         <PolarAreaChart :chartData="chartByBidang" :plugins="[ChartDataLabels]" :options="chartByBidangOptions" class="bg-white" />
         <div class="w-full md:w-2/4 md:mx-auto">
             <h3 class="text-center text-gray-800">Klik Sekolah Anda untuk melihat Data Peserta</h3>
-            <div class="h-12 text-white flex items-center justify-between px-2 my-1 border"  
+            <div class="h-12 text-white flex items-center justify-between px-2 my-1 border cursor-pointer"  
                 v-for="(sekolah, s) in dataSekolahs.current" 
                 :key="s" 
                 :style="`width: 100%;
