@@ -28,7 +28,7 @@ const props = defineProps({
                     <th class="border px-2 py-3">NISN</th>
                     <th class="border px-2 py-3">JK</th>
                     <th class="border px-2 py-3">Sekolah</th>
-                    <th class="border px-2 py-3">TTD / Paraf</th>
+                    <th class="border px-2 py-3" style="width: 20%">TTD / Paraf</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,7 +39,7 @@ const props = defineProps({
                     </td>
                     <td class="border px-2 py-2 flex items-center h-full">
                         <span>
-                            <img :src="imgUrl(peserta.foto)" alt="Foto" class="h-8 rounded-full aspect-square object-cover mr-2" />
+                            <img :src="imgUrl(peserta.foto)" alt="Foto" class="h-10 rounded-full aspect-square print:aspect-square object-cover object-top mr-2" />
                         </span>
                         {{ peserta.nama }}</td>
                     <td class="border px-2 py-2">{{ peserta.jk }}</td>

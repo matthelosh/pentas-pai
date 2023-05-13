@@ -75,7 +75,7 @@ const sideBg = (kode) => {
                     </div>
                 </div>
                 <div class="foto w-full mt-16 print:mt-2">
-                    <img :src="imgUrl(peserta.foto)" alt="Foto" class=" aspect-square object-cover rounded-full w-[100px] print:w-[75px] mx-auto object-top border">
+                    <img :src="imgUrl(peserta.foto)" alt="Foto" class=" aspect-square object-cover rounded-full w-[100px] print:w-[75px] mx-auto object-top border" @load="this.classList.remove('animate-pulse')" >
                 </div>
                 <div class="identitas w-full px-2 mt-10 print:mt-2">
                     <h2 class="uppercase text-center leading-4 font-bold text-sm">{{ peserta.nama }}</h2>
