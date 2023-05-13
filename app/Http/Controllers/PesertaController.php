@@ -53,7 +53,7 @@ class PesertaController extends Controller
             $peserta->lomba_id = implode(",", $data->lomba_id);
             $peserta->sekolah_id = $data->sekolah_id;
             $peserta->save();
-            $peserta->bidangs()->attach($bidangs[0]);
+            $peserta->bidangs()->attach($bidangs);
             return response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
         } catch(\Exception $e) {
             return response()->json(['status' => 'fail', 'msg' => $e->getMessage(), 'errCode' => $e->getCode()], 500);
