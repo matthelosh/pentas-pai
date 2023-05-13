@@ -80,8 +80,9 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
     })->name('bidang.index');
 
     Route::prefix('panitia')->group(function() {
-        Route::get('/', [PanitiaController::class, 'index'])->name('dashboard.panitia');
-        Route::post('/', [PanitiaController::class, 'store'])->name('panitia.store');
+        Route::get('/', [PanitiaController::class, 'page'])->name('dashboard.panitia');
+        Route::post('/', [PanitiaController::class, 'index'])->name('panitia.index');
+        Route::post('/store', [PanitiaController::class, 'store'])->name('panitia.store');
     });
 
     Route::prefix('lomba')->group(function() {

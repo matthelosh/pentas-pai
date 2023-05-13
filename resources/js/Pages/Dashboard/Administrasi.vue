@@ -7,8 +7,9 @@ import CetakKartu from '@/Components/Peserta/CetakKartu.vue';
 import PresensiPeserta from '@/Components/Peserta/PresensiPeserta.vue'
 import Surat from '@/Components/Panitia/Surat.vue'
 import RekapPeserta from '@/Components/Peserta/RekapPeserta.vue';
+import KartuPanitia from '@/Components/Panitia/KartuPanitia.vue';
 
-const mode = ref('list')
+const mode = ref('kartu-panitia')
 const dialog = ref(false)
 const selectedLomba = ref(null)
 const dokumen = ref('')
@@ -65,10 +66,10 @@ const showRekap = () => {
             <div class="bg-white kartu-peserta rounded shadow">
               <h3  class="w-full bg-gray-200 p-2 font-bold">Administrasi Panitia</h3>
               <div class="toolbar grid grid-cols-2 gap-2 p-3">
-                <button class="bg-sky-600 text-white py-1 px-3 rounded hover:bg-teal-500 duration-200 transition-all mx-1 hover:shadow-lg" @click="showContestantCard">
+                <button class="bg-sky-600 text-white py-1 px-3 rounded hover:bg-teal-500 duration-200 transition-all mx-1 hover:shadow-lg">
                   Sertifikat
                 </button>
-                <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded mx-1 hover:shadow-lg">Kartu</button>
+                <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded mx-1 hover:shadow-lg" @click="mode = 'kartu-panitia'">Kartu Panitia</button>
                 <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded mx-1 hover:shadow-lg" @click="showSurat">Persuratan</button>
                 </div>
             </div>
@@ -79,6 +80,7 @@ const showRekap = () => {
         <PresensiPeserta :lomba="selectedLomba" v-if="mode == 'presensi-peserta'" @close="mode = 'list'" />
         <Surat v-if="mode == 'persuratan'" @close="mode = 'list'" />
         <RekapPeserta v-if="mode == 'rekap'" @close="mode = 'list'" />
+        <KartuPanitia v-if="mode == 'kartu-panitia'" @close="mode = 'list'" />
     </transition-group>
 </Dash>
 </template>
@@ -94,7 +96,7 @@ const showRekap = () => {
 
 .slide-fade-enter-from,
 .slide-fade-leave-to {
-  transform: translateX(20px);
+  transform: translateY(20px);
   opacity: 0;
 }
 </style>

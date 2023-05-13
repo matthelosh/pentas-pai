@@ -9,16 +9,22 @@ use Inertia\Inertia;
 
 class PanitiaController extends Controller
 {
+    
+    public function page()
+    {
+        return Inertia::render('Dashboard/Panitia', [
+            'gurus' => Guru::with('sekolah', 'panitias')->get(),
+        ], 200);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        if ($request->getMethod('get')) {
-            return Inertia::render('Dashboard/Panitia', [
-                'gurus' => Guru::with('sekolah', 'panitias')->get(),
+            return response()->json([
+                'status' => 'Ok',
+                'panitias' => Panitia::with('guru','lomba')->get()
             ], 200);
-        }
     }
 
     /**
