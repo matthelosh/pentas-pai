@@ -53,8 +53,18 @@ const expandChild = (e) => {
     // li.querySelector('ul').classList.toggle('hidden')
     
 }
+
+const amIActive = (url) => {
+    return route().current() == url ? true : false
+}
+
+const doesMyChildActive = (children) => {
+    return children.includes(route().current()) ? true : false
+}
+
 onMounted(() => {
     window.addEventListener('scroll', handleScroll)
+    // console.log(route().current())
 })
 </script>
 
@@ -72,14 +82,14 @@ onMounted(() => {
                 Dashboard
             </Link></li>
             <li>
-                <a href="#" class="parent flex items-center py-2 px-3 md:hover:bg-opacity-70 md:hover:bg-white md:hover:shadow md:hover:pl-5 transition-all duration-500" @mouseover="imTouched" @mouseleave="leftBehind" @click.prevent="expandChild">
-                <ArrowRightCircleIcon class="ikon hidden h-5 transition-all duration-500" />
+                <a href="#" class="parent flex items-center py-2 px-3 md:hover:bg-opacity-70 md:hover:bg-white md:hover:shadow md:hover:pl-5 transition-all duration-500" @mouseover="imTouched" @mouseleave="leftBehind" @click.prevent="expandChild" :class="doesMyChildActive(['dashboard.peserta','dashboard.panitia']) ? 'active' :''">
+                <ArrowRightCircleIcon class="ikon h-5 transition-all duration-500" :class="!doesMyChildActive(['dashboard.peserta','dashboard.panitia']) ? 'hidden' :''" />
                 Utama
                 </a>
-                    <ul class="child-menu hidden duration-500 transition-all ease-in-out bg-white bg-opacity-25">
-                        <li><Link :href="route('dashboard.peserta')" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">Data Peserta</Link></li>
-                        <li><Link :href="route('dashboard.panitia')" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">Data Panitia</Link></li>
-                        <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-5 py-2">C</a></li>
+                    <ul class="child-menu duration-500 transition-all ease-in-out bg-white bg-opacity-25" :class="!doesMyChildActive(['dashboard.peserta','dashboard.panitia']) ? 'hidden' :''">
+                        <li><Link :href="route('dashboard.peserta')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.peserta') ? 'bg-white bg-opacity-70' : ''">Data Peserta</Link></li>
+                        <li><Link :href="route('dashboard.panitia')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.panitia') ? 'bg-white bg-opacity-70' : ''">Data Panitia</Link></li>
+                        <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2">C</a></li>
                     </ul>
                 </li>
             <li>

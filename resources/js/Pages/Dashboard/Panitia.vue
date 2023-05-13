@@ -1,8 +1,9 @@
 <script setup>
 import Dash from '@/Layout/Dash.vue';
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, usePage, router } from '@inertiajs/vue3';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import AlertBox from '@/Components/General/AlertBox.vue';
 
 const jabatans = ref([
     'Penasehat',
@@ -27,6 +28,7 @@ const jabatans = ref([
 
 const loading = ref(false)
 
+const alertBox = ref(null)
 
 const $page = usePage();
 
@@ -57,15 +59,19 @@ const setJabatan = async ($event,guru) => {
                 break
         }
     }
-    let panitia = {guru_id: guru.id, lomba_id: lomba_id, jabatan: jabatan}
+    let panitia = {guru_id: guru.id, lomba_id: lomba_id, jabatan: jabatan, id: guru.panitias.length > 0 ? guru.panitias[0].id : null,}
     await axios.post(route('panitia.store'), {data: JSON.stringify(panitia)})
                 .then(res => {
-
+                    if (res.data.status == 'ok') {
+                        alertBox.value.open('Ok', res.data.msg)
+                        router.reload({only: ['gurus']})
+                    }
                 })
 }
 </script>
 
 <template>
+<AlertBox ref="alertBox" />
 <Head title="Data Panitia" />
 <Dash>
     <h1>Data Panitia</h1>
@@ -91,7 +97,7 @@ const setJabatan = async ($event,guru) => {
                     <td class="py-1 px-3">{{ guru.panitia ? guru.panitias.jabatan : '-' }}
                         <select name="jabatan" id="jabatanSelect"  @change="setJabatan($event, guru)">
                             <option value="0">Pilih Jabatan</option>
-                            <option v-for="(jabatan,j) in jabatans" :key="j" :value="jabatan" :selected="(guru.panitias && jabatan == guru.panitias.jabatan)">{{ jabatan }}</option>
+                            <option v-for="(jabatan,j) in jabatans" :key="j" :value="jabatan" :selected="(guru.panitias.length > 0 && jabatan == guru.panitias[0].jabatan)">{{ jabatan }}</option>
                         </select>
                     </td>
                 </tr>

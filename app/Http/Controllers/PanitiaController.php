@@ -16,7 +16,7 @@ class PanitiaController extends Controller
     {
         if ($request->getMethod('get')) {
             return Inertia::render('Dashboard/Panitia', [
-                'gurus' => Guru::with('sekolah')->get(),
+                'gurus' => Guru::with('sekolah', 'panitias')->get(),
             ], 200);
         }
     }
@@ -43,7 +43,7 @@ class PanitiaController extends Controller
                 [
                     'jabatan' => $data->jabatan,
                     'guru_id' => $data->guru_id,
-                    'lomba_id' => $data->lomba_id
+                    'lomba_id' => 1 //Sementara
                 ]
             );
             return response()->json(['status' => 'ok', 'msg' => 'Panitia Disimpan'], 200);
