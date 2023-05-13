@@ -32,4 +32,9 @@ class Guru extends Model
     {
         return $this->hasMany(Panitia::class);
     }
+
+    public function juri()
+    {
+        return $this->hasOne(Juri::class);
+    }
 }

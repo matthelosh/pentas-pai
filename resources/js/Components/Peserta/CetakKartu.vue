@@ -60,29 +60,29 @@ const sideBg = (kode) => {
             <XCircleIcon class="text-red-600 h-6 cursor-pointer" @click="$emit('close')" />
         </div>
     </div>
-    <div class="w-full grid grid-cols-2 gap-3 p-3 relative">
-        <div v-for="(peserta,p) in props.lomba.pesertas" :key="p" class=" border-gray-800 border shadow print:shadow-none print:w-[9cm] print:h-[12cm] print:break-inside-avoid print:my-8 print:mx-4 h-[12cm] w-[9cm] mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover">
+    <div class="w-full grid grid-cols-3 gap-1 print:gap-2 print:p-0 p-3 relative">
+        <div v-for="(peserta,p) in props.lomba.pesertas" :key="p" class=" border-gray-800 border shadow print:shadow-none  print:break-inside-avoid print:my-8 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[500px] print:h-[350px]" >
             <div class="left h-full relative block pt-5" :class="sideBg(lomba.kode)">
-                <h1 class="text-uppercase whitespace-nowrap uppercase mt-6 font-extrabold text-4xl rotate-90 text-black">{{ lomba.label }}</h1>
-                <h1 class="text-6xl font-extrabold absolute bg-white aspect-square w-24 text-center  rounded-lg bottom-2 -right-6 border-2 border-black flex justify-center items-center">{{ p+1 }}</h1>
+                <h1 class="absolute text-uppercase whitespace-nowrap uppercase mt-6 font-extrabold text-4xl rotate-90 text-black">{{ lomba.label }}</h1>
+                <h1 class="text-4xl font-extrabold absolute bg-white aspect-square w-16 text-center  rounded-lg bottom-2 -right-6 border-2 border-black flex justify-center items-center">{{ p+1 }}</h1>
             </div>
-            <div class="col-span-3">
+            <div class="col-span-3 ">
                 <div class="logo flex gap-1 items-end justify-center mt-6">
                     <img src="/img/kkg.png" alt="Logo KKG" class="h-10">
                     <div class="logo--text">
                         <h3 class="my-0 leading-4 font-bold text-sm">PENTAS PAIS 2023</h3>
-                        <h2 class="my-0 lh leading-4 text-xs">KKG PAI KECAMATAN WAGIR</h2>
+                        <h2 class="my-0 leading-4 text-xs">KKG PAI KECAMATAN WAGIR</h2>
                     </div>
                 </div>
-                <div class="foto w-full my-4">
-                    <img :src="imgUrl(peserta.foto)" alt="Foto" class=" aspect-square object-cover rounded-full w-[150px] mx-auto object-center">
+                <div class="foto w-full mt-16 print:mt-2">
+                    <img :src="imgUrl(peserta.foto)" alt="Foto" class=" aspect-square object-cover rounded-full w-[100px] print:w-[75px] mx-auto object-top border">
                 </div>
-                <div class="identitas w-full px-2">
-                    <h2 class="uppercase text-center leading-4 font-bold">{{ peserta.nama }}</h2>
-                    <h3 class="text-center leading-4">No. {{ peserta.nisn }}</h3>
-                    <h4 class="uppercase text-center leading-4 mt-4 font-bold">{{ peserta.sekolah.nama }}</h4>
+                <div class="identitas w-full px-2 mt-10 print:mt-2">
+                    <h2 class="uppercase text-center leading-4 font-bold text-sm">{{ peserta.nama }}</h2>
+                    <h3 class="text-center leading-4 text-sm">No. {{ peserta.nisn }}</h3>
+                    <h4 class="uppercase text-center leading-4 mt-4 font-bold text-sm">{{ peserta.sekolah.nama }}</h4>
                 </div>
-                <vue-qrcode :value="`peserta?nisn=${peserta.nisn}`" :options="{width: 100, color: {light: '#fefefeee', dark: '#347f67'}}" class="absolute bottom-2 right-2"></vue-qrcode>
+                <vue-qrcode :value="`peserta?nisn=${peserta.nisn}`" :options="{width: 75, color: {light: '#fefefeee', dark: '#347f67'}}" class="absolute bottom-2 right-2"></vue-qrcode>
             </div>
         </div>
     </div>

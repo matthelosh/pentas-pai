@@ -51,7 +51,7 @@ onMounted( () => {
 
 <template>
 <Transition type="fade">
-    <div class="report fixed top-0 right-0 bottom-0 left-0 z-50 bg-white" v-if="show">
+    <div class="report fixed top-0 right-0 bottom-0 left-0 z-50 bg-white overflow-y-auto" v-if="show">
         <div class="report-body w-full min-w-full">
             <div class="report-toolbar p-3 flex justify-between items-center shadow sticky top-0">
                 {{ title }}

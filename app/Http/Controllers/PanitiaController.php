@@ -34,7 +34,22 @@ class PanitiaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = json_decode($request->data);
+        try {
+            Panitia::updateOrCreate(
+                [
+                    'id' => $data->id ?? null
+                ],
+                [
+                    'jabatan' => $data->jabatan,
+                    'guru_id' => $data->guru_id,
+                    'lomba_id' => $data->lomba_id
+                ]
+            );
+            return response()->json(['status' => 'ok', 'msg' => 'Panitia Disimpan'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'ok', 'msg' => $e->getMessage()], 500);
+        }
     }
 
     /**

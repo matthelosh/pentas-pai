@@ -76,6 +76,7 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
 
     Route::prefix('panitia')->group(function() {
         Route::get('/', [PanitiaController::class, 'index'])->name('dashboard.panitia');
+        Route::post('/', [PanitiaController::class, 'store'])->name('panitia.store');
     });
 
     Route::prefix('lomba')->group(function() {

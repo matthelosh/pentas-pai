@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('panitias', function (Blueprint $table) {
+        Schema::create('juris', function (Blueprint $table) {
             $table->id();
-            $table->integer('lomba_id');
+            $table->string('label', 30);
+            $table->string('lomba_id', 4);
             $table->integer('guru_id');
-            $table->integer('user_id')->nullable();
-            $table->string('jabatan', 30)->default('Umum');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('panitia');
+        Schema::dropIfExists('juris');
     }
 };
