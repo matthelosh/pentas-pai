@@ -102,8 +102,13 @@ const hapus = async (id) => {
 
 // Edit
 const formPeserta = ref(null)
-const edit = (peserta) => {
-    formPeserta.value.open(peserta)
+const edit = async (peserta) => {
+    await formPeserta.value.open(peserta)
+                .then(ok => {
+                    if (ok) {
+                        router.reload({only: ['pesertas']})
+                    }
+                })
 }
 </script> 
 
@@ -122,6 +127,7 @@ const edit = (peserta) => {
                 <input type="checkbox" name="select" id="select" class="rounded" v-model="select" />
                 Pilih Data
             </label>
+            <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 rounded" @click="edit(null)" >Baru</button>
             <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 rounded" @click="$refs.filePeserta.click()">{{ btnImporText }}</button>
             <button class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800" :disabled="loading" @click="fixData">
                 <span v-if="!loading">Daftarkan BIdang Lomba</span>

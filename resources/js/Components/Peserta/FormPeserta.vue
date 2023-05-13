@@ -7,8 +7,9 @@ import axios from 'axios'
 const page = usePage()
 
 const fileFoto = ref(null)
-const urlFoto = ref('')
+const urlFoto = ref('/img/peserta.png')
 const loading = ref(false)
+const mode = ref('edit')
 const onFotoPicked = (e) => {
     let file = e.target.files[0]
     urlFoto.value = URL.createObjectURL(file)
@@ -26,42 +27,61 @@ const peserta = ref({
     lomba_id: []
 })
 
+const resolved = ref(null)
+const rejected = ref(null)
+
 const close = () => {
     show.value = false
 }
 const open = (data) => {
     show.value = true
-    peserta.value = {
-        id: data.id,
-        nisn: data.nisn,
-        nama: data.nama,
-        jk: data.jk,
-        sekolah_id: data.sekolah_id,
-        foto: data.foto,
-        hp: data.hp,
-        lomba_id: []
-    }
-    if(data.lomba_id.includes(",")) {
-        peserta.value.lomba_id = data.lomba_id.split(",")
+    if(data !== null) {
+        mode.value = 'edit'
+        peserta.value = {
+            id: data.id,
+            nisn: data.nisn,
+            nama: data.nama,
+            jk: data.jk,
+            sekolah_id: data.sekolah_id,
+            foto: data.foto,
+            hp: data.hp,
+            lomba_id: []
+        }
+        if(data.lomba_id.includes(",")) {
+            peserta.value.lomba_id = data.lomba_id.split(",")
+        } else {
+            peserta.value.lomba_id.push(data.lomba_id)
+        }
+        urlFoto.value = imgUrl(data.foto ? data.foto : '/img/peserta.png' )
     } else {
-        peserta.value.lomba_id.push(data.lomba_id)
+        mode.value = 'new'
+        peserta.value = {lomba_id: []}
+        urlFoto.value = '/img/peserta.png'
     }
-    urlFoto.value = imgUrl(data.foto ? data.foto : '/img/peserta.png' )
+
+    return new Promise((resolve, reject) => {
+        resolved.value = resolve
+        rejected.value = reject
+    })
 }
 
 const kirim = async () => {
     loading.value = true
+    const routeName = mode.value == 'edit' ? 'dashboard.peserta.update' : 'peserta.store'
     let formData = new FormData()
     formData.append("data", JSON.stringify(peserta.value))
     if(fileFoto.value !== null) {
         formData.append("foto", fileFoto.value)
     }
-    await axios.post(route('dashboard.peserta.update', {id: peserta.value.id}), formData)
+    await axios.post(route(routeName, {id: peserta.value.id}), formData)
                 .then(res=> {
                     console.log(res)
                     loading.value = false
+                    rejected.value(true)
+                    show.value = false
                 }).catch(err => {
                     loading.value = false
+                    alert('Ada yang salah')
                 })
 }
 
@@ -90,13 +110,13 @@ onMounted(() => {
 
 <template>
     <div class="fixed top-0 right-0 bottom-0 left-0 bg-[#33333389] flex items-center justify-center z-50" @click.self="close" v-if="show">
-        <div class="columns-1 md:columns-2 md:p-10 gap-5 relative bg-gray-50 w-2/4">
-            <div class="w-full bg-gray-100 p-3 mb-3 rounded">
+        <div class="grid grid-cols-2 md:columns-2 md:p-10 gap-5 relative bg-gray-50 w-2/4">
+            <div class="w-full bg-gray-200 p-3 mb-3 rounded flex flex-col justify-center items-center">
                 <img :src="urlFoto" alt="Peserta" class="w-1/2 rounded-full aspect-square object-cover object-top mx-auto shadow transition-all duration-500 hover:shadow-lg hover:shadow-lime-600 cursor-pointer bg-[#fefefe]" @click="$refs.foto.click()">
                 <h1 class="text-center text-gray-500 text-lg">Foto Peserta <br /><small class="text-black">[Klik gambar untuk mengganti]</small></h1>
                 <input type="file" ref="foto" class="hidden" @change="onFotoPicked" />
             </div>
-            <form ref="formRegistrasi" @submit.prevent="kirim" class="p-2 md:h-96">
+            <form ref="formRegistrasi" @submit.prevent="kirim" class="p-2 h-full">
                 <h3 class=" text-lg text-gray-700 mt-0 mb-4 font-extrabold">Data Peserta</h3>
                 <div class="flex justify-between mb-3">
                     <label for="sekolah">Sekolah</label>
