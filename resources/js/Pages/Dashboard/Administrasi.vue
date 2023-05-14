@@ -8,6 +8,8 @@ import PresensiPeserta from '@/Components/Peserta/PresensiPeserta.vue'
 import Surat from '@/Components/Panitia/Surat.vue'
 import RekapPeserta from '@/Components/Peserta/RekapPeserta.vue';
 import KartuPanitia from '@/Components/Panitia/KartuPanitia.vue';
+import PresensiPanitia from '@/Components/Panitia/PresensiPanitia.vue';
+import FormNilai from '@/Components/Lomba/FormNilai.vue';
 
 const mode = ref('list')
 const dialog = ref(false)
@@ -24,6 +26,11 @@ const showPresensiPeserta = () => {
   dokumen.value = 'presensi-peserta'
 }
 
+const showFormNilai = () => {
+  dialog.value = true
+  dokumen.value = 'form-nilai'
+}
+
 const showSurat = () => {
   // dialog.value = true
   // alert('hi')
@@ -35,6 +42,7 @@ const cetak = (args) => {
   dialog.value = false
   mode.value = args.dokumen
   selectedLomba.value = args.lomba
+  console.log(args)
 }
 
 // Rekap
@@ -59,7 +67,7 @@ const showRekap = () => {
             <div class="bg-white kartu-peserta rounded shadow">
               <h3  class="w-full bg-gray-200 p-2 font-bold">Administrasi Lomba</h3>
               <div class="toolbar grid grid-cols-2 gap-2 p-3">
-                <button class="bg-sky-600 text-white py-1 px-3 rounded hover:bg-teal-500 duration-200 transition-all mx-1 hover:shadow-lg" @click="showContestantCard">Form Nilai</button>
+                <button class="bg-sky-600 text-white py-1 px-3 rounded hover:bg-teal-500 duration-200 transition-all mx-1 hover:shadow-lg" @click="showFormNilai">Form Nilai</button>
                 <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded mx-1 hover:shadow-lg">Sertifikat</button>
               </div>
             </div>
@@ -71,6 +79,7 @@ const showRekap = () => {
                 </button>
                 <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded mx-1 hover:shadow-lg" @click="mode = 'kartu-panitia'">Kartu Panitia</button>
                 <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded mx-1 hover:shadow-lg" @click="showSurat">Persuratan</button>
+                <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded mx-1 hover:shadow-lg active:bg-orange-300" @click="mode = 'presensi-panitia'">Presensi</button>
                 </div>
             </div>
             <div class="bg-white">dfdf</div>
@@ -78,9 +87,11 @@ const showRekap = () => {
         <Kartu v-if="dialog" :dokumen="dokumen" @close="dialog=false" @cetakKartu="cetak"/>
         <CetakKartu :lomba="selectedLomba" v-if="mode == 'kartu-peserta'" @close="mode = 'list'" />
         <PresensiPeserta :lomba="selectedLomba" v-if="mode == 'presensi-peserta'" @close="mode = 'list'" />
+        <FormNilai :lomba="selectedLomba" v-if="mode == 'form-nilai'" @close="mode = 'list'" />
         <Surat v-if="mode == 'persuratan'" @close="mode = 'list'" />
         <RekapPeserta v-if="mode == 'rekap'" @close="mode = 'list'" />
         <KartuPanitia v-if="mode == 'kartu-panitia'" @close="mode = 'list'" />
+        <PresensiPanitia v-if="mode == 'presensi-panitia'" @close="mode = 'list'" />
     </transition-group>
 </Dash>
 </template>

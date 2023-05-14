@@ -37,7 +37,7 @@ const $page = usePage();
 const setJabatan = async ($event,guru) => {
     loading.value = true
     let jabatan = $event.target.value
-    let lomba_id = ''
+    let lomba_id = null
     if(jabatan.includes('Sie Lomba')) {
         let teks = jabatan.split(" ")
         switch(teks[-teks.length]) {
@@ -119,7 +119,7 @@ const buatAkun = async () => {
                     <tr class="odd:bg-gray-50" v-for="(guru,g) in $page.props.gurus" :key="guru">
                         <td class="text-center py-1 px-3">{{ g+1 }}</td>
                         <td class="py-1 px-3">{{ guru.nip }}</td>
-                        <td class="py-1 px-3">{{ guru.nama }} <span class="text-teal-800">{{ guru.panitias[0].user ?  `[${guru.panitias[0].user.name }]`: ''}}</span></td>
+                        <td class="py-1 px-3">{{ guru.nama }} <span class="text-teal-800">{{ guru.panitias.length > 0 ?  `[${guru.panitias[0].user.name }]`: ''}}</span></td>
                         <td class="py-1 px-3">{{ guru.jk }}</td>
                         <td class="py-1 px-3">{{ guru.sekolah ? guru.sekolah.nama : '-' }}</td>
                         <td class="py-1 px-3">{{ guru.panitia ? guru.panitias.jabatan : '-' }}

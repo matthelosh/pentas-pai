@@ -45,7 +45,8 @@ class PanitiaController extends Controller
     {
         $data = json_decode($request->data);
         try {
-            $lomba = Lomba::where('tahun', date('Y'))->select('id');
+            $lomba = Lomba::where('tahun', date('Y'))->first();
+            // dd($lomba);
             if($data->jabatan !== '0') {
                 Panitia::updateOrCreate(
                     [
