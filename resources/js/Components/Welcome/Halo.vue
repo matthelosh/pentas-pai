@@ -13,6 +13,7 @@ import Report from './Report.vue';
 
 const lombas = ref([])
 const sekolahs = ref([])
+// const pesertas = ref([])
 
 const chartByBidang = ref({
     labels: [],
@@ -67,15 +68,16 @@ const listLomba = async () => {
 
 
 const jml = computed(() => {
-    if(lombas.value.bidangs) {
-        let jml = lombas.value.bidangs.reduce(
-            (ac, cv) => (ac + cv.pesertas.length),
-            0
-        )
+    // if(lombas.value.bidangs) {
+    //     let jml = lombas.value.bidangs.reduce(
+    //         (ac, cv) => (ac + cv.pesertas.length),
+    //         0
+    //     )
 
-        return jml
-    }
+    //     return jml
+    // }
     // return lombas.value
+    return sekolahs.value.reduce((jml, sekolah) => (jml + sekolah.pesertas.length), 0)
 })
 
 const sekolahPage = ref(1)
