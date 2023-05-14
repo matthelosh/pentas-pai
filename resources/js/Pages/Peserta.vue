@@ -67,7 +67,7 @@ const datas = computed(() => {
                 </tbody>
             </table>
         </div>
-        <div class="bg-gray-200 flex items-center justify-between pl-3 flex-wrap">
+        <div class="bg-gray-200 flex items-center justify-between pl-3 flex-wrap w-full">
             Jml Halaman: {{ datas.pageCount }}
             <div class="flex items-center h-full flex-wrap">
                 <button @click="currentPage-=1" class="flex justify-center w-8 border border-gray-500">&lt;</button>

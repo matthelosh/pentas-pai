@@ -65,7 +65,8 @@ onMounted(() => {
         <PieChart :chartData="testData" />
     </div>
     <div class="w-full p-5 bg-white mt-5">
-        <Editor class="bg-gray-200" v-model="text" />
+        <!-- <Editor class="bg-gray-200" v-model="text" /> -->
+        <!-- {{ $page.props.auth }} -->
     </div>
 </Dash>
 </template>

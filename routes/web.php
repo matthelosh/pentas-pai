@@ -66,9 +66,10 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
     })->name('dashboard');
 
     Route::prefix('peserta')->group(function() {
-        Route::inertia('/', 'Dashboard/Peserta', [
-            'pesertas' => Peserta::with('sekolah','bidangs')->get(),
-        ])->name('dashboard.peserta');
+        // Route::inertia('/', 'Dashboard/Peserta', [
+        //     'pesertas' => Peserta::with('sekolah','bidangs')->get(),
+        // ])->name('dashboard.peserta');
+        Route::get('/', [PesertaController::class, 'index'])->name('dashboard.peserta');
         Route::post('/attach', [PesertaController::class, 'attach'])->name('dashboard.peserta.attach');
         Route::post('/impor', [PesertaController::class, 'impor'])->name('dashboard.peserta.impor');
         Route::delete('/{id}', [PesertaController::class, 'destroy'])->name('dashboard.peserta.destroy');
@@ -83,6 +84,7 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
         Route::get('/', [PanitiaController::class, 'page'])->name('dashboard.panitia');
         Route::post('/', [PanitiaController::class, 'index'])->name('panitia.index');
         Route::post('/store', [PanitiaController::class, 'store'])->name('panitia.store');
+        Route::post('/account/make', [PanitiaController::class, 'makeAccount'])->name('panitia.account.make');
     });
 
     Route::prefix('lomba')->group(function() {

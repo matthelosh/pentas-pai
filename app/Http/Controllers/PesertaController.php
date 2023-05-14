@@ -18,9 +18,15 @@ class PesertaController extends Controller
     {
         // return 'Halo';
         try {
+            // return auth()->user()->panitias[0]->guru;
             $page = auth()->user() ? 'Dashboard/' : '';
+            if (auth()->user()->level == 'panitia') {
+                $pesertas = Peserta::where('sekolah_id', auth()->user()->panitias[0]->guru->sekolah_id)->with('sekolah','bidangs')->get();
+            } else {
+                $pesertas = Peserta::with('sekolah','bidangs')->get();
+            }
             return Inertia::render($page.'Peserta',[
-                'pesertas' => Peserta::with('sekolah','bidangs')->get(),
+                'pesertas' => $pesertas,
                 'bidangs' => Bidang::all()
             ], 200);
         } catch(\Exception $e) {

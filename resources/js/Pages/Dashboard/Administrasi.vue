@@ -9,7 +9,7 @@ import Surat from '@/Components/Panitia/Surat.vue'
 import RekapPeserta from '@/Components/Peserta/RekapPeserta.vue';
 import KartuPanitia from '@/Components/Panitia/KartuPanitia.vue';
 
-const mode = ref('kartu-panitia')
+const mode = ref('list')
 const dialog = ref(false)
 const selectedLomba = ref(null)
 const dokumen = ref('')

@@ -13,7 +13,7 @@ const list = async () => {
     await axios.post(route('panitia.index'))
                 .then(res => {
                     panitias.value = res.data.panitias
-                    console.log(res)
+                    // console.log(res)
                     // alert('yes')
                 }).catch(err => console.log(err))
 }
@@ -28,7 +28,7 @@ onMounted(() => {
 
     <div class="w-full bg-white">
         <Head title="Kartu Panitia" />
-        <div class="toolbar w-full p-3 flex items-center justify-between shadow-lg print:hidden bg-white">
+        <div class="toolbar w-full p-3 flex items-center justify-between shadow-lg print:hidden bg-white sticky z-50">
             Kartu Panitia
             <div class="toolbar-items flex items-center gap-2 ">
                 <button class="rounded-full p-0" @click="$emit('close')">
@@ -58,7 +58,7 @@ onMounted(() => {
                         <h2 class="leading-4 print:text-sm print:leading-3"><code>{{ panitia.jabatan }}</code></h2>
                         <p class="leading-4 text-sm"><code>{{ panitia.guru.hp }}</code></p>
                     </div>
-                    <vue-qrcode :value="`https://pentaspais.kkgpaiwagir.or.id/panpel/${i}`" :options="{width:60}" class="mx-auto mt-6 print:mt-3" />
+                    <vue-qrcode :value="`https://pentaspais.kkgpaiwagir.or.id/panpel/${p}`" :options="{width:60}" class="mx-auto mt-6 print:mt-3" />
                     <SvgIcon :path="mdiTypewriter" type="mdi" class="absolute right-0 bottom-2 text-gray-100" size="90" />
                     <div class="footer absolute left-0 right-0 bottom-0 flex justify-between p-3 print:p-1">
                         <p class="text-sm text-teal-800 print:text-xs">https://pentaspais.kkgpaiwagir.or.id</p>

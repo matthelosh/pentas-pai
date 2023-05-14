@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 import axios from 'axios';
 import {read, utils} from 'xlsx'
 import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiDelete } from '@mdi/js';
+import { mdiDelete, mdiFileExcel } from '@mdi/js';
 
 import DialogBox from '@/Components/General/DialogBox.vue';
 import ImportTable from '@/Components/Peserta/ImportTable.vue';
@@ -119,83 +119,94 @@ const edit = async (peserta) => {
 <Head title="Data Peserta" />
 <Dash>
 <div class="w-full bg-white">
-    <div class="toolbar w-full h-12 bg-gray-50 rounded shadow flex items-center px-3 justify-between print:hidden">
-        <h1>Data Peserta</h1>
+    <div class="toolbar w-full h-12 bg-gray-50 rounded shadow flex items-center px-0 md:px-3 justify-center md:justify-between print:hidden">
+        <h1 class="hidden md:inline">
+            <span >Data Peserta</span>
+        </h1>
         <div class="toolbar-items flex items-center gap-2">
             <input type="file" name="filePeserta" id="filePeserta" ref="filePeserta" @change="onFilePicked" class="hidden" accept=".xlsx, .xls, .ods, .csv" />
-            <label for="select" class="mx-3">
+            <label for="select" class="mx-3 hidden md:inline" >
                 <input type="checkbox" name="select" id="select" class="rounded" v-model="select" />
                 Pilih Data
             </label>
             <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 rounded" @click="edit(null)" >Baru</button>
-            <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 rounded" @click="$refs.filePeserta.click()">{{ btnImporText }}</button>
-            <button class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800" :disabled="loading" @click="fixData">
-                <span v-if="!loading">Daftarkan BIdang Lomba</span>
-                <ArrowPathIcon class="w-6 text-white animate-spin" v-if="loading" />
+            <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 rounded flex items-center" @click="$refs.filePeserta.click()">
+                <span class="hidden md:inline">
+                    {{ btnImporText }}
+                </span>
+                <SvgIcon type="mdi" :path="mdiFileExcel" />
             </button>
-            <input type="text" placeholder="Cari" class="h-8 rounded" v-model="search" @keyup.enter="filter" />
+            <button class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800" :disabled="loading" @click="fixData">
+                <span v-if="!loading" class="hidden md:inline">Daftarkan Bidang Lomba</span>
+                <ArrowPathIcon class="w-6 text-white" :class="loading ? 'animate-spin' : ''" />
+            </button>
+            <input type="text" placeholder="Cari" class="h-8 rounded w-[60%] md:w-64" v-model="search" @keyup.enter="filter" />
         </div>
     </div>
-    <div class="content w-full bg-white p-3 mt-2">
-        
-        <table class="table w-full border-collapse">
-            <caption><h1>Data Peserta Lomba</h1></caption>
-            <thead>
-                <tr>
-                    <th class="border text-center">
-                        <span v-show="!select">No</span>
-                        <input type="checkbox" name="select" id="select" class="rounded"  v-if="select" @change="selectedAll" />
-                    </th>
-                    <th class="border text-center">NISN</th>
-                    <th class="border text-center">Nama</th>
-                    <th class="border text-center">JK</th>
-                    <th class="border text-center">Sekolah</th>
-                    <th class="border text-center">Lomba</th>
-                    <th class="border text-center print:hidden">Opsi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="odd:bg-gray-50" v-for="(data,d) in datas.current" :key="d">
-                    <td class="border p-2">
-                        <span v-show="!select">{{ d+1 }}</span>
-                        <input type="checkbox" name="select" id="select" class="rounded"  :checked="checked(data.nisn)" v-if="select" @change="selectOne($event, data)" />
-                    </td>
-                    <td class="border p-2">{{ data.nisn }}</td>
-                    <td class="border p-2">
-                        <div class="h-full flex items-center gap-2 cursor-pointer" @click="edit(data)">
-                            <img :src="imgUrl(data.foto)" alt="Foto" class="h-8 aspect-square object-cover object-top rounded-full" />
-                        {{ data.nama }}
-                        </div>
-                        
-                    </td>
-                    <td class="border p-2">{{ data.jk }}</td>
-                    <td class="border p-2">{{ data.sekolah.nama }}</td>
-                    <td class="border p-2 flex gap-2">
-                        <div class="bg-teal-200 px-2 py-1 rounded">{{ data.lomba_id }}</div>
-                        <ul>
-                            <li v-for="(bidang,b) in data.bidangs" :key="b">{{ b+1 }}. {{ bidang.label }}</li>
-                        </ul>
-                        <!-- | {{ data.lomba_id }} -->
-                    </td>
-                    <td class="text-center border p-2 print:hidden">
-                        <button class="p-0 text-red-400 hover:text-red-600 active:text-orange-400" @click="hapus(data.id)">
-                            <SvgIcon type="mdi" :path="mdiDelete" :size="18" />
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="w-full bg-gray-200 flex items-center justify-between pl-3 print:hidden">
+
+    <div class="content w-full bg-white p-3 mt-2 ">
+        <div class="overflow-x-auto w-full border">
+            <table class="w-full table table-responsive border-collapse ">
+                <caption class="text-left md:text-center p-2">
+                    <h1 class="text-xl">Data Peserta Lomba</h1>
+                </caption>
+                <thead>
+                    <tr>
+                        <th class="border text-center">
+                            <span v-show="!select">No</span>
+                            <input type="checkbox" name="select" id="select" class="rounded"  v-if="select" @change="selectedAll" />
+                        </th>
+                        <th class="border text-center">NISN</th>
+                        <th class="border text-center">Nama</th>
+                        <th class="border text-center">JK</th>
+                        <th class="border text-center">Sekolah</th>
+                        <th class="border text-center">Lomba</th>
+                        <th class="border text-center print:hidden">Opsi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="odd:bg-gray-50" v-for="(data,d) in datas.current" :key="d">
+                        <td class="border p-2">
+                            <span v-show="!select">{{ d+1 }}</span>
+                            <input type="checkbox" name="select" id="select" class="rounded"  :checked="checked(data.nisn)" v-if="select" @change="selectOne($event, data)" />
+                        </td>
+                        <td class="border p-2">{{ data.nisn }}</td>
+                        <td class="border p-2">
+                            <div class="h-full grid grid-cols-2 md:flex items-center gap-2 cursor-pointer" @click="edit(data)">
+                                <img :src="imgUrl(data.foto)" alt="Foto" class="h-8 aspect-square object-cover object-top rounded-full" />
+                            {{ data.nama }}
+                            </div>
+                            
+                        </td>
+                        <td class="border p-2">{{ data.jk }}</td>
+                        <td class="border p-2">{{ data.sekolah.nama }}</td>
+                        <td class="border p-2 flex gap-2">
+                            <div class="bg-teal-200 px-2 py-1 rounded">{{ data.lomba_id }}</div>
+                            <ul>
+                                <li v-for="(bidang,b) in data.bidangs" :key="b">{{ b+1 }}. {{ bidang.label }}</li>
+                            </ul>
+                        </td>
+                        <td class="text-center border p-2 print:hidden">
+                            <button class="p-0 text-red-400 hover:text-red-600 active:text-orange-400" @click="hapus(data.id)">
+                                <SvgIcon type="mdi" :path="mdiDelete" :size="18" />
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="w-full bg-gray-200 flex items-center justify-between px-3  flex-wrap print:hidden">
             <div class="flex items-center gap-1">
                 Total: {{ datas.total }}
             </div>
             Jml Halaman: {{ datas.pageCount }}
-            <div class="flex items-center h-full ">
-                <button @click="currentPage-=1" class="flex justify-center w-8 border border-gray-500">&lt;</button>
-                <button v-for="b in datas.pageCount" :key="b" class="flex justify-center w-8 border border-gray-500" :class="b == currentPage ? 'bg-sky-600 text-white': ''" @click="currentPage=b">{{ b }}</button>
-                <button @click="currentPage+=1" class="flex justify-center w-8 border border-gray-500">&gt;</button>
-            </div>
+            
         </div>
+        <div class="w-full flex flex-wrap md:justify-end print:hidden">
+                <button @click="currentPage-=1" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0">&lt;</button>
+                <button v-for="b in datas.pageCount" :key="b" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0" :class="b == currentPage ? 'bg-sky-600 text-white': ''" @click="currentPage=b">{{ b }}</button>
+                <button @click="currentPage+=1" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0">&gt;</button>
+            </div>
     </div>
 
     

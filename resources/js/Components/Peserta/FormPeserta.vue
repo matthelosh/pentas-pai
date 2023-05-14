@@ -4,6 +4,8 @@ import { usePage } from '@inertiajs/vue3'
 import { imgUrl } from '@/Plugins/misc'
 import { ArrowPathIcon } from '@heroicons/vue/20/solid'
 import axios from 'axios'
+import { mdiClose } from '@mdi/js'
+import SvgIcon from '@jamescoyle/vue-icon'
 const page = usePage()
 
 const fileFoto = ref(null)
@@ -110,13 +112,17 @@ onMounted(() => {
 
 <template>
     <div class="fixed top-0 right-0 bottom-0 left-0 bg-[#33333389] flex items-center justify-center z-50" @click.self="close" v-if="show">
-        <div class="grid grid-cols-2 md:columns-2 md:p-10 gap-5 relative bg-gray-50 w-2/4">
-            <div class="w-full bg-gray-200 p-3 mb-3 rounded flex flex-col justify-center items-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 md:p-10 md:gap-5 relative bg-gray-50 w-[90vw] h-90vh md:w-2/4">
+            <div class="w-full bg-gray-200 p-3 mb-0 md:mb-3 rounded flex flex-col justify-center items-center relative md:static">
+                <SvgIcon type="mdi" :path="mdiClose" class="absolute w-10 text-gray-400 hover:text-gray-600 active:text-white top-4 right-2" @click="close" />
                 <img :src="urlFoto" alt="Peserta" class="w-1/2 rounded-full aspect-square object-cover object-top mx-auto shadow transition-all duration-500 hover:shadow-lg hover:shadow-lime-600 cursor-pointer bg-[#fefefe]" @click="$refs.foto.click()">
-                <h1 class="text-center text-gray-500 text-lg">Foto Peserta <br /><small class="text-black">[Klik gambar untuk mengganti]</small></h1>
+                <h1 class="text-center text-gray-500 text-lg">
+                    <span class="hidden">Foto Peserta<br /></span> 
+                    <small class="text-black">[Klik gambar untuk mengganti]</small>
+                </h1>
                 <input type="file" ref="foto" class="hidden" @change="onFotoPicked" />
             </div>
-            <form ref="formRegistrasi" @submit.prevent="kirim" class="p-2 h-full">
+            <form ref="formRegistrasi" @submit.prevent="kirim" class="p-2 h-auto">
                 <h3 class=" text-lg text-gray-700 mt-0 mb-4 font-extrabold">Data Peserta</h3>
                 <div class="flex justify-between mb-3">
                     <label for="sekolah">Sekolah</label>
@@ -165,7 +171,6 @@ onMounted(() => {
                     </button>
                 </div>
             </form>
-            {{ $page.props.bidangs }}
         </div>
     </div>
 </template>
