@@ -55,7 +55,7 @@ class PesertaController extends Controller
             $peserta->nisn = $data->nisn;
             $peserta->nama = $data->nama;
             $peserta->jk = $data->jk;
-            $peserta->foto = isset($file) ? 'img/peserta/'.$data->nisn.'.jpg' : '';
+            $peserta->foto = isset($file) ? '/storage/img/peserta/'.$data->nisn.'.jpg' : '';
             $peserta->hp = $data->hp;
             $peserta->lomba_id = implode(",", $data->lomba_id);
             $peserta->sekolah_id = $data->sekolah_id;
@@ -129,7 +129,7 @@ class PesertaController extends Controller
             }
             $bidangs = [];
             foreach($data->lomba_id as $kode) {
-                $bidang = Bidang::where('kode', $kode)->select('id')->first();
+                $bidang = Bidang::where('kode', $kode)->first();
                 array_push($bidangs, $bidang->id);
             }
             $peserta = Peserta::find($id);
@@ -137,12 +137,14 @@ class PesertaController extends Controller
             $peserta->nisn = $data->nisn;
             $peserta->nama = $data->nama;
             $peserta->jk = $data->jk;
-            $peserta->foto = isset($file) ? 'img/peserta/'.$data->nisn.'.jpg' : 'img/peserta.png';
+            $peserta->foto = isset($file) ? '/storage/img/peserta/'.$data->nisn.'.jpg' : '/img/peserta.png';
             $peserta->hp = $data->hp;
-            $peserta->lomba_id = $data->lomba_id;
+            $peserta->lomba_id = implode(",",$data->lomba_id);
             $peserta->sekolah_id = $data->sekolah_id;
             $peserta->save();
-            $peserta->bidangs()->attach($bidangs);
+            if (count($peserta->bidangs) < count($bidangs)) {
+                $peserta->bidangs()->attach($bidangs);
+            }
             return response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
         } catch(\Exception $e) {
             return response()->json(['status' => 'fail', 'msg' => $e->getMessage(), 'errCode' => $e->getCode()], 500);
