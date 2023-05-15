@@ -20,7 +20,7 @@ class PesertaController extends Controller
         try {
             // return auth()->user()->panitias[0]->guru;
             $page = auth()->user() ? 'Dashboard/' : '';
-            if (auth()->user()->level == 'panitia') {
+            if (auth()->check() && auth()->user()->level == 'panitia') {
                 $pesertas = Peserta::where('sekolah_id', auth()->user()->panitias[0]->guru->sekolah_id)->with('sekolah','bidangs')->get();
             } else {
                 $pesertas = Peserta::with('sekolah','bidangs')->get();
@@ -120,6 +120,8 @@ class PesertaController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            // dd(Peserta::find($id));
+            // dd($request->file('foto'));
             $data = json_decode($request->data);
             if ( $request->file('foto')) {
                 $foto = $request->file('foto');

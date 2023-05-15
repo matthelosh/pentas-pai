@@ -42,7 +42,7 @@ const cetak = (args) => {
   dialog.value = false
   mode.value = args.dokumen
   selectedLomba.value = args.lomba
-  console.log(args)
+  // console.log(args)
 }
 
 // Rekap

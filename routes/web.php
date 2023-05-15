@@ -60,6 +60,10 @@ Route::prefix('peserta')->group(function() {
     Route::post('/{id}/detail', [PesertaController::class, 'show'])->name('peserta.show');
 });
 
+Route::prefix('verifikasi')->group(function() {
+    Route::get('/{id}', [SertifikatController::class, 'verify'])->name('verifikasi');
+});
+
 Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
     Route::get('/', function () {
         return Inertia::render('Dashboard');

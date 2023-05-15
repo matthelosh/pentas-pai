@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import { XCircleIcon } from '@heroicons/vue/20/solid';
+import * as _ from 'lodash-es';
 
 const props = defineProps({
     lomba:Object
@@ -34,6 +35,18 @@ const bidang = computed(() => {
     return kriterias.value.filter(item => item.lomba == props.lomba.kode)
 })
 
+const pesertas = computed(() => {
+    if(props.lomba.kode == 'bjr' || props.lomba.kode == 'lcc') {
+        return _.groupBy(props.lomba.pesertas, 'sekolah.nama')
+    } else {
+        return props.lomba.pesertas
+    }
+})
+
+const banjari = (kode) => {
+    return ['bjr'].includes(kode)   
+}
+
 </script>
 
 <template>
@@ -56,9 +69,9 @@ const bidang = computed(() => {
                 </caption>
                 <thead>
                     <tr>
-                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2">No</th>
-                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2">NISN</th>
-                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2">Nama</th>
+                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2">{{ banjari(lomba.kode) ? 'Grup/Sekolah' : 'No' }}</th>
+                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2" v-if="!banjari(lomba.kode)">NISN</th>
+                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2">{{ banjari(lomba.kode) ? 'Peserta' : 'Nama' }}</th>
                         <th class="border border-black py-1 print:py-0 px-3" :colspan="bidang[0].aspeks.length">Skor</th>
                         <th class="border border-black py-1 print:py-0 px-3" rowspan="2">Nilai</th>
                     </tr>
@@ -67,10 +80,14 @@ const bidang = computed(() => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(peserta,p) in props.lomba.pesertas" class=" odd:bg-gray-50">
-                        <td class="text-center py-1 px-3 border border-black">{{ p+1 }}</td>
-                        <td class="text-center py-1 px-3 border border-black">{{ peserta.nisn }}</td>
-                        <td class="py-1 px-3 border border-black">{{ peserta.nama }}</td>
+                    <tr v-for="(peserta,p) in pesertas" class=" odd:bg-gray-50">
+                        <td class="text-center py-1 px-3 border border-black">{{ banjari(lomba.kode) ? p : p+1 }}</td>
+                        <td class="text-center py-1 px-3 border border-black" v-if="!regu(lomba.kode)">{{ peserta.nisn }}</td>
+                        <td class="py-1 px-3 border border-black">
+                            <ul v-if="regu(lomba.kode)">
+                                <li v-for="(pes, i) in peserta" :key="i">{{ i+1 }}. {{ pes.nama }}</li>
+                            </ul>
+                        </td>
                         <td class="py-1 px-3 border border-black" v-for="i in bidang[0].aspeks" :key="i"></td>
                         <td class="py-1 px-3 border border-black"></td>
                     </tr>

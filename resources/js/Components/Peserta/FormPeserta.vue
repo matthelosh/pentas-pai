@@ -75,9 +75,14 @@ const kirim = async () => {
     if(fileFoto.value !== null) {
         formData.append("foto", fileFoto.value)
     }
+    // let data = {
+    //     data: JSON.stringify(peserta.value),
+    //     foto: fileFoto.value
+    // }
+    // console.log(data)
     await axios.post(route(routeName, {id: peserta.value.id}), formData)
                 .then(res=> {
-                    console.log(res)
+                    // console.log(res)
                     loading.value = false
                     rejected.value(true)
                     show.value = false

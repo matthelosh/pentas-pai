@@ -1,4 +1,5 @@
 <script setup>
+import { ref, computed } from 'vue';
 import { XCircleIcon } from '@heroicons/vue/20/solid';
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import { imgUrl } from '@/Plugins/misc';
@@ -38,15 +39,26 @@ const sideBg = (kode) => {
     return bg+' bg-opacity-90'
 }
 
-// const parseImg = (url) => {
+const pesertas = ref(props.lomba.pesertas)
+
+const filterSekolah = (e) => {
+    pesertas.value = props.lomba.pesertas.filter(item => item.sekolah_id == e.target.value)
+}
+
+const sekolahs = computed(() => {
+    let datas = []
+    props.lomba.pesertas.forEach(item => {
+        datas.push(item.sekolah)
+    })
     
-//     if (url.includes('=')) {
-//         let splited = url.split('=')
-//         return `https://drive.google.com/uc?export=view&id=${splited[splited.length-1]}`
-//     } else {
-//         return url
-//     }
-// }
+    return datas.filter(
+        (thing, index, self) => index === self.findIndex((t) => t.npsn === thing.npsn)
+    )
+    
+})
+
+const sekolah = ref('0')
+
 </script>
 
 <template>
@@ -54,6 +66,11 @@ const sideBg = (kode) => {
     <div class="toolbar h-10 bg-[#fefefe] shadow items-center p-2 print:hidden flex justify-between absolute w-full z-10 top-0">
         Kartu Peserta {{ props.lomba.label }}
         <div class="toolbar-items flex gap-2">
+            <select name="sekolah_id" v-model="sekolah" @change="filterSekolah" class="py-0">
+                <option value="0">Pilih Sekolah</option>
+                <option v-for="(sekolah,s) in sekolahs" :key="s" :value="sekolah.npsn">{{ sekolah.nama }}</option>
+            </select>
+
             <button class="bg-sky-400 text-white px-2 rounded shadow hover:bg-sky-600" @click="printMe">
                 Cetak
             </button>
@@ -61,7 +78,7 @@ const sideBg = (kode) => {
         </div>
     </div>
     <div class="w-full grid grid-cols-3 gap-1 print:gap-2 print:p-0 p-3 relative">
-        <div v-for="(peserta,p) in props.lomba.pesertas" :key="p" class=" border-gray-800 border shadow print:shadow-none  print:break-inside-avoid print:my-1 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[500px] print:h-[350px]" >
+        <div v-for="(peserta,p) in pesertas" :key="p" class=" border-gray-800 border shadow print:shadow-none  print:break-inside-avoid print:my-1 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[500px] print:h-[350px]" >
             <div class="left h-full relative block pt-5" :class="sideBg(lomba.kode)">
                 <h1 class="absolute text-uppercase whitespace-nowrap uppercase top-12 font-extrabold w-[100%] text-4xl rotate-90 text-black">{{ lomba.label }}</h1>
                 <h1 class="text-4xl font-extrabold absolute bg-white aspect-square w-16 text-center  rounded-lg bottom-2 -right-6 border-2 border-black flex justify-center items-center">{{ p+1 }}</h1>

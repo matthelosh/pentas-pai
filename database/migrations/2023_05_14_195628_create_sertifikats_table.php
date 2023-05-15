@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sertifikats', function (Blueprint $table) {
-            $table->uuid();
+            $table->uuid('id');
             $table->string('penerima', 100);
             $table->string('predikat', 100);
+            $table->enum('tipe', ['juara', 'partisipasi', 'panitia']);
             $table->text('kegiatan', 100);
             $table->string('tempat', 60);
             $table->date('tanggal');
