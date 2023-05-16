@@ -47,9 +47,9 @@ onMounted(() => {
         <div class="w-full h-48 bg-white rounded shadow grid grid-cols-4 overflow-hidden" v-for="(lomba,l) in lomba.bidangs" :key="l">
             <div class="h-full w-3/4 bg-gray-200"></div>
             <div class="w-full h-full py-4 pr-3 col-span-3">
-                <p>{{ lomba.label }}</p>
-                <h1 class="text-4xl">{{ lomba.pesertas.length }} <small class="text-sm">Orang</small></h1>
-                <p-btn color="sky" class="mt-16" @click="$emit('cetakKartu', {lomba:lomba, dokumen:props.dokumen})">Cetak</p-btn>
+                <h1 class="text-xl">{{ lomba.label }}</h1>
+                <h1 class="text-4xl" v-if="$page.props.auth.user.level == 'admin'">{{ lomba.pesertas.length }} <small class="text-sm">Orang</small></h1>
+                <button class="mt-16 py-1 px-2 rounded bg-sky-800 text-white hover:bg-sky-600 active:bg-orange-600" @click="$emit('cetakKartu', {lomba:lomba, dokumen:props.dokumen})">Cetak</button>
             </div>
             
         </div>

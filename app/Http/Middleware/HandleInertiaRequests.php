@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Models\Lomba;
+use App\Models\Panitia;
+use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -40,12 +42,27 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
-            'lomba' => $this->lomba() ?? null
+            'lomba' => $this->lomba() ?? null,
+            'sekolahs' => $request->user() ? $this->sekolahs($request->user()) : null,
         ]);
     }
 
     public function lomba()
     {
         return Lomba::where('tahun', date('Y'))->with('sekolah')->first();
+    }
+
+    public function sekolahs($user)
+    {
+        $sekolahs = [];
+        if($user->level !== 'admin') {
+            $panitia = Panitia::where('user_id', $user->id)->with('guru.sekolah')->first();
+            array_push($sekolahs, $panitia->guru->sekolah);
+        } else {
+            $sekolahs = Panitia::all();
+        }
+        
+        // $sekolahs = Sekolah::where('npsn', $panitia->guru->seklah_id)->get();
+        return $sekolahs;
     }
 }

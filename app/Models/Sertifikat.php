@@ -11,7 +11,6 @@ class Sertifikat extends Model
     use UUID, HasFactory;
 
     protected $fillable = [
-        'uuid',
         'penerima',
         'predikat',
         'tipe',

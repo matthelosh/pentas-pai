@@ -64,6 +64,7 @@ Route::prefix('verifikasi')->group(function() {
     Route::get('/{id}', [SertifikatController::class, 'verify'])->name('verifikasi');
 });
 
+
 Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
     Route::get('/', function () {
         return Inertia::render('Dashboard');
@@ -74,6 +75,7 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
         //     'pesertas' => Peserta::with('sekolah','bidangs')->get(),
         // ])->name('dashboard.peserta');
         Route::get('/', [PesertaController::class, 'index'])->name('dashboard.peserta');
+        Route::post('/', [PesertaController::class, 'getPeserta'])->name('dashboard.peserta.index');
         Route::post('/attach', [PesertaController::class, 'attach'])->name('dashboard.peserta.attach');
         Route::post('/impor', [PesertaController::class, 'impor'])->name('dashboard.peserta.impor');
         Route::delete('/{id}', [PesertaController::class, 'destroy'])->name('dashboard.peserta.destroy');
@@ -102,8 +104,14 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
         Route::post('/{id}/lampiran/store', [SuratController::class, 'storeAttachment'])->name('surat.lampiran.store');
     });
 
+    Route::prefix('juara')->group(function() {
+        Route::post('/', [JuaraController::class, 'index'])->name('juara.index');
+        Route::post('/store', [JuaraController::class, 'store'])->name('juara.store');
+    });
+
     Route::prefix('administrasi')->group(function() {
         Route::inertia('/', 'Dashboard/Administrasi')->name('administrasi');
+        // Route::get('/', [JuaraController::class, 'tes'])->name('administrasi');
     });
 });
 

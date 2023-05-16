@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { XCircleIcon } from '@heroicons/vue/20/solid';
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import { imgUrl } from '@/Plugins/misc';
@@ -7,6 +7,14 @@ const props = defineProps({
     lomba: Object
 })
 
+onMounted(() => {
+    let datas = []
+    props.lomba.pesertas.forEach((item, index) => {
+        item.no = index+1
+        datas.push(item)
+    })
+    pesertas.value = datas
+})
 const printMe = () => {
     window.print()
 }
@@ -39,21 +47,24 @@ const sideBg = (kode) => {
     return bg+' bg-opacity-90'
 }
 
-const pesertas = ref(props.lomba.pesertas)
+const pesertas = ref([])
 
 const filterSekolah = (e) => {
-    pesertas.value = props.lomba.pesertas.filter(item => item.sekolah_id == e.target.value)
+    let Pesertas = props.lomba.pesertas.filter(item => item.sekolah_id == e.target.value)
+    let datas = []
+    Pesertas.forEach((item,index) => {
+        datas.push(item)
+    })
+
+    pesertas.value = Pesertas
+
 }
 
 const sekolahs = computed(() => {
-    let datas = []
-    props.lomba.pesertas.forEach(item => {
-        datas.push(item.sekolah)
-    })
-    
-    return datas.filter(
+    return props.lomba.pesertas.map(item => item.sekolah).filter(
         (thing, index, self) => index === self.findIndex((t) => t.npsn === thing.npsn)
     )
+    
     
 })
 
@@ -81,7 +92,7 @@ const sekolah = ref('0')
         <div v-for="(peserta,p) in pesertas" :key="p" class=" border-gray-800 border shadow print:shadow-none  print:break-inside-avoid print:my-1 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[500px] print:h-[350px]" >
             <div class="left h-full relative block pt-5" :class="sideBg(lomba.kode)">
                 <h1 class="absolute text-uppercase whitespace-nowrap uppercase top-12 font-extrabold w-[100%] text-4xl rotate-90 text-black">{{ lomba.label }}</h1>
-                <h1 class="text-4xl font-extrabold absolute bg-white aspect-square w-16 text-center  rounded-lg bottom-2 -right-6 border-2 border-black flex justify-center items-center">{{ p+1 }}</h1>
+                <h1 class="text-4xl font-extrabold absolute bg-white aspect-square w-16 text-center  rounded-lg bottom-2 -right-6 border-2 border-black flex justify-center items-center">{{ peserta.no }}</h1>
             </div>
             <div class="col-span-3 ">
                 <div class="logo flex gap-1 items-end justify-center mt-6">
@@ -92,7 +103,7 @@ const sekolah = ref('0')
                     </div>
                 </div>
                 <div class="foto w-full mt-16 print:mt-2">
-                    <img :src="imgUrl(peserta.foto)" alt="Foto" class=" aspect-square object-cover rounded-full w-[100px] print:w-[75px] mx-auto object-top border" @load="this.classList.remove('animate-pulse')" >
+                    <img :src="imgUrl(peserta.foto)" alt="Foto" class=" aspect-square object-cover rounded-full w-[100px] print:w-[75px] mx-auto object-top border"  >
                 </div>
                 <div class="identitas w-full px-2 mt-10 print:mt-2">
                     <h2 class="uppercase text-center leading-4 font-bold text-sm">{{ peserta.nama }}</h2>

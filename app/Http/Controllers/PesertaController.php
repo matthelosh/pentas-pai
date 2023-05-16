@@ -34,6 +34,19 @@ class PesertaController extends Controller
         }
     }
 
+    public function getPeserta(Request $request)
+    {
+        try {
+            if($request->query('bidang')) {
+                $pesertas = Peserta::where('bidang_id', $request->query('bidang'))->with('sekolah')->get();
+            } else {
+                $pesertas = Peserta::with('sekolah')->get();
+            }
+            return response()->json(['status' => 'ok', 'pesertas' => $pesertas], 200);
+        } catch(\Exception $e) {
+            return response()->json(['status' => 'ok', 'msg' => $e->getMEssage()], 500);
+        }
+    }
 
     /**
      * Store a newly created resource in storage.

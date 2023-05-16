@@ -3,6 +3,8 @@ import {onMounted } from 'vue';
 import { Bars3CenterLeftIcon, ArrowRightCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid';
 import { Link, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiExitToApp } from '@mdi/js';
 
 
 const page = usePage()
@@ -99,12 +101,18 @@ onMounted(() => {
                 </Link>
             </li>
         </ul>
+        <ul class="absolute bottom-0 w-full" >
+            <li class="flex cursor-pointer p-3 bg-red-100 w-full justify-end gap-1 hover:bg-red-400 hover:text-white transition-all hover:transition-all hover:justify-end duration-200  ease-in-out" @click="logout">
+                <SvgIcon type="mdi" :path="mdiExitToApp" />
+                Keluar
+            </li>
+        </ul>
     </div>
     <div class="main-wrap col-span-12 md:col-span-10 md:px-3 print:col-span-12">
-        <nav class="bg-white p-3 md:rounded-xl shadow sticky md:sticky z-20 top-0 right-0 left-0 flex justify-between items-center print:hidden md:translate-x-[263px]">
+        <nav class="bg-white p-3 md:rounded-xl shadow z-20 top-0 right-0 left-0 flex justify-between items-center print:hidden md:translate-x-[263px]">
             Navbar
             <Bars3CenterLeftIcon class="h-6 cursor-pointer md:hidden" @click="toggleSide" />
-            <XCircleIcon class="h-8 hidden md:block cursor-pointer text-red-600 hover:text-red-500 hover:shadow rounded-full" @click="logout" />
+            <!-- <XCircleIcon class="h-8 hidden md:block cursor-pointer text-red-600 hover:text-red-500 hover:shadow rounded-full" @click="logout" /> -->
         </nav>
         <main class="md:mt-3 px-3 md:px-0 print:p-0 print:m-0 md:rounded-br-lg md:translate-x-[263px] print:translate-x-[0] bg-gray-100 print:col-span-12">
             <slot />

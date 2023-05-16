@@ -72,7 +72,7 @@ const banjari = (kode) => {
                         <th class="border border-black py-1 print:py-0 px-3" rowspan="2">{{ banjari(lomba.kode) ? 'Grup/Sekolah' : 'No' }}</th>
                         <th class="border border-black py-1 print:py-0 px-3" rowspan="2" v-if="!banjari(lomba.kode)">NISN</th>
                         <th class="border border-black py-1 print:py-0 px-3" rowspan="2">{{ banjari(lomba.kode) ? 'Peserta' : 'Nama' }}</th>
-                        <th class="border border-black py-1 print:py-0 px-3" :colspan="bidang[0].aspeks.length">Skor</th>
+                        <th class="border border-black py-1 print:py-0 px-3" :colspan="banjari(lomba.kode) ? '0' : bidang[0].aspeks.length">Skor</th>
                         <th class="border border-black py-1 print:py-0 px-3" rowspan="2">Nilai</th>
                     </tr>
                     <tr>
@@ -82,11 +82,12 @@ const banjari = (kode) => {
                 <tbody>
                     <tr v-for="(peserta,p) in pesertas" class=" odd:bg-gray-50">
                         <td class="text-center py-1 px-3 border border-black">{{ banjari(lomba.kode) ? p : p+1 }}</td>
-                        <td class="text-center py-1 px-3 border border-black" v-if="!regu(lomba.kode)">{{ peserta.nisn }}</td>
+                        <td class="text-center py-1 px-3 border border-black" v-if="!banjari(lomba.kode)">{{ peserta.nisn }}</td>
                         <td class="py-1 px-3 border border-black">
-                            <ul v-if="regu(lomba.kode)">
+                            <ul v-if="banjari(lomba.kode)">
                                 <li v-for="(pes, i) in peserta" :key="i">{{ i+1 }}. {{ pes.nama }}</li>
                             </ul>
+                            <span v-else>{{ peserta.nama }} <small class=" font-bold">[{{ peserta.sekolah.nama }}]</small></span>
                         </td>
                         <td class="py-1 px-3 border border-black" v-for="i in bidang[0].aspeks" :key="i"></td>
                         <td class="py-1 px-3 border border-black"></td>
