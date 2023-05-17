@@ -77,7 +77,7 @@ const showRekap = () => {
             </div>
             <div class="bg-white">dfdf</div>
         </div>
-        <Kartu v-if="dialog" :dokumen="dokumen" @close="dialog=false" @cetakKartu="cetak"/>
+        
         <CetakKartu :lomba="selectedLomba" v-if="mode == 'kartu-peserta'" @close="mode = 'list'" />
         <PresensiPeserta :lomba="selectedLomba" v-if="mode == 'presensi-peserta'" @close="mode = 'list'" />
         <FormNilai :lomba="selectedLomba" v-if="mode == 'form-nilai'" @close="mode = 'list'" />
@@ -86,9 +86,12 @@ const showRekap = () => {
         <KartuPanitia v-if="mode == 'kartu-panitia'" @close="mode = 'list'" />
         <PresensiPanitia v-if="mode == 'presensi-panitia'" @close="mode = 'list'" />
         <PiagamJuara v-if="mode == 'piagam-juara'" @close="mode = 'list'" :lomba="selectedLomba" />
-        <DataJuara v-if="mode == 'data-juara'" @close="mode = 'list'" :lomba="selectedLomba" />
+        
     </transition-group>
+    <DataJuara v-if="mode == 'data-juara'" @close="mode = 'list'" :lomba="selectedLomba" />
 </Dash>
+
+<Kartu v-if="dialog" :dokumen="dokumen" @close="dialog=false" @cetakKartu="cetak"/>
 </template>
 
 <style scoped>

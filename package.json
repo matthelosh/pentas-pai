@@ -42,6 +42,7 @@
         "@vueuse/core": "^10.1.2",
         "chart.js": "^4.3.0",
         "chartjs-plugin-datalabels": "^2.2.0",
+        "file-saver": "^2.0.5",
         "html2pdf": "^0.0.11",
         "lodash": "^4.17.21",
         "lodash-es": "^4.17.21",

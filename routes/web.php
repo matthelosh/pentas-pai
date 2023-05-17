@@ -107,6 +107,7 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
     Route::prefix('juara')->group(function() {
         Route::post('/', [JuaraController::class, 'index'])->name('juara.index');
         Route::post('/store', [JuaraController::class, 'store'])->name('juara.store');
+        Route::post('/impor', [JuaraController::class, 'impor'])->name('juara.impor');
     });
 
     Route::prefix('administrasi')->group(function() {

@@ -29,19 +29,30 @@ class JuaraController extends Controller
         }
     }
 
-    public function tes(Request $request)
-    {
-        $panitia = Panitia::where('user_id',$request->user()->id)->with('guru')->first();
-        return $panitia;
-    }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
+   public function impor(Request $request)
+   {
+        $datas = json_decode($request->data);
+        try {
+            foreach($datas as $data) {
+                Juara::updateOrCreate(
+                    [
+                        'id' => $data->id ?? Str::uuid()->toString()
+                    ],
+                    [
+                        'peserta_id' => $data->peserta_id,
+                        'lomba_id' => '1',
+                        'bidang_id' => $data->bidang_id,
+                        'peringkat' => $data->peringkat,
+                        'nilai' => $data->nilai,
+                        'keterangan' => $data->keterangan
+                    ]
+                    );
+            }
+            return response()->json(['status' => 'ok', 'msg' => 'Data DIsimpan'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'fail', 'msg' => $e->getMessage()], 500);
+        }
+   }
     /**
      * Store a newly created resource in storage.
      */
