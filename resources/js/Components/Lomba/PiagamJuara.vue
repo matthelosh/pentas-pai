@@ -83,23 +83,21 @@ onMounted(() => {
                 <h1 class="nama text-6xl text-center mt-4 capitalize" style="font-family: Pacifico!important;">{{nama(juara.peserta.nama)}}</h1>
                 <h4 class="sekolah text-xl text-center mt-4">{{juara.peserta.sekolah.nama}}</h4>
                 <h4 class="sekolah text-xl text-center mt-4">Sebagai Juara {{ juara.peringkat }}</h4>
-                <p class="mt-8 mx-20">dalam perlombaan {{ lomba ? lomba.label : juara.bidang.label }} pada kegiatan {{ $page.props.lomba.label }} yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
+                <p class="mt-8 mx-20">dalam perlombaan <span class="font-extrabold">{{ lomba ? lomba.label : juara.bidang.label }}</span> pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
                 <div class="grid grid-cols-3 w-10/12 mx-auto">
-                    <div>
-                        <br>
-                        <br>
-                        <p class="text-center">Penanggung Jawab</p>
+                    <div class="relative">
+                        <p class="text-center mt-14">Penanggung Jawab</p>
                         <img src="/img/stempel.png" alt="Stempel" class="absolute h-32 left-[10%] -translate-y-4 mix-blend-multiply">
-                        <img src="/img/ttd-kkg.png" alt="Ketua" class="mx-auto h-18 mix-blend-multiply">
-                        <p class="text-center underline font-extrabold">Hasan Lutfi, S.PdI., M. PdI.</p>
+                        <img src="/img/ttd-kkg.png" alt="Ketua" class="left-[50%] h-16 mix-blend-multiply absolute -translate-x-8">
+                        <p class="text-center underline font-extrabold mt-14">Hasan Lutfi, S.PdI., M. PdI.</p>
                         <p class="text-center">NIP. 19760115 200501 1 002</p>
                     </div>
                     <div></div>
-                    <div>
+                    <div class="relative">
                         <p class="text-center mt-8">Wagir, 16 Mei 2023</p>
                         <p class="text-center">Ketua Panitia</p>
-                        <img src="/img/ttd-ketua.png" alt="Ketua" class="mx-auto h-20">
-                        <p class="text-center underline font-extrabold">Choiri Machmudi, S. Ag., M. Pd.</p>
+                        <img src="/img/ttd-ketua.png" alt="Ketua" class="left-[50%] h-20 mix-blend-multiply absolute -translate-x-10">
+                        <p class="text-center underline font-extrabold mt-14">Choiri Machmudi, S. Ag., M. Pd.</p>
                         <p class="text-center">NIP. 19760115 200501 1 002</p>
                     </div>
                 </div>
