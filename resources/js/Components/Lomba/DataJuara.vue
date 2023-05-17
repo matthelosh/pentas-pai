@@ -76,7 +76,7 @@ const unduh = () => {
 const impor = async () => {
     await axios.post(route('juara.impor'), {data: JSON.stringify(importDatas.value)})
                 .then(res => {
-                    mode='list'
+                    mode.value='list'
                     list()
                 }).catch(err => console.log(err))
 }
