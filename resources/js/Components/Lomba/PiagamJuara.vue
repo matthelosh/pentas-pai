@@ -3,6 +3,7 @@ import SvgIcon from '@jamescoyle/vue-icon';
 import { Head, usePage } from '@inertiajs/vue3';
 import { mdiClose, mdiFilePdfBox } from '@mdi/js';
 import { ref, onMounted } from 'vue';
+import { imgUrl } from '@/Plugins/misc';
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import axios from 'axios';
 const props = defineProps({lomba:Object, juara: Object})
@@ -58,8 +59,8 @@ const unduh = () => {
         html2pdf().set({
             margin:       0,
             filename:     'Piagam Juara '+nama,
-            image:        { type: 'jpeg', quality: 2 },
-            html2canvas:  { scale: 2 },
+            image:        { type: 'jpeg', quality: 1 },
+            html2canvas:  { scale: 2, useCors: true },
             pageBreak: {mode: ['css']},
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
         }).from(elemen).save()
@@ -97,15 +98,21 @@ onMounted(() => {
         </div>
         <div class="content p-2 print:p-0 print:m-0 bg-gray-400 print:bg-transparent min-h-[70vh] grid grid-cols-1">
             <h1 class="text-6xl text-center text-red-50" v-if="juaras.length < 1"><small>Belum Ada Juara Di Bidang</small> <br /> {{ bidang }}</h1>
-            <div class="grid grid-cols-1 gap-3">
+            <div class="grid grid-cols-1 gap-3 print:gap-0">
                 <div class="paper mx-auto print:m-0 bg-white bg-[url('/img/piagam-juara.png')] bg-cover h-[210mm] w-[297mm] p-10 relative break-after-page print:shadow-none rounded" v-for="(juara,j) in juaras" :key="j">
                     <img src="/img/kkg.png" alt="Logo KKG" class="absolute h-20">
+                    <img src="/img/logo.png" alt="Logo KKG" class="absolute left-32 mt-4 w-20" />
                     <h1 style="font-family:Dancing Script!important;" class="text-6xl text-center mt-20">Piagam Penghargaan</h1>
-                    <h2 class="text-center mt-14 text-xl">Diberikan Kepada:</h2>
-                    <h1 class="nama text-6xl text-center mt-4 capitalize" style="font-family: Pacifico!important;">{{nama(juara.peserta.nama)}}</h1>
-                    <h4 class="sekolah text-xl text-center mt-4">{{juara.peserta.sekolah.nama}}</h4>
-                    <h4 class="sekolah text-xl text-center mt-4">Sebagai Juara {{ juara.peringkat }}</h4>
-                    <p class="mt-8 mx-20">dalam perlombaan <span class="font-extrabold">{{ lomba ? lomba.label : juara.bidang.label }}</span> pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
+                    <h2 class="text-center mt-6 text-xl">Diberikan Kepada:</h2>
+                    <div class="flex justify-center items-end w-10/12 mx-auto gap-4">
+                        <img :src="imgUrl(juara.peserta.foto)" alt="Foto" class="aspect-square border-4 border-gray-800 rounded-full h-40">
+                        <div class="bio">
+                            <h1 class="nama text-[3.2rem]  mt-4 capitalize" style="font-family: Pacifico!important;">{{nama(juara.peserta.nama)}}</h1>
+                            <h4 class="sekolah text-xl mt-4">{{juara.peserta.sekolah.nama}}</h4>
+                            <h4 class="sekolah text-4xl mt-4">Sebagai Juara {{ juara.peringkat }}</h4>
+                        </div>
+                    </div>
+                    <p class="mt-4 mx-20">dalam perlombaan <span class="font-extrabold">{{ lomba ? lomba.label : juara.bidang.label }}</span> pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
                     <div class="grid grid-cols-3 w-10/12 mx-auto">
                         <div class="relative">
                             <p class="text-center mt-14">Penanggung Jawab</p>
@@ -128,7 +135,7 @@ onMounted(() => {
                         <vue-qrcode :value="`https://pentaspais.kkgpaiwagir.or.id/verifikasi/piagam?id=${juara.id}`" :options="{width: 75}"  class="shadow" />
                         <span class="text-teal-800 bg-white bg-opacity-50">https://pentaspais.kkgpaiwagir.or.id</span>
                     </div>
-                    <img src="/img/logo.png" alt="Logo KKG" class="absolute top-10 left-28 w-24" />
+                   
                 </div>
             </div>
         </div>
