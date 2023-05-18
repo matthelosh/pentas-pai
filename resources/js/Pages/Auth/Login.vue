@@ -4,20 +4,27 @@ import { Head } from '@inertiajs/vue3'
 import Front from '@/Layout/Front.vue';
 import { EyeIcon, EyeSlashIcon, UserCircleIcon, LockClosedIcon, ArrowPathIcon } from '@heroicons/vue/20/solid';
 import axios from 'axios';
+import AlertBox from '@/Components/General/AlertBox.vue';
 const showPassword = ref(false)
 const loading = ref(false)
-
+const alertBox = ref(null)
 const user = ref({})
 const login = async () => {
     loading.value = true
     await axios.post('/login', user.value)
             .then(res => {
                 window.location.href = '/panitia'
+            }).catch(err => {
+                // console.log(err)
+                let msg = err.response.status == 422 ? 'Username atau password tidak tepat' : err.response.data.message
+                alertBox.value.open("Error", msg)
+                loading.value = false
             })
 }
 
 </script>
 <template>
+<AlertBox ref="alertBox" />    
 <Head title="Login" />
 <Front class="h-screen">
 <div class="container md:flex md:items-center md:h-[580px]">

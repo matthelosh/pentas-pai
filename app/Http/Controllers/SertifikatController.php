@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sertifikat;
+use App\Models\Juara;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 

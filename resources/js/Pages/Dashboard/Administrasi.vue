@@ -1,17 +1,19 @@
 <script setup>
 import { Head, usePage } from '@inertiajs/vue3';
-import { ref, TransitionGroup, computed } from 'vue';
+import { ref, TransitionGroup, computed, defineAsyncComponent } from 'vue';
 import Dash from '@/Layout/Dash.vue';
-import Kartu from '@/Components/Kartu.vue'
-import CetakKartu from '@/Components/Peserta/CetakKartu.vue';
-import PresensiPeserta from '@/Components/Peserta/PresensiPeserta.vue'
-import Surat from '@/Components/Panitia/Surat.vue'
-import RekapPeserta from '@/Components/Peserta/RekapPeserta.vue';
-import KartuPanitia from '@/Components/Panitia/KartuPanitia.vue';
-import PresensiPanitia from '@/Components/Panitia/PresensiPanitia.vue';
-import FormNilai from '@/Components/Lomba/FormNilai.vue';
-import PiagamJuara from '@/Components/Lomba/PiagamJuara.vue';
-import DataJuara from '@/Components/Lomba/DataJuara.vue';
+// import Kartu from '@/Components/Kartu.vue'
+const Kartu = defineAsyncComponent(() => import('@/Components/Kartu.vue'))
+const CetakKartu = defineAsyncComponent(() => import('@/Components/Peserta/CetakKartu.vue'));
+const PresensiPeserta = defineAsyncComponent(() => import('@/Components/Peserta/PresensiPeserta.vue'))
+const Surat = defineAsyncComponent(() => import('@/Components/Panitia/Surat.vue'))
+const RekapPeserta = defineAsyncComponent(() => import('@/Components/Peserta/RekapPeserta.vue'))
+const KartuPanitia = defineAsyncComponent(() => import('@/Components/Panitia/KartuPanitia.vue'))
+const PresensiPanitia = defineAsyncComponent(() => import('@/Components/Panitia/PresensiPanitia.vue'))
+const FormNilai = defineAsyncComponent(() => import('@/Components/Lomba/FormNilai.vue'))
+const PiagamJuara = defineAsyncComponent(() => import('@/Components/Lomba/PiagamJuara.vue'))
+const DataJuara = defineAsyncComponent(() => import('@/Components/Lomba/DataJuara.vue'))
+const SertifikatPeserta = defineAsyncComponent(() => import('@/Components/Peserta/SertifikatPeserta.vue'))
 
 const mode = ref('list')
 const dialog = ref(false)
@@ -89,6 +91,8 @@ const showRekap = () => {
         
     </transition-group>
     <DataJuara v-if="mode == 'data-juara'" @close="mode = 'list'" :lomba="selectedLomba" />
+    <SertifikatPeserta v-if="mode == 'sertifikat-peserta'" @close="mode = 'list'" :lomba="selectedLomba" />
+    
 </Dash>
 
 <Kartu v-if="dialog" :dokumen="dokumen" @close="dialog=false" @cetakKartu="cetak"/>

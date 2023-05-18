@@ -61,7 +61,9 @@ Route::prefix('peserta')->group(function() {
 });
 
 Route::prefix('verifikasi')->group(function() {
-    Route::get('/{id}', [SertifikatController::class, 'verify'])->name('verifikasi');
+    Route::inertia('/', 'Verifikasi')->name('verifikasi');
+    Route::get('/piagam', [JuaraController::class, 'verify'])->name('verifikasi.juara');
+    Route::get('/{id}', [SertifikatController::class, 'verify'])->name('verifikasi.sertifikat');
 });
 
 
@@ -111,6 +113,7 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
     });
 
     Route::prefix('administrasi')->group(function() {
+        // Route::inertia('/', 'Dashboard/LazyAdministrasi')->name('administrasi');
         Route::inertia('/', 'Dashboard/Administrasi')->name('administrasi');
         // Route::get('/', [JuaraController::class, 'tes'])->name('administrasi');
     });

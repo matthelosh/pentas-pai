@@ -7,6 +7,7 @@ use App\Models\Panitia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\User;
+use Inertia\Inertia;
 class JuaraController extends Controller
 {
     /**
@@ -79,14 +80,15 @@ class JuaraController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Juara $juara)
+    public function verify(Request $request)
     {
-        //
+        try {
+            
+            return Inertia::render('Verifikasi')->with(['status' => 'OK', 'data' => 'Tes'], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
-
     /**
      * Show the form for editing the specified resource.
      */

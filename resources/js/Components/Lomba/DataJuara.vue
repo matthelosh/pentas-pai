@@ -1,6 +1,6 @@
 <script setup >
 import { ref, onMounted } from 'vue'; 
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import { XCircleIcon, PrinterIcon, ArrowPathIcon } from '@heroicons/vue/20/solid';
 import PiagamJuara from './PiagamJuara.vue';
@@ -10,6 +10,7 @@ import { mdiFileExcel, mdiClose } from '@mdi/js';
 import { read, utils, write, writeFileXLSX } from 'xlsx';
 import {saveAs} from 'file-saver'
 
+const page = usePage()
 const props = defineProps({
     lomba: Object,
 })
@@ -20,7 +21,13 @@ const list = async() => {
     loading.value = true
     await axios.post(route('juara.index'))
                 .then(res => {
-                    datas.value = res.data.juaras
+                    datas.value = res.data.juaras.filter(item => {
+                        if ( page.props.auth.user.level == 'admin') {
+                            return item
+                        } else {
+                            return item.peserta.sekolah_id == page.props.sekolahs[0].npsn
+                        }
+                    })
                     loading.value = false
                 })
 }
@@ -89,9 +96,9 @@ onMounted(() => {
 <template>
 <div class="w-full bg-white">
     <Head title="Data Juara" />
-    <div class="toolbar bg-white h-12 p-2 flex items-center justify-between shadow print:hidden sticky top-0">
+    <div class="toolbar bg-white h-12 py-2 px-3 flex items-center justify-between shadow print:hidden sticky top-0">
         <span>
-            Data Juara
+            DATA PERAIH JUARA {{ page.props.sekolahs[0].nama }}
         </span>
         <div class="toolbar-items flex items-center gap-1">
             <input type="file" name="fileJuara" ref="fileJuara" @change="onFileJuaraPicked" accept=".xlsx, .xls, .ods, .csv" class="hidden">
@@ -117,26 +124,26 @@ onMounted(() => {
             <table class="table border border-collapse w-full">
                 <thead>
                     <tr class="bg-sky-100">
-                        <th class="border border-gray-600 py-2">No</th>
-                        <th class="border border-gray-600 py-2">NISN</th>
-                        <th class="border border-gray-600 py-2">Nama</th>
-                        <th class="border border-gray-600 py-2">JK</th>
-                        <th class="border border-gray-600 py-2">Lomba</th>
-                        <th class="border border-gray-600 py-2">Peringkat</th>
-                        <th class="border border-gray-600 py-2">Nilai</th>
-                        <th class="border border-gray-600 py-2">Lembaga</th>
-                        <th class="border border-gray-600 py-2 print:hidden">Opsi</th>
+                        <th class="border border-gray-400 py-2 px-3">No</th>
+                        <th class="border border-gray-400 py-2 px-3">NISN</th>
+                        <th class="border border-gray-400 py-2 px-3">Nama</th>
+                        <th class="border border-gray-400 py-2 px-3">JK</th>
+                        <th class="border border-gray-400 py-2 px-3">Lomba</th>
+                        <th class="border border-gray-400 py-2 px-3">Peringkat</th>
+                        <th class="border border-gray-400 py-2 px-3">Nilai</th>
+                        <th class="border border-gray-400 py-2 px-3">Lembaga</th>
+                        <th class="border border-gray-400 py-2 px-3 print:hidden">Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, i) in datas" :key="i">
-                        <td class="text-center py-1 px-2 border border-gray-600">{{ i+1 }}</td>
-                        <td class="text-center py-1 px-2 border border-gray-600">{{ item.peserta.nisn }}</td>
-                        <td class="py-1 px-2 border border-gray-600">{{ item.peserta.nama }}</td>
-                        <td class="text-center py-1 px-2 border border-gray-600">{{ item.peserta.jk }}</td>
-                        <td class="text-center py-1 px-2 border border-gray-600">{{ item.bidang.label}}</td>
-                        <td class="text-center py-1 px-2 border border-gray-600">{{ item.peringkat}}</td>
-                        <td class="text-center py-1 px-2 border border-gray-600">{{ item.nilai }}</td>
+                    <tr v-for="(item, i) in datas" :key="i" class="odd:bg-gray-100">
+                        <td class="text-center py-1 px-2 border border-gray-400 bg-gray-200">{{ i+1 }}</td>
+                        <td class="text-center py-1 px-2 border border-gray-400">{{ item.peserta.nisn }}</td>
+                        <td class="py-1 px-2 border border-gray-400">{{ item.peserta.nama }}</td>
+                        <td class="text-center py-1 px-2 border border-gray-400">{{ item.peserta.jk }}</td>
+                        <td class="text-center py-1 px-2 border border-gray-400">{{ item.bidang.label}}</td>
+                        <td class="text-center py-1 px-2 border border-gray-400">{{ item.peringkat}}</td>
+                        <td class="text-center py-1 px-2 border border-gray-400">{{ item.nilai }}</td>
                         <td class=" py-1 px-2 border border-gray-600">{{ item.peserta.sekolah.nama }}</td>
                         <td class="text-center py-1 px-2 border border-gray-600 print:hidden">
                             <button class="px-2 py-1 rounded-md hover:bg-sky-600 active:bg-orange-400 bg-sky-400 text-white flex items-center mx-auto" @click="cetak(item)">

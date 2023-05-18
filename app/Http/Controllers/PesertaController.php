@@ -38,7 +38,7 @@ class PesertaController extends Controller
     {
         try {
             if($request->query('bidang')) {
-                $pesertas = Peserta::where('bidang_id', $request->query('bidang'))->with('sekolah')->get();
+                $pesertas = Peserta::where('lomba_id', 'LIKE', '%'.$request->query('bidang').'%')->with('sekolah','bidangs')->get();
             } else {
                 $pesertas = Peserta::with('sekolah')->get();
             }

@@ -13,7 +13,7 @@ import html2pdf from 'html2pdf.js'
 
 const bidang = ref('')
 
-const bidangId = ref('0')
+const bidangId = ref('bjr')
 const bidangs = ref([
     {kode: 'bjr', label: 'Banjari'},
     {kode: 'adz', label: 'Adzan'},
@@ -56,9 +56,10 @@ const unduh = () => {
     let elements = document.querySelectorAll(".paper")
     elements.forEach((elemen,i) => {
         let nama = elemen.querySelector(".nama").innerText
+        let sekolah = elemen.querySelector(".sekolah").innerText
         html2pdf().set({
             margin:       0,
-            filename:     'Piagam Juara '+nama,
+            filename:     'Piagam Juara '+nama+' - '+sekolah,
             image:        { type: 'jpeg', quality: 1 },
             html2canvas:  { scale: 2, useCors: true },
             pageBreak: {mode: ['css']},
@@ -109,7 +110,7 @@ onMounted(() => {
                         <div class="bio">
                             <h1 class="nama text-[3.2rem]  mt-4 capitalize" style="font-family: Pacifico!important;">{{nama(juara.peserta.nama)}}</h1>
                             <h4 class="sekolah text-xl mt-4">{{juara.peserta.sekolah.nama}}</h4>
-                            <h4 class="sekolah text-4xl mt-4">Sebagai Juara {{ juara.peringkat }}</h4>
+                            <h4 class="peringkat text-4xl mt-4">Sebagai Juara {{ juara.peringkat }}</h4>
                         </div>
                     </div>
                     <p class="mt-4 mx-20">dalam perlombaan <span class="font-extrabold">{{ lomba ? lomba.label : juara.bidang.label }}</span> pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
