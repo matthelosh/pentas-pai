@@ -107,7 +107,7 @@ const nama = (nama) => {
             <p class="mt-4 mx-20 text-lg">pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
             <div class="grid grid-cols-3 w-10/12 mx-auto">
                 <div class="relative">
-                    <p class="text-center mt-14">Penanggung Jawab</p>
+                    <p class="text-center mt-14">Ketua KKG</p>
                     <img src="/img/stempel.png" alt="Stempel" class="absolute h-32 left-[10%] -translate-y-4 mix-blend-multiply">
                     <img src="/img/ttd-kkg.png" alt="Ketua" class="left-[50%] h-16 mix-blend-multiply absolute -translate-x-8">
                     <p class="text-center underline font-extrabold mt-14">Hasan Lutfi, S.PdI., M. PdI.</p>
