@@ -24,10 +24,15 @@ class PanitiaController extends Controller
      */
     public function index(Request $request)
     {
-            return response()->json([
-                'status' => 'Ok',
-                'panitias' => Panitia::with('guru','lomba')->get()
-            ], 200);
+        if($request->user()->level == 'admin') {
+            $panitias = Panitia::with('guru.sekolah','lomba')->get();
+        } else {
+            $panitias = Panitia::where('user_id', $request->user()->id)->with('guru.sekolah')->get();
+        }
+        return response()->json([
+            'status' => 'Ok',
+            'panitias' => $panitias
+        ], 200);
     }
 
     /**

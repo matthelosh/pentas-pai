@@ -5,9 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Lomba;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class LombaController extends Controller
 {
+    public function page(Request $request)
+    {
+        return Inertia::render('Dashboard/Lomba', [
+            'lombas' => Lomba::with('sekolah')->get(),
+        ], 200);
+    }
+
+    public function activate(Request $request, $id)
+    {
+        Lomba::where('status', '1')->update(['status' => '0']);
+        Lomba::find($id)->update(['status' => '1']);
+        return response()->json(['status' => 'ok', 'msg' => 'Lomba diaktifkan'], 200);
+    }
     /**
      * Display a listing of the resource.
      */

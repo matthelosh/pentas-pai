@@ -2,31 +2,14 @@
 import Dash from '@/Layout/Dash.vue';
 import { Head, usePage, router } from '@inertiajs/vue3';
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
-import AlertBox from '@/Components/General/AlertBox.vue';
+import { ref, defineAsyncComponent } from 'vue';
 import { mdiAccountMultipleCheck, mdiClose } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
+import {jabatans} from '@/Plugins/Datas'
 
-const jabatans = ref([
-    'Penasehat',
-    'Penanggung Jawab',
-    'Ketua',
-    'Wakil Ketua',
-    'Sekretaris 1',
-    'Sekretaris 2',
-    'Bendahara 1',
-    'Bendahara 2',
-    'Sie Lomba MTQ',
-    'Sie Lomba MHQ',
-    'Sie Lomba Pildacil',
-    'Sie Lomba Banjari',
-    'Sie Lomba Adzan',
-    'Sie Lomba Cerdas-Cermat',
-    'Sie Dokumentasi',
-    'Sie Perlengkapan',
-    'Sie Konsumsi',
-    'Sie Pembantu Umum'
-])
+
+const AlertBox = defineAsyncComponent(() => import('@/Components/General/AlertBox.vue'))
+
 
 const loading = ref(false)
 
@@ -89,7 +72,7 @@ const buatAkun = async () => {
 <Head title="Data Panitia" />
 <Dash>
     <div class="w-full bg-white rouded shadow">
-        <div class="toolbar bg-white sticky top-14 flex items-center justify-between p-3 h-12 shadow print:hidden">
+        <div class="toolbar bg-white sticky top-0 flex items-center justify-between p-3 h-12 shadow print:hidden">
             <div class="toolbar-title text-lg font-bold flex items-center gap-1">
                 <SvgIcon type="mdi" :path="mdiAccountMultipleCheck" />
                 Data Panitia
@@ -105,6 +88,7 @@ const buatAkun = async () => {
         </div>
         <div class="table table-responsive w-full">
             <table class="border border-collapse w-full">
+                <caption class="text-xl text-center my-4 w-full">DATA USERNAME PANITIA</caption>
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="py-2 px-3">No</th>
@@ -122,7 +106,7 @@ const buatAkun = async () => {
                         <td class="py-1 px-3">{{ guru.nama }} <span class="text-teal-800">{{ guru.panitias.length > 0 ?  `[${guru.panitias[0].user.name }]`: ''}}</span></td>
                         <td class="py-1 px-3">{{ guru.jk }}</td>
                         <td class="py-1 px-3">{{ guru.sekolah ? guru.sekolah.nama : '-' }}</td>
-                        <td class="py-1 px-3">{{ guru.panitia ? guru.panitias.jabatan : '-' }}
+                        <td class="py-1 px-3">
                             <select name="jabatan" id="jabatanSelect"  @change="setJabatan($event, guru)">
                                 <option value="0">Pilih Jabatan</option>
                                 <option v-for="(jabatan,j) in jabatans" :key="j" :value="jabatan" :selected="(guru.panitias.length > 0 && jabatan == guru.panitias[0].jabatan)">{{ jabatan }}</option>

@@ -18,32 +18,20 @@ const props = defineProps({
 const mode = ref('list')
 
 
-const pesertas = ref('')
+const panitias = ref('')
 
 const list = async () => {
-    await axios.post(route('dashboard.peserta.index', {
-            _query: {bidang: props.lomba.kode}
-        })).then(res => {
-            pesertas.value = res.data.pesertas.filter(item => {
-                if(page.props.auth.user.level == 'admin') {
-                    return item
-                } else {
-                    return item.sekolah_id == page.props.sekolahs[0].npsn
-                }
-            })
+    await axios.post(route('panitia.index')).then(res => {
+            panitias.value = res.data.panitias
 
         })
 }
 
-const selectedPeserta = ref({})
-const setLomba = (peserta) => {
-    let lombas = peserta.bidangs.filter(item => item.kode == props.lomba.kode)
-    return peserta.bidangs.length > 0 ? lombas[0] : 'Tidak Ikut lomba'
-}
+const selectedPanitia = ref({})
 
-const viewSertificate = (peserta) => {
+const viewSertificate = (panitia) => {
     mode.value = 'cetak'
-    selectedPeserta.value = peserta
+    selectedPanitia.value = panitia
 }
 
 const cetak = () => {
@@ -60,7 +48,7 @@ const nama = (nama) => {
 <div class="w-full bg-white">
     <div class="toolbar w-full h-12  bg-white flex items-center justify-between p-3 shadow sticky top-0 z-10 print:hidden">
         <span class="toolbar-title">
-            Sertifikat Peserta Lomba {{ lomba.label }}
+            Sertifikat Panitia
         </span>
         <div class="toolbar-items flex items-center gap-2">
             <button class="bg-sky-400 hover:bg-sky-600 active:bg-orange-400 text-white flex gap-1 items-center py-1 px-2 rounded" @click="mode='list'">
@@ -78,48 +66,48 @@ const nama = (nama) => {
     </div>
     <div class="content">
         <table class="table w-full bg-white border border-collapse" v-if="mode == 'list'">
-            <caption class="text-xl my-4">Data Peserta Bidang Lomba {{ lomba.label }}</caption>
+            <caption class="text-xl my-4">Data Panitia Lomba </caption>
             <thead>
                 <tr class="bg-gray-200">
                     <th class="py-2 px-3 text-gray-800 border-e border-gray-400">No</th>
-                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">NISN</th>
+                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">NIP</th>
                     <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Nama</th>
                     <th class="py-2 px-3 text-gray-800 border-e border-gray-400">JK</th>
-                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Bidang Lomba</th>
+                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Lembaga</th>
                     <th class="py-2 px-3 text-gray-800 print:hidden">Opsi</th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="odd:bg-gray-100" v-for="(peserta,p) in pesertas" :key="p">
+                <tr class="odd:bg-gray-100" v-for="(panitia,p) in panitias" :key="p">
                     <td class="text-center py-1 px-2 border-e border-gray-400">{{ p+1 }}</td>
-                    <td class="py-1 px-2 border-e border-gray-400">{{ peserta.nisn }}</td>
-                    <td class="py-1 px-2 border-e border-gray-400">{{ peserta.nama }}</td>
-                    <td class="py-1 px-2 border-e border-gray-400">{{ peserta.jk }}</td>
-                    <td class="py-1 px-2 border-e border-gray-400 text-center">{{ setLomba(peserta).label }}</td>
+                    <td class="py-1 px-2 border-e border-gray-400">{{ panitia.guru.nip }}</td>
+                    <td class="py-1 px-2 border-e border-gray-400">{{ panitia.guru.nama }}</td>
+                    <td class="py-1 px-2 border-e border-gray-400">{{ panitia.guru.jk }}</td>
+                    <td class="py-1 px-2 border-e border-gray-400">{{ panitia.guru.sekolah ? panitia.guru.sekolah.nama : '-' }}</td>
                     <td class="py-1 px-2 print:hidden text-center" >
-                        <button class="py-1 px-2 rounded hover:bg-green-600 active:bg-orange-400 bg-green-400 text-white" @click="viewSertificate(peserta)">Cetak</button>
+                        <button class="py-1 px-2 rounded hover:bg-green-600 active:bg-orange-400 bg-green-400 text-white" @click="viewSertificate(panitia)">Cetak</button>
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="paper mx-auto print:m-0 bg-white bg-[url('/img/piagam-peserta.jpg')] bg-cover h-[210mm] w-[297mm] p-10 relative break-after-page print:shadow-none rounded" v-if="mode=='cetak'">
-            <img src="/img/kkgpaimalangkab.png" alt="Logo KKG" class="absolute h-20">
-            <img src="/img/logo.png" alt="Logo KKG" class="absolute left-32 mt-4 w-20" />
+        <div class="paper mx-auto mt-4 print:m-0 bg-white bg-[url('/img/sertifikat-panitia.jpg')] bg-cover h-[210mm] w-[297mm] p-10 relative break-after-page print:shadow-none rounded" v-if="mode=='cetak'">
+            <img src="/img/kkgpaimalangkab.png" alt="Logo KKG" class="absolute h-20 top-2">
+            <img src="/img/logo.png" alt="Logo KKG" class="absolute left-32 top-6 w-20" />
             <h1 style="font-family:Dancing Script!important;" class="text-6xl text-center mt-20">Sertifikat</h1>
+            <h1 style="font-family:Dancing Script!important;" class="text-xl text-center">No: {{selectedPanitia.guru.nip}}</h1>
             <h2 class="text-center mt-6 text-xl">Diberikan Kepada:</h2>
             <div class="flex justify-center items-end w-10/12 mx-auto gap-4">
-                <img :src="imgUrl(selectedPeserta.foto)" alt="Foto" class="aspect-square border-4 border-gray-800 rounded-full h-40">
                 <div class="bio">
-                    <h1 class="nama text-[3.2rem]  mt-4 capitalize" style="font-family: Pacifico!important;">{{nama(selectedPeserta.nama)}}</h1>
-                    <h4 class="sekolah text-xl mt-4">{{selectedPeserta.sekolah.nama}}</h4>
-                    <h4 class="peringkat text-4xl mt-4">Sebagai Peserta</h4>
+                    <h1 class="nama text-[3.2rem]  mt-4 underline capitalize" style="font-family: Pacifico!important;">{{nama(selectedPanitia.guru.nama)}}</h1>
+                    <h4 class="sekolah text-xl  text-center">{{selectedPanitia.guru.sekolah ? selectedPanitia.guru.sekolah.nama : '-'}}</h4>
+                    <h4 class="peringkat text-4xl text-center mt-4">Sebagai {{ selectedPanitia.jabatan }}</h4>
                 </div>
             </div>
-            <p class="mt-4 mx-20">dalam perlombaan <span class="font-extrabold">{{ lomba.label }}</span> pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
+            <p class="mt-4 mx-20 text-lg">pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
             <div class="grid grid-cols-3 w-10/12 mx-auto">
                 <div class="relative">
-                    <p class="text-center mt-14">Ketua KKG PAI Kec. Wagir</p>
+                    <p class="text-center mt-14">Penanggung Jawab</p>
                     <img src="/img/stempel.png" alt="Stempel" class="absolute h-32 left-[10%] -translate-y-4 mix-blend-multiply">
                     <img src="/img/ttd-kkg.png" alt="Ketua" class="left-[50%] h-16 mix-blend-multiply absolute -translate-x-8">
                     <p class="text-center underline font-extrabold mt-14">Hasan Lutfi, S.PdI., M. PdI.</p>
@@ -136,7 +124,7 @@ const nama = (nama) => {
             </div>
             
             <div class="absolute bottom-2 left-6 print:relative">
-                <vue-qrcode :value="`https://pentaspais.kkgpaiwagir.or.id/verifikasi/sertifikat?id=${selectedPeserta.nisn}`" :options="{width: 75}"  class="shadow" />
+                <vue-qrcode :value="`https://pentaspais.kkgpaiwagir.or.id/verifikasi/sertifikat?id=${selectedPanitia.guru.nip}`" :options="{width: 75}"  class="shadow rounded" />
                 <span class="text-teal-800 bg-white bg-opacity-50">https://pentaspais.kkgpaiwagir.or.id</span>
             </div>
             

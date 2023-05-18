@@ -14,6 +14,7 @@ const FormNilai = defineAsyncComponent(() => import('@/Components/Lomba/FormNila
 const PiagamJuara = defineAsyncComponent(() => import('@/Components/Lomba/PiagamJuara.vue'))
 const DataJuara = defineAsyncComponent(() => import('@/Components/Lomba/DataJuara.vue'))
 const SertifikatPeserta = defineAsyncComponent(() => import('@/Components/Peserta/SertifikatPeserta.vue'))
+const SertifikatPanitia = defineAsyncComponent(() => import('@/Components/Panitia/SertifikatPanitia.vue'))
 
 const mode = ref('list')
 const dialog = ref(false)
@@ -92,6 +93,7 @@ const showRekap = () => {
     </transition-group>
     <DataJuara v-if="mode == 'data-juara'" @close="mode = 'list'" :lomba="selectedLomba" />
     <SertifikatPeserta v-if="mode == 'sertifikat-peserta'" @close="mode = 'list'" :lomba="selectedLomba" />
+    <SertifikatPanitia v-if="mode == 'sertifikat-panitia'" @close="mode = 'list'" :lomba="selectedLomba" />
     
 </Dash>
 

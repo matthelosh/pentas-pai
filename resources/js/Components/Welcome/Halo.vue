@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import axios from 'axios';
-import { DoughnutChart, PieChart, LineChart, BarChart, PolarAreaChart } from 'vue-chart-3';
+import { PolarAreaChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 Chart.register(...registerables);
@@ -68,15 +68,6 @@ const listLomba = async () => {
 
 
 const jml = computed(() => {
-    // if(lombas.value.bidangs) {
-    //     let jml = lombas.value.bidangs.reduce(
-    //         (ac, cv) => (ac + cv.pesertas.length),
-    //         0
-    //     )
-
-    //     return jml
-    // }
-    // return lombas.value
     return sekolahs.value.reduce((jml, sekolah) => (jml + sekolah.pesertas.length), 0)
 })
 

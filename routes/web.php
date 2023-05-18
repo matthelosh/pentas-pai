@@ -96,7 +96,9 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
     });
 
     Route::prefix('lomba')->group(function() {
-        Route::post('/', [LombaController::class, 'index'])->name('lomba.inndex');
+        Route::get('/', [LombaController::class, 'page'])->name('dashboard.lomba');
+        Route::post('/', [LombaController::class, 'index'])->name('lomba.index');
+        Route::put('/{id}', [LombaController::class, 'activate'])->name('lomba.activate');
     });
 
     Route::post('/rekap', [LombaController::class, 'rekap'])->name('rekap');

@@ -91,7 +91,7 @@ onMounted(() => {
                     <ul class="child-menu duration-500 transition-all ease-in-out bg-white bg-opacity-25" :class="!doesMyChildActive(['dashboard.peserta','dashboard.panitia']) ? 'hidden' :''">
                         <li><Link :href="route('dashboard.peserta')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.peserta') ? 'bg-white bg-opacity-70' : ''">Data Peserta</Link></li>
                         <li><Link :href="route('dashboard.panitia')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.panitia') ? 'bg-white bg-opacity-70' : ''">Data Panitia</Link></li>
-                        <li><a href="#" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2">C</a></li>
+                        <li><Link :href="route('dashboard.lomba')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.panitia') ? 'bg-white bg-opacity-70' : ''">Data Lomba</Link></li>
                     </ul>
                 </li>
             <li>

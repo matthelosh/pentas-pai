@@ -13,7 +13,8 @@ class Lomba extends Model
         'kode',
         'label',
         'tahun',
-        'lokasi_id'
+        'lokasi_id',
+        'status'
     ];
 
     public function bidangs()

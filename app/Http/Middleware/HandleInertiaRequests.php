@@ -59,7 +59,7 @@ class HandleInertiaRequests extends Middleware
             $panitia = Panitia::where('user_id', $user->id)->with('guru.sekolah')->first();
             array_push($sekolahs, $panitia->guru->sekolah);
         } else {
-            $sekolahs = Panitia::all();
+            $sekolahs = Sekolah::all();
         }
         
         // $sekolahs = Sekolah::where('npsn', $panitia->guru->seklah_id)->get();

@@ -8,7 +8,6 @@ import FormJuara from './FormJuara.vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiFileExcel, mdiClose } from '@mdi/js';
 import { read, utils, write, writeFileXLSX } from 'xlsx';
-import {saveAs} from 'file-saver'
 
 const page = usePage()
 const props = defineProps({

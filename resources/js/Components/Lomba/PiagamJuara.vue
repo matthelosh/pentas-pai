@@ -7,7 +7,6 @@ import { imgUrl } from '@/Plugins/misc';
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import axios from 'axios';
 const props = defineProps({lomba:Object, juara: Object})
-const background = ref('/img/piagam-juara.png')
 const page = usePage()
 import html2pdf from 'html2pdf.js'
 
@@ -101,7 +100,7 @@ onMounted(() => {
             <h1 class="text-6xl text-center text-red-50" v-if="juaras.length < 1"><small>Belum Ada Juara Di Bidang</small> <br /> {{ bidang }}</h1>
             <div class="grid grid-cols-1 gap-3 print:gap-0">
                 <div class="paper mx-auto print:m-0 bg-white bg-[url('/img/piagam-juara.png')] bg-cover h-[210mm] w-[297mm] p-10 relative break-after-page print:shadow-none rounded" v-for="(juara,j) in juaras" :key="j">
-                    <img src="/img/kkg.png" alt="Logo KKG" class="absolute h-20">
+                    <img src="/img/kkgpaimalangkab.png" alt="Logo KKG" class="absolute h-20">
                     <img src="/img/logo.png" alt="Logo KKG" class="absolute left-32 mt-4 w-20" />
                     <h1 style="font-family:Dancing Script!important;" class="text-6xl text-center mt-20">Piagam Penghargaan</h1>
                     <h2 class="text-center mt-6 text-xl">Diberikan Kepada:</h2>
@@ -116,7 +115,7 @@ onMounted(() => {
                     <p class="mt-4 mx-20">dalam perlombaan <span class="font-extrabold">{{ lomba ? lomba.label : juara.bidang.label }}</span> pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
                     <div class="grid grid-cols-3 w-10/12 mx-auto">
                         <div class="relative">
-                            <p class="text-center mt-14">Penanggung Jawab</p>
+                            <p class="text-center mt-14">Ketua KKG PAI Kec. Wagir</p>
                             <img src="/img/stempel.png" alt="Stempel" class="absolute h-32 left-[10%] -translate-y-4 mix-blend-multiply">
                             <img src="/img/ttd-kkg.png" alt="Ketua" class="left-[50%] h-16 mix-blend-multiply absolute -translate-x-8">
                             <p class="text-center underline font-extrabold mt-14">Hasan Lutfi, S.PdI., M. PdI.</p>
