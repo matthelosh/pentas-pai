@@ -1,10 +1,13 @@
 <script setup>
-import {onMounted } from 'vue';
+import {onMounted, defineAsyncComponent, computed, ref } from 'vue';
 import { Bars3CenterLeftIcon, ArrowRightCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid';
 import { Link, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiExitToApp } from '@mdi/js';
+
+const Loading = defineAsyncComponent(() => import('@/Components/General/Loading.vue'))
+const loading = ref(false)
 
 
 const page = usePage()
@@ -30,9 +33,11 @@ const leftBehind = (e) => {
 }
 
 const logout = () => {
+    loading.value = true
     axios.post('/logout')
         .then(res => {
             window.location.href= route('login')
+            loading.value = false
         })
 }
 
@@ -41,18 +46,11 @@ const handleScroll = (e) => {
     let sidebar = document.querySelector('#sidebar')
     let sidePos = sidebar.getBoundingClientRect() 
 
-    // if(sidePos.top !== scrollY) {
-    //     sidebar.style.position = 'sticky!important'
-    // }
-    // console.log(scrollY, sidePos.top)
 } 
 
 const expandChild = (e) => {
     const li = e.target.closest('li')
     li.querySelector('ul').classList.toggle('hidden')
-    // li.querySelector('ul').classList.toggle('h-0')
-    
-    // li.querySelector('ul').classList.toggle('hidden')
     
 }
 
@@ -64,6 +62,19 @@ const doesMyChildActive = (children) => {
     return children.includes(route().current()) ? true : false
 }
 
+const admin = computed(() => {
+    return page.props.auth.user.level == 'admin'
+})
+
+const DialogBox = defineAsyncComponent(() => import('@/Components/General/DialogBox.vue'))
+const dialogBox = ref(null)
+const confirmLogout = async () => {
+    if (await dialogBox.value.open("Yakin Mau Keluar?")) {
+        logout()
+    }
+}
+
+
 onMounted(() => {
     window.addEventListener('scroll', handleScroll)
     // console.log(route().current())
@@ -71,13 +82,22 @@ onMounted(() => {
 </script>
 
 <template>
+<Loading v-if="loading" />
+<DialogBox ref="dialogBox" />
 <div class="h-min-full h-screen relative grid grid-cols-12 gap-3">
     <div id="sidebar" class="sidebar h-[100vh] md:h-[95vh] overflow-y-auto w-2/4 z-20 md:w-2/12 bg-teal-400 md:rounded-xl fixed top-0 md:top-3 md:fixed md:block md:col-span-2 -translate-x-[100%] md:-translate-x-0 transition-all duration-300 shadow-lg md:shadow-lg overflow-x-hidden print:hidden">
         <div class="w-full p-3 flex md:hidden items-center bg-teal-100 top-0">Pentas PAIS</div>
+        
         <div class="w-full mt-3 md:mt-0 bg-gray-100 py-5">
             <img src="/img/peserta.png" alt="Avatar" class="rounded-full bg-white w-[100px] mx-auto shadow">
             <h3 class="text-center text-teal-800">@{{ page.props.auth.user.name }}</h3>
         </div>
+        <ul class="top-0 w-full" >
+            <li class="flex cursor-pointer p-3 bg-red-400 w-full justify-end gap-1 hover:bg-red-600 text-gray-200 hover:text-white transition-all hover:transition-all hover:justify-end duration-200  ease-in-out" @click="confirmLogout">
+                <SvgIcon type="mdi" :path="mdiExitToApp" />
+                Keluar
+            </li>
+        </ul>
         <ul class="mt-2">
             <li><Link :href="route('dashboard')" class="flex items-center py-2 px-3 md:hover:bg-opacity-70 md:hover:bg-white md:hover:shadow md:hover:pl-5 transition-all duration-500 " @mouseover="imTouched" @mouseleave="leftBehind" :class="route().current() == 'dashboard' ? 'active' : ''">
                 <ArrowRightCircleIcon class="ikon h-5 transition-all duration-500" :class="route().current() == 'dashboard' ? '' : 'hidden'" />
@@ -90,8 +110,8 @@ onMounted(() => {
                 </a>
                     <ul class="child-menu duration-500 transition-all ease-in-out bg-white bg-opacity-25" :class="!doesMyChildActive(['dashboard.peserta','dashboard.panitia']) ? 'hidden' :''">
                         <li><Link :href="route('dashboard.peserta')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.peserta') ? 'bg-white bg-opacity-70' : ''">Data Peserta</Link></li>
-                        <li><Link :href="route('dashboard.panitia')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.panitia') ? 'bg-white bg-opacity-70' : ''">Data Panitia</Link></li>
-                        <li><Link :href="route('dashboard.lomba')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.panitia') ? 'bg-white bg-opacity-70' : ''">Data Lomba</Link></li>
+                        <li v-if="admin"><Link :href="route('dashboard.panitia')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.panitia') ? 'bg-white bg-opacity-70' : ''">Data Panitia</Link></li>
+                        <li v-if="admin"><Link :href="route('dashboard.lomba')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.panitia') ? 'bg-white bg-opacity-70' : ''">Data Lomba</Link></li>
                     </ul>
                 </li>
             <li>
@@ -101,12 +121,7 @@ onMounted(() => {
                 </Link>
             </li>
         </ul>
-        <ul class="absolute bottom-0 w-full" >
-            <li class="flex cursor-pointer p-3 bg-red-100 w-full justify-end gap-1 hover:bg-red-400 hover:text-white transition-all hover:transition-all hover:justify-end duration-200  ease-in-out" @click="logout">
-                <SvgIcon type="mdi" :path="mdiExitToApp" />
-                Keluar
-            </li>
-        </ul>
+        
     </div>
     <div class="main-wrap col-span-12 md:col-span-10 md:px-3 print:col-span-12">
         <nav class="bg-white p-3 md:rounded-xl shadow z-20 top-0 right-0 left-0 flex justify-between items-center print:hidden md:translate-x-[263px]">
