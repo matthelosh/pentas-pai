@@ -22,4 +22,5 @@ export default defineConfig({
         https: false,
         host: 'tes.kkgpaiwagir.or.id',
     },
+    base: ''
 });

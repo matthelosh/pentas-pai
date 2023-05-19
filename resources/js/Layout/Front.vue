@@ -41,7 +41,6 @@ const tes = (e) => {
     </nav>
     <main class="relative top-16 py-2 md:top-20 px-3 md:py-1 md:px-0">
             <slot />
-        
     </main>
 </div>
 </template>
