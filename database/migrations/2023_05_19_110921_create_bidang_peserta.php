@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('lombas', function (Blueprint $table) {
-            $table->boolean('status')->default(true);
+        Schema::create('bidang_peserta', function (Blueprint $table) {
+            $table->id();
+            $table->integer('bidang_id');
+            $table->integer('peserta_id');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('lombas', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('bidang_peserta');
     }
 };

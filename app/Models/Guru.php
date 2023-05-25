@@ -37,4 +37,9 @@ class Guru extends Model
     {
         return $this->hasOne(Juri::class);
     }
+
+    public function user()
+    {
+        return $this->morphOne('App\Models\User', 'userable');
+    }
 }

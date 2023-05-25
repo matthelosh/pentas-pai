@@ -9,6 +9,7 @@ import { mdiExitToApp } from '@mdi/js';
 const Loading = defineAsyncComponent(() => import('@/Components/General/Loading.vue'))
 const loading = ref(false)
 
+const props = defineProps({title: String})
 
 const page = usePage()
 
@@ -41,12 +42,12 @@ const logout = () => {
         })
 }
 
-const handleScroll = (e) => {
-    let scrollY = window.scrollY
-    let sidebar = document.querySelector('#sidebar')
-    let sidePos = sidebar.getBoundingClientRect() 
+// const handleScroll = (e) => {
+//     let scrollY = window.scrollY
+//     let sidebar = document.querySelector('#sidebar')
+//     // let sidePos = sidebar.getBoundingClientRect() 
 
-} 
+// } 
 
 const expandChild = (e) => {
     const li = e.target.closest('li')
@@ -76,7 +77,7 @@ const confirmLogout = async () => {
 
 
 onMounted(() => {
-    window.addEventListener('scroll', handleScroll)
+    // window.addEventListener('scroll', handleScroll)
     // console.log(route().current())
 })
 </script>
@@ -104,14 +105,15 @@ onMounted(() => {
                 Dashboard
             </Link></li>
             <li>
-                <a href="#" class="parent flex items-center py-2 px-3 md:hover:bg-opacity-70 md:hover:bg-white md:hover:shadow md:hover:pl-5 transition-all duration-500" @mouseover="imTouched" @mouseleave="leftBehind" @click.prevent="expandChild" :class="doesMyChildActive(['dashboard.peserta','dashboard.panitia']) ? 'active' :''">
-                <ArrowRightCircleIcon class="ikon h-5 transition-all duration-500" :class="!doesMyChildActive(['dashboard.peserta','dashboard.panitia']) ? 'hidden' :''" />
+                <a href="#" class="parent flex items-center py-2 px-3 md:hover:bg-opacity-70 md:hover:bg-white md:hover:shadow md:hover:pl-5 transition-all duration-500" @mouseover="imTouched" @mouseleave="leftBehind" @click.prevent="expandChild" :class="doesMyChildActive(['dashboard.peserta','dashboard.guru', 'dashboard.lomba','sekolah.home']) ? 'active' :''">
+                <ArrowRightCircleIcon class="ikon h-5 transition-all duration-500" :class="!doesMyChildActive(['dashboard.peserta','dashboard.guru', 'dashboard.lomba', 'sekolah.home']) ? 'hidden' :''" />
                 Utama
                 </a>
-                    <ul class="child-menu duration-500 transition-all ease-in-out bg-white bg-opacity-25" :class="!doesMyChildActive(['dashboard.peserta','dashboard.panitia']) ? 'hidden' :''">
+                    <ul class="child-menu duration-500 transition-all ease-in-out bg-white bg-opacity-25" :class="doesMyChildActive(['dashboard.peserta','dashboard.guru', 'dashboard.lomba', 'sekolah.home']) ? 'inline' :'hidden'">
                         <li><Link :href="route('dashboard.peserta')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.peserta') ? 'bg-white bg-opacity-70' : ''">Data Peserta</Link></li>
-                        <li v-if="admin"><Link :href="route('dashboard.panitia')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.panitia') ? 'bg-white bg-opacity-70' : ''">Data Panitia</Link></li>
-                        <li v-if="admin"><Link :href="route('dashboard.lomba')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.panitia') ? 'bg-white bg-opacity-70' : ''">Data Lomba</Link></li>
+                        <li v-if="admin"><Link :href="route('dashboard.guru')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.guru') ? 'bg-white bg-opacity-70' : ''">Data Guru</Link></li>
+                        <li v-if="admin"><Link :href="route('dashboard.lomba')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('dashboard.lomba') ? 'bg-white bg-opacity-70' : ''">Data Lomba</Link></li>
+                        <li v-if="admin"><Link :href="route('sekolah.home')" class="block hover:bg-white md:hover:bg-opacity-70 px-8 py-2" :class="amIActive('sekolah.home') ? 'bg-white bg-opacity-70' : ''">Data Sekolah</Link></li>
                     </ul>
                 </li>
             <li>
@@ -125,11 +127,11 @@ onMounted(() => {
     </div>
     <div class="main-wrap col-span-12 md:col-span-10 md:px-3 print:col-span-12">
         <nav class="bg-white p-3 md:rounded-xl shadow z-20 top-0 right-0 left-0 flex justify-between items-center print:hidden md:translate-x-[263px]">
-            Navbar
+            {{ props.title }}
             <Bars3CenterLeftIcon class="h-6 cursor-pointer md:hidden" @click="toggleSide" />
             <!-- <XCircleIcon class="h-8 hidden md:block cursor-pointer text-red-600 hover:text-red-500 hover:shadow rounded-full" @click="logout" /> -->
         </nav>
-        <main class="md:mt-3 px-3 md:px-0 print:p-0 print:m-0 md:rounded-br-lg md:translate-x-[263px] print:translate-x-[0] bg-gray-100 print:col-span-12">
+        <main class="md:mt-3 px-3 md:px-0 print:p-0 print:m-0 md:rounded-br-lg md:translate-x-[263px] print:translate-x-[0]  print:col-span-12">
             <slot />
         </main>
     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
 
@@ -25,13 +26,49 @@ class SekolahController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function home(Request $request)
     {
-        //
+        $sekolahs = $request->user()->level == 'admin' ? Sekolah::all() : Sekolah::where('npsn', $request->user()->userable->sekolah_id)->get();
+
+        return Inertia::render('Dashboard/Sekolah', [
+            'sekolahs' => $sekolahs,
+        ], 200);
     }
+
+    public function impor(Request $request)
+    {
+        try{
+            foreach(json_decode($request->sekolahs) as $data)
+            {
+                Sekolah::updateOrCreate(
+                    [
+                        'id' => $data->id ?? null,
+                        'npsn' => $data->npsn,
+                    ],
+                    [
+                        'nama' => $data->name,
+                        'alamat' => $data->alamat,
+                        'telp' => $data->telp ?? null,
+                        'email' => $data->email ?? null,
+                        'website' => $data->website ?? null,
+                        'kepsek' => $data->kepsek ?? null,
+                        'nip_kepsek' => $data->nip_kepsek ?? null
+                    ]
+                    );
+            }
+            return response()->json([
+                'status' => 'ok',
+                'msg' => 'Data Sekolah sukses diimpor'
+            ], 200);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'msg' => $e->getMessage(),
+                'code' => $e->getCode()
+            ], 500);
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.

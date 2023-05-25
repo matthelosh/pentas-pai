@@ -20,7 +20,7 @@ export default defineConfig({
     ],
     server: {
         https: false,
-        host: 'tes.kkgpaiwagir.or.id',
+        host: 'pentas-pais.test',
     },
     base: ''
 });

@@ -41,12 +41,12 @@ const props = defineProps({
     <div class="ttd grid grid-cols-9 mx-8 mt-6 pb-24">
         <div class="ttd-ketua relative col-span-3 print:col-span-4">
             <p>&nbsp;</p>
-            <p>Ketua Panitia</p>
+            <p>Ketua KKG PAI Kec. Wagir</p>
 
-            <img src="/img/ttd-ketua.png" alt="TTD" class="h-16 mx-auto">
-            <p class="underline">Choiri Mahmudi, S. Ag., M. Pd.</p>
-            <p>NIP. 19760115 200501 1 002</p>
-            <img src="/img/stempel.png" alt="Stempel" class=" h-32 absolute top-10 -left-8">
+            <img src="/img/ttd-kkg.png" alt="TTD" class="h-16 mx-auto -translate-x-14">
+            <p class="underline">Hasan Lutfi, S.Pd., M. PdI.</p>
+            <p>NIP. 19760904 200801 1 013</p>
+            <img src="/img/stempel.png" alt="Stempel" class=" h-32 absolute top-4 -left-8">
         </div>
         <div class="col-span-3 print:col-span-1">
             &nbsp;
@@ -55,9 +55,9 @@ const props = defineProps({
             <p>Wagir {{ moment(surat.tanggal).format('DD MMM YYYY') }}</p>
             <p>Sekretaris</p>
 
-            <img src="/img/ttd-sekretaris.png" alt="TTD" class="h-16 mx-auto">
-            <p class="underline">MUHAMMAD SOLEH, S. PdI.</p>
-            <p>NIP. 19840703 201903 1 007</p>
+            <img src="/img/ttd-ketua.png" alt="TTD" class="h-16 mx-auto -translate-x-2">
+            <p class="underline">Choiri Mahmudi, S. Ag., M. Pd.</p>
+            <p>NIP. 19760115 200501 1 002</p>
 
         </div>
     </div>

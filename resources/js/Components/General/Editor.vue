@@ -32,6 +32,10 @@
           unsetTextAlign
         </button>
       </div>
+      
+      <button class="border rounded hover:bg-gray-200 focus:bg-gray-400 px-2 py-1" @click="editor.chain().focus().setHardBreak().run()">
+        <CheckCircleIcon class="h-8 text0gray-200" />
+      </button>
       <button class="border rounded hover:bg-gray-200 focus:bg-gray-400 px-2 py-1" @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()">
         insertTable
       </button>
@@ -101,13 +105,19 @@
   import Paragraph from '@tiptap/extension-paragraph'
   import Gapcursor from '@tiptap/extension-gapcursor'
   import TextAlign from '@tiptap/extension-text-align'
+  import HardBreak from '@tiptap/extension-hard-break'
+  import SvgIcon from '@jamescoyle/vue-icon'
+  import { mdiKeyboardReturn } from '@mdi/js'
+  import { CheckCircleIcon } from '@heroicons/vue/20/solid';
+  // import { CogIcon } from '@heroicons/vue/20/solid'
   
   
   export default {
     components: {
-      EditorContent,
-      BubbleMenu
-    },
+    EditorContent,
+    BubbleMenu,
+    SvgIcon
+},
   
     props: {
       modelValue: {
@@ -146,9 +156,10 @@
           StarterKit,
           BubbleMenu,
           Document,
-          Paragraph,
+          // Paragraph,
           Text,
-          Gapcursor,
+          // HardBreak,
+          // Gapcursor,
           Table.configure({
             resizable: true,
           }),

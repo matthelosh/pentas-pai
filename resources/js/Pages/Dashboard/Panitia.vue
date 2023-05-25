@@ -1,121 +1,141 @@
 <script setup>
-import Dash from '@/Layout/Dash.vue';
-import { Head, usePage, router } from '@inertiajs/vue3';
+import { ref, onMounted } from 'vue';
+import { XMarkIcon } from '@heroicons/vue/20/solid';
 import axios from 'axios';
-import { ref, defineAsyncComponent } from 'vue';
-import { mdiAccountMultipleCheck, mdiClose } from '@mdi/js';
-import SvgIcon from '@jamescoyle/vue-icon';
-import {jabatans} from '@/Plugins/Datas'
+import ContextMenu from '@imengyu/vue3-context-menu';
 
+onMounted(() => {
+    listGuru()
+})
 
-const AlertBox = defineAsyncComponent(() => import('@/Components/General/AlertBox.vue'))
-
-
-const loading = ref(false)
-
-const alertBox = ref(null)
-
-const $page = usePage();
-
-const setJabatan = async ($event,guru) => {
-    loading.value = true
-    let jabatan = $event.target.value
-    let lomba_id = null
-    if(jabatan.includes('Sie Lomba')) {
-        let teks = jabatan.split(" ")
-        switch(teks[-teks.length]) {
-            case "MTQ":
-                lomba_id = 'mtq'
-                break
-            case "MHQ":
-                lomba_id = 'mhq'
-                break
-            case "Pildacil":
-                lomba_id = 'pdc'
-                break
-            case "Banjari":
-                lomba_id = 'bjr'
-                break
-            case "Adzan":
-                lomba_id = 'adz'
-                break
-            case "Cerdas-Cermat":
-                lomba_id = 'lcc'
-                break
-        }
-    }
-    let panitia = {guru_id: guru.id, lomba_id: lomba_id, jabatan: jabatan, id: guru.panitias.length > 0 ? guru.panitias[0].id : null, user_id: guru.panitias.length > 0 ? guru.panitias[0].user_id:null,}
-    await axios.post(route('panitia.store'), {data: JSON.stringify(panitia)})
-                .then(res => {
-                    if (res.data.status == 'ok') {
-                        alertBox.value.open('Ok', res.data.msg)
-                        router.reload({only: ['gurus']})
-                    }
-                }).catch(err => {
-                    alertBox.value.open('Error', err.response.data.msg)
-                })
+const listGuru = async() => {
+    await axios.post(route('guru.index'))
+        .then(res => {
+            let datas = []
+            res.data.gurus.forEach(guru => {
+                datas.push({nip: guru.nip, label: guru.nama, onClick: () => alert('Hi')})
+            })
+            gurus.value = datas
+        })
 }
 
-const buatAkun = async () => {
-    axios.post(route('panitia.account.make'))
-            .then(res => {
-                alertBox.value.open('Ok', res.data.msg)
-                router.reload({only: ['gurus']})
-            }).catch(err => {
-                    alertBox.value.open('Error', err.response.data.msg)
-                })
+const props = defineProps({
+    lomba: Object
+})
+
+const gurus = ref([])
+
+const panitia = ref({
+    ketua: '',
+    wakil: '',
+})
+
+const setPanitia = (e, jabatan) => {
+    e.preventDefault()
+    // alert('tes')
+    ContextMenu.showContextMenu({
+        x: e.x,
+        y: e.y,
+        maxHeight: 230,
+        items: gurus.value
+    })
 }
+
 </script>
 
 <template>
-<AlertBox ref="alertBox" />
-<Head title="Data Panitia" />
-<Dash>
-    <div class="w-full bg-white rouded shadow">
-        <div class="toolbar bg-white sticky top-0 flex items-center justify-between p-3 h-12 shadow print:hidden">
-            <div class="toolbar-title text-lg font-bold flex items-center gap-1">
-                <SvgIcon type="mdi" :path="mdiAccountMultipleCheck" />
-                Data Panitia
-            </div>
-            <div class="toolbar-items flex items-center gap-1">
-                <button class="bg-sky-600 hover:bg-sky-800 active:bg-sky-200 active:text-gray-800 py-2 px-3 text-white rounded-md" @click="buatAkun">
-                    Buat Akun
+    <div class="w-full bg-white rounded-shadow">
+        <div class="toolbar h-12 flex items-center justify-between p-3 sticky top-0 bg-teal-800 text-lime-50">
+            <span>
+                Susunan Panitia {{ lomba.label }}
+            </span>
+            <div class="toolbar-items flex items-center">
+                <button @click="$emit('close')">
+                    <XMarkIcon class="h-8 bg-red-400 bg-opacity-30 rounded-full text-red-200 hover:bg-red-400 active:bg-orange-400" />
                 </button>
-                <!-- <button class="rounded-full bg-red-600 hover:bg-red-800 active:bg-orange-400 text-white p-1">
-                    <SvgIcon type="mdi" :path="mdiClose"  />
-                </button> -->
             </div>
         </div>
-        <div class="table table-responsive w-full">
-            <table class="border border-collapse w-full">
-                <caption class="text-xl text-center my-4 w-full">DATA USERNAME PANITIA</caption>
-                <thead>
-                    <tr class="bg-gray-100">
-                        <th class="py-2 px-3">No</th>
-                        <th class="py-2 px-3">NIP</th>
-                        <th class="py-2 px-3">Nama</th>
-                        <th class="py-2 px-3">JK</th>
-                        <th class="py-2 px-3">Sekolah</th>
-                        <th class="py-2 px-3">Jabatan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="odd:bg-gray-50" v-for="(guru,g) in $page.props.gurus" :key="guru">
-                        <td class="text-center py-1 px-3">{{ g+1 }}</td>
-                        <td class="py-1 px-3">{{ guru.nip }}</td>
-                        <td class="py-1 px-3">{{ guru.nama }} <span class="text-teal-800">{{ guru.panitias.length > 0 ?  `[${guru.panitias[0].user.name }]`: ''}}</span></td>
-                        <td class="py-1 px-3">{{ guru.jk }}</td>
-                        <td class="py-1 px-3">{{ guru.sekolah ? guru.sekolah.nama : '-' }}</td>
-                        <td class="py-1 px-3">
-                            <select name="jabatan" id="jabatanSelect"  @change="setJabatan($event, guru)">
-                                <option value="0">Pilih Jabatan</option>
-                                <option v-for="(jabatan,j) in jabatans" :key="j" :value="jabatan" :selected="(guru.panitias.length > 0 && jabatan == guru.panitias[0].jabatan)">{{ jabatan }}</option>
-                            </select>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="content w-full bg-white">
+            <div class="row flex justify-center pt-4">
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Ketua Pelaksana</div>
+                    <div class="pejabat px-2 text-center" @contextmenu="setPanitia($event, 'ketua')">Nama</div>
+                </div>
+            </div>
+            <div class="row flex justify-center pt-2 pb-4">
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Wakil Ketua</div>
+                    <div class="pejabat px-2 text-center" @contextmenu="setPanitia($event, 'wakil')">Nama</div>
+                </div>
+            </div>
+            <div class="row flex justify-center p-4 gap-6">
+                <div class="flex-grow"></div>
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Sekretaris 1</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                </div>
+                <div class="flex-grow"></div>
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Bendahara 1</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                </div>
+                <div class="flex-grow"></div>
+            </div>
+            <div class="row flex justify-center p-4 gap-6">
+                <div class="flex-grow"></div>
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Sekretaris 2</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                </div>
+                <div class="flex-grow"></div>
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Bendahara 2</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                </div>
+                <div class="flex-grow"></div>
+            </div>
+            <div class="row flex justify-center p-4">
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Seksi-seksi</div>
+                </div>
+            </div>
+            <div class="row flex justify-around p-4 gap-6">
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded" v-for="(bidang,b) in lomba.bidangs" :key="b">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Sie {{ bidang.label }}</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                </div>
+            </div>
+            <div class="row flex justify-around p-4 gap-6">
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Sie Dokumentasi</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                </div>
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Sie Konsumsi</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                </div>
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Sie Perlengkapan</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                </div>
+                <div class="box flex flex-col max-w-64 border border-gray-800 rounded">
+                    <div class="jabatan px-2 text-center bg-gray-600 text-white">Sie Pembantu Umum</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                    <div class="pejabat px-2 text-center">Nama</div>
+                </div>
+            </div>
+            <!-- <p>
+                {{ lomba }}
+            </p> -->
         </div>
     </div>
-</Dash>
 </template>

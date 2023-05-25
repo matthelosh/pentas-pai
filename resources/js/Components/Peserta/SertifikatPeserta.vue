@@ -44,6 +44,7 @@ const setLomba = (peserta) => {
 const viewSertificate = (peserta) => {
     mode.value = 'cetak'
     selectedPeserta.value = peserta
+    headTitle.value = 'Sertifikat Peserta '+props.lomba.label+' - ' + peserta.nama
 }
 
 const cetak = () => {
@@ -53,10 +54,12 @@ const cetak = () => {
 const nama = (nama) => {
     return nama.toLowerCase()
 }
+
+const headTitle = ref('Sertifikat Peserta')
 </script>
 
 <template>
-<Head title="Sertifikat Peserta" />
+<Head :title="headTitle" />
 <div class="w-full bg-white">
     <div class="toolbar w-full h-12  bg-white flex items-center justify-between p-3 shadow sticky top-0 z-10 print:hidden">
         <span class="toolbar-title">
@@ -85,16 +88,18 @@ const nama = (nama) => {
                     <th class="py-2 px-3 text-gray-800 border-e border-gray-400">NISN</th>
                     <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Nama</th>
                     <th class="py-2 px-3 text-gray-800 border-e border-gray-400">JK</th>
+                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Sekolah</th>
                     <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Bidang Lomba</th>
                     <th class="py-2 px-3 text-gray-800 print:hidden">Opsi</th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="odd:bg-gray-100" v-for="(peserta,p) in pesertas" :key="p">
+                <tr class="odd:bg-gray-100 hover:bg-lime-100" v-for="(peserta,p) in pesertas" :key="p">
                     <td class="text-center py-1 px-2 border-e border-gray-400">{{ p+1 }}</td>
                     <td class="py-1 px-2 border-e border-gray-400">{{ peserta.nisn }}</td>
                     <td class="py-1 px-2 border-e border-gray-400">{{ peserta.nama }}</td>
                     <td class="py-1 px-2 border-e border-gray-400">{{ peserta.jk }}</td>
+                    <td class="py-1 px-2 border-e border-gray-400">{{ peserta.sekolah.nama }}</td>
                     <td class="py-1 px-2 border-e border-gray-400 text-center">{{ setLomba(peserta).label }}</td>
                     <td class="py-1 px-2 print:hidden text-center" >
                         <button class="py-1 px-2 rounded hover:bg-green-600 active:bg-orange-400 bg-green-400 text-white" @click="viewSertificate(peserta)">Cetak</button>
@@ -108,10 +113,10 @@ const nama = (nama) => {
             <img src="/img/logo.png" alt="Logo KKG" class="absolute left-32 mt-4 w-20" />
             <h1 style="font-family:Dancing Script!important;" class="text-6xl text-center mt-20">Sertifikat</h1>
             <h2 class="text-center mt-6 text-xl">Diberikan Kepada:</h2>
-            <div class="flex justify-center items-end w-10/12 mx-auto gap-4">
-                <img :src="imgUrl(selectedPeserta.foto)" alt="Foto" class="aspect-square border-4 border-gray-800 rounded-full h-40">
+            <div class="flex justify-center items-center w-10/12 mx-auto gap-4">
+                <img :src="imgUrl(selectedPeserta.foto)" alt="Foto" class="aspect-square border-4 border-gray-800 rounded-full h-40 object-cover object-center">
                 <div class="bio">
-                    <h1 class="nama text-[3.2rem]  mt-4 capitalize" style="font-family: Pacifico!important;">{{nama(selectedPeserta.nama)}}</h1>
+                    <h1 class="nama text-[3.2rem]  mt-4 capitalize" style="font-family: Pacifico!important; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{nama(selectedPeserta.nama)}}</h1>
                     <h4 class="sekolah text-xl mt-4">{{selectedPeserta.sekolah.nama}}</h4>
                     <h4 class="peringkat text-4xl mt-4">Sebagai Peserta</h4>
                 </div>

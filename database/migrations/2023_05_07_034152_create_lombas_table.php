@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('kode', 10);
             $table->string('label', 60);
+            $table->date('tanggal');
             $table->string('tahun', 191);
             $table->string('lokasi_id', 20)->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

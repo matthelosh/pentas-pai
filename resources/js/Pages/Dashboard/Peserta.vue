@@ -12,7 +12,7 @@ import DialogBox from '@/Components/General/DialogBox.vue';
 import ImportTable from '@/Components/Peserta/ImportTable.vue';
 import { ArrowPathIcon } from '@heroicons/vue/20/solid';
 
-import {imgUrl} from '@/Plugins/misc';
+import {imgUrl, paginate} from '@/Plugins/misc';
 import FormPeserta from '@/Components/Peserta/FormPeserta.vue';
 
 
@@ -28,10 +28,11 @@ const filter = () => {
     })
 }
 const datas = computed(() => {
-    let length = pesertas.value.length
-    let pages =  _.chunk(pesertas.value, 10)
+    // let length = pesertas.value.length
+    // let pages =  _.chunk(pesertas.value, 10)
 
-    return {current: pages[currentPage.value-1], pageCount: pages.length, total: length}
+    // return {current: pages[currentPage.value-1], pageCount: pages.length, total: length}
+    return paginate(pesertas.value, currentPage.value)
 })
 const fixData = async () => {
     loading.value = true
@@ -136,7 +137,7 @@ const edit = async (peserta) => {
                 </span>
                 <SvgIcon type="mdi" :path="mdiFileExcel" />
             </button>
-            <button class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800" :disabled="loading" @click="fixData">
+            <button class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800" :disabled="loading" @click="fixData" :class="$page.props.auth.user.level !== 'admin' ? 'hidden' : ''">
                 <span v-if="!loading" class="hidden md:inline">Daftarkan Bidang Lomba</span>
                 <ArrowPathIcon class="w-6 text-white" :class="loading ? 'animate-spin' : ''" />
             </button>
@@ -148,7 +149,7 @@ const edit = async (peserta) => {
         <div class="overflow-x-auto w-full border">
             <table class="w-full table table-responsive border-collapse ">
                 <caption class="text-left md:text-center p-2">
-                    <h1 class="text-xl">Data Peserta Lomba</h1>
+                    <h1 class="text-xl">Data Peserta {{ $page.props.lomba.label }}</h1>
                 </caption>
                 <thead>
                     <tr>
@@ -203,9 +204,9 @@ const edit = async (peserta) => {
             
         </div>
         <div class="w-full flex flex-wrap md:justify-end print:hidden">
-                <button @click="currentPage-=1" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0">&lt;</button>
+                <button @click="currentPage-=1" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0" :disabled="currentPage == 1">&lt;</button>
                 <button v-for="b in datas.pageCount" :key="b" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0" :class="b == currentPage ? 'bg-sky-600 text-white': ''" @click="currentPage=b">{{ b }}</button>
-                <button @click="currentPage+=1" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0">&gt;</button>
+                <button @click="currentPage+=1" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0" :disabled="currentPage >= datas.pageCount">&gt;</button>
             </div>
     </div>
 

@@ -1,10 +1,13 @@
 <script setup>
-import { ref } from 'vue';
-import { Head } from '@inertiajs/vue3'
+import { ref, onMounted } from 'vue';
+import { Head, usePage } from '@inertiajs/vue3'
 import Front from '@/Layout/Front.vue';
 import { EyeIcon, EyeSlashIcon, UserCircleIcon, LockClosedIcon, ArrowPathIcon } from '@heroicons/vue/20/solid';
 import axios from 'axios';
 import AlertBox from '@/Components/General/AlertBox.vue';
+
+const page = usePage()
+
 const showPassword = ref(false)
 const loading = ref(false)
 const alertBox = ref(null)
@@ -13,7 +16,7 @@ const login = async () => {
     loading.value = true
     await axios.post('/login', user.value)
             .then(res => {
-                window.location.href = '/panitia'
+                window.location.href = route('dashboard')
             }).catch(err => {
                 // console.log(err)
                 let msg = err.response.status == 422 ? 'Username atau password tidak tepat' : err.response.data.message
@@ -21,6 +24,12 @@ const login = async () => {
                 loading.value = false
             })
 }
+
+onMounted(() => {
+    if (page.props.auth.user) {
+        window.location.href = route('dashboard')
+    }
+})
 
 </script>
 <template>

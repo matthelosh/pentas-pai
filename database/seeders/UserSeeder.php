@@ -19,7 +19,9 @@ class UserSeeder extends Seeder
                 'name' => 'admin',
                 'email' => 'admin@kkgpaiwagir.or.id',
                 'password' => Hash::make('123'),
-                'level' => 'admin'
+                'level' => 'admin',
+                'userable_id' => '0',
+                'userable_type' => 'App\Models\Guru',
             ]);
     }
 }

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('kode', 10);
             $table->string('label', 60);
+            $table->enum('kategori', ['tunggal','regu'])->default('tunggal');
+            $table->enum('kelompok', ['putra', 'putri', 'campur']);
             $table->string('deskripsi', 191);
             $table->timestamps();
         });

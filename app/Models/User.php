@@ -48,8 +48,13 @@ class User extends Authenticatable
         return $this->hasMany(Panitia::class);
     }
 
+    public function userable()
+    {
+        return $this->morphTo();
+    }
+
     public function guru()
     {
-        return $this->hasOneThrough(Guru::class, Panitia::class);
+        return $this->belongsTo(Guru::class, 'id');
     }
 }

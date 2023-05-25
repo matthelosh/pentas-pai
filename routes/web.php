@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\ProfileController;
 use App\Models\Bidang;
+use App\Models\Lomba;
 use App\Models\Peserta;
 use App\Models\Sekolah;
 use Illuminate\Foundation\Application;
@@ -37,6 +38,7 @@ Route::prefix('lomba')->group(function() {
 });
 
 Route::prefix('sekolah')->group(function() {
+    
     Route::post('/', [SekolahController::class, 'index'])->name('sekolah.index');
     Route::post('/{id}', [SekolahController::class, 'show'])->name('sekolah.show');
 });
@@ -45,10 +47,11 @@ Route::post('/registrasi', [PesertaController::class, 'store'])->name('peserta.s
 
 Route::prefix('daftar')->group(function() {
     Route::get('/', function() {
+        $lomba = Lomba::where('status','1')->with('bidangs')->first();
         return Inertia::render('Daftar',
         [
             'sekolahs' => Sekolah::all(),
-            'bidangs' => Bidang::all()
+            'bidangs' => $lomba->bidangs,
         ]
     );
     })->name('daftar');
@@ -67,10 +70,15 @@ Route::prefix('verifikasi')->group(function() {
 });
 
 
-Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+Route::prefix('sekretariat')->middleware(['auth','verified'])->group(function () {
+    Route::get('/', [DashController::class, 'index'])->name('dashboard');
+
+    // Admin Sekolah
+    Route::prefix('sekolah')->group(function() {
+        Route::get('/', [SekolahController::class, 'home'])->name('sekolah.home');
+        Route::post('/impor', [SekolahController::class, 'impor'])->name('sekolah.impor');
+        Route::post('/', [SekolahController::class, 'index'])->name('sekolah.index');
+    });
 
     Route::prefix('peserta')->group(function() {
         // Route::inertia('/', 'Dashboard/Peserta', [
@@ -95,9 +103,17 @@ Route::prefix('panitia')->middleware(['auth','verified'])->group(function () {
         Route::post('/account/make', [PanitiaController::class, 'makeAccount'])->name('panitia.account.make');
     });
 
+    Route::prefix('guru')->group(function() {
+        Route::get('/', [GuruController::class, 'page'])->name('dashboard.guru');
+        Route::post('/', [GuruController::class, 'index'])->name('guru.index');
+        Route::post('/impor', [GuruController::class, 'impor'])->name('guru.impor');
+        Route::post('/account/make', [GuruController::class, 'makeAccount'])->name('guru.account.make');
+    });
+
     Route::prefix('lomba')->group(function() {
         Route::get('/', [LombaController::class, 'page'])->name('dashboard.lomba');
         Route::post('/', [LombaController::class, 'index'])->name('lomba.index');
+        Route::post('/store', [LombaController::class, 'store'])->name('lomba.store');
         Route::put('/{id}', [LombaController::class, 'activate'])->name('lomba.activate');
     });
 

@@ -13,6 +13,7 @@ class Lomba extends Model
         'kode',
         'label',
         'tahun',
+        'tanggal',
         'lokasi_id',
         'status'
     ];
@@ -27,13 +28,14 @@ class Lomba extends Model
         return $this->belongsTo(Sekolah::class, 'lokasi_id', 'npsn');
     }
 
-    public function gurus()
-    {
-        return $this->hasManyThrough(Guru::class, Panitia::class);
-    }
 
     public function panitias()
     {
         return $this->hasMany(Panitia::class);
+    }
+
+    public function pesertas()
+    {
+        return $this->belongsTo(Peserta::class, 'lomba_peserta', 'lomba_id', 'peserta_id');
     }
 }

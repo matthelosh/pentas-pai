@@ -1,5 +1,5 @@
 <script setup >
-import { ref, onMounted } from 'vue'; 
+import { ref, onMounted, computed } from 'vue'; 
 import { Head, router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import { XCircleIcon, PrinterIcon, ArrowPathIcon } from '@heroicons/vue/20/solid';
@@ -87,6 +87,10 @@ const impor = async () => {
                 }).catch(err => console.log(err))
 }
 
+const admin = computed(() => {
+    return page.props.auth.user.level == 'admin'
+})
+
 onMounted(() => {
     list()
 })
@@ -104,14 +108,14 @@ onMounted(() => {
             <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 flex items-center rounded" @click="unduh">
                 Download
             </button>
-            <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 flex items-center rounded" @click="$refs.fileJuara.click()">
+            <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 flex items-center rounded" @click="$refs.fileJuara.click()" v-if="admin">
                 <SvgIcon type="mdi" :path="mdiFileExcel" />
                 {{ fileName }}
             </button>
             <button class="bg-teal-400 hover:bg-teal-600 active:bg-orange-400 text-white py-1 px-2 rounded" @click="list">
                 <ArrowPathIcon class="h-6 text-white" />
             </button>
-            <button class="bg-teal-400 hover:bg-teal-600 active:bg-orange-400 text-white py-1 px-2 rounded" @click="dialog = true">Baru</button>
+            <button class="bg-teal-400 hover:bg-teal-600 active:bg-orange-400 text-white py-1 px-2 rounded" @click="dialog = true" v-if="admin">Baru</button>
             <XCircleIcon class="text-red-600 h-8 hover:text-red-800 active:text-orange-400 cursor-pointer" @click="$emit('close')" />
         </div>
     </div>

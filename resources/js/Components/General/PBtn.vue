@@ -7,9 +7,9 @@ const props = defineProps({
 })
 
 const classStyle = computed(() => {
-    let style = 'px-2 py-1  flex items-center rounded'
+    let style = 'px-2 py-1  flex items-center rounded text-white'
     if (props.color != null) {
-        style += ` bg-${props.color}-200`
+        style += ` bg-${props.color}-400 hover:bg-${props.color}-600 active:bg-orange-400`
     } else {
         style += 'bg-gray-200'
     }

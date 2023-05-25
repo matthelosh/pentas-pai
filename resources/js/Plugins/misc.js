@@ -1,3 +1,5 @@
+import * as _ from 'lodash-es'
+
 export const imgUrl = (url) => {
     if (url.includes('=')) {
         let splited = url.split('=')
@@ -6,3 +8,11 @@ export const imgUrl = (url) => {
         return url[0] == '/' ? url : '/'+url
     }
 }
+
+export const paginate = (datas, currentPage) => {
+    let pages = _.chunk(datas, 10)
+
+    return { current: pages[currentPage-1], pageCount: pages.length, dataLength: datas.length}
+}
+
+export default {imgUrl}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bidang;
+use App\Models\Lomba;
 use App\Models\Peserta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +12,12 @@ use Inertia\Inertia;
 
 class PesertaController extends Controller
 {
+
+
+    public function lomba()
+    {
+        return Lomba::where('status','1')->with('bidangs.pesertas')->first();
+    }
     /**
      * Display a listing of the resource.
      */
@@ -21,13 +28,17 @@ class PesertaController extends Controller
             // return auth()->user()->panitias[0]->guru;
             $page = auth()->user() ? 'Dashboard/' : '';
             if (auth()->check() && auth()->user()->level == 'panitia') {
-                $pesertas = Peserta::where('sekolah_id', auth()->user()->panitias[0]->guru->sekolah_id)->with('sekolah','bidangs')->get();
+                $pesertas = Peserta::where('sekolah_id', auth()->user()->panitias[0]->guru->sekolah_id)->whereHas('lomba', function($q) {
+                    $q->where('lombas.status','1');
+                })->with('sekolah','bidangs')->get();
             } else {
-                $pesertas = Peserta::with('sekolah','bidangs')->get();
+                $pesertas = Peserta::with('sekolah', 'bidangs')->whereHas('lomba', function($q) {
+                    $q->where('lombas.status','1');
+                })->get();
             }
             return Inertia::render($page.'Peserta',[
                 'pesertas' => $pesertas,
-                'bidangs' => Bidang::all()
+                'lomba' => $this->lomba()
             ], 200);
         } catch(\Exception $e) {
             return back()->withErrors(['msg' => $e->getMessage()]);
@@ -54,6 +65,7 @@ class PesertaController extends Controller
     public function store(Request $request)
     {
         try {
+            $lomba = Lomba::where('status' , '1')->first();
             $data = json_decode($request->data);
             if ( $request->file('foto')) {
                 $foto = $request->file('foto');
@@ -74,6 +86,7 @@ class PesertaController extends Controller
             $peserta->sekolah_id = $data->sekolah_id;
             $peserta->save();
             $peserta->bidangs()->attach($bidangs);
+            $peserta->lomba()->attach($lomba->id);
             return response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
         } catch(\Exception $e) {
             return response()->json(['status' => 'fail', 'msg' => $e->getMessage(), 'errCode' => $e->getCode()], 500);
@@ -83,6 +96,7 @@ class PesertaController extends Controller
     public function attach(Peserta $peserta, Request $request)
     {
         $pesertas = json_decode($request->pesertas);
+        $lomba = Lomba::where('status','1')->first();
         foreach($pesertas as $data) {
             $lombas = explode(",", $data->lomba_id);
             $bidangs = [];
@@ -96,6 +110,7 @@ class PesertaController extends Controller
             $peserta = $peserta->where('id', $data->id)->with('bidangs')->first();
             if(count($peserta->bidangs) < 1) {
                 $peserta->bidangs()->attach($bidangs);
+                $peserta->lomba()->attach($lomba->id);
             }
         }
 

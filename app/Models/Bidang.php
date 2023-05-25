@@ -11,7 +11,9 @@ class Bidang extends Model
     protected $fillable = [
         'kode',
         'label',
-        'tahun'
+        'deskripsi',
+        'kategori',
+        'kelompok'
     ];
 
     public function lombas()
@@ -25,7 +27,7 @@ class Bidang extends Model
     // }
     public function pesertas()
     {
-        return $this->belongsToMany(Peserta::class, 'lomba_peserta','lomba_id', 'peserta_id');
+        return $this->belongsToMany(Peserta::class, 'bidang_peserta','bidang_id', 'peserta_id');
     }
 
     public function juris()

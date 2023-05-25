@@ -359,6 +359,11 @@
   resolved "https://registry.yarnpkg.com/@heroicons/vue/-/vue-2.0.17.tgz#4c23f26a715c2931c0d4fd5d2e77f8ede7a6a77b"
   integrity sha512-M5P6Y9tmctbtv/IC1dO5vTw9xqppYxm/5BKuL4hGlxxLvaxbnTmMAoxTIzezSdYAaLh63emgOCBMa+mxphRxUQ==
 
+"@imengyu/vue3-context-menu@^1.2.10":
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/@imengyu/vue3-context-menu/-/vue3-context-menu-1.2.10.tgz#ca72548b09dd214ee373cfbb8a05a5c6acdd11e3"
+  integrity sha512-L+qIoqcewQ8SPk2PMvsaMD9HWxFouij0JAqYwn19Fz7giqz0rLpWMf9aJRpQ3ysOySEKPdilg8dLYYB96QmGHA==
+
 "@inertiajs/core@1.0.6":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@inertiajs/core/-/core-1.0.6.tgz#4d13ab792edfc55de0e38a43e09638b167e50814"

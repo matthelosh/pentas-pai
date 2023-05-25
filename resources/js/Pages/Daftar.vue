@@ -62,7 +62,7 @@ const alertBox = ref(null)
 <Head title="Mendaftar Lomba" />
 <Front>
     <div class="w-full rounded bg-white shadow p-3">
-        <h1 class="text-lg font-bold">Formulir Pendaftaran
+        <h1 class="text-lg font-bold">Formulir Pendaftaran {{ $page.props.lomba.label }}
             <!-- <button class="outline rounded px-2 hover:bg-gray-200 active:bg-gray-400" @click="tes">Tes</button> -->
         </h1>
         <div class="columns-1 md:columns-2 md:p-10 gap-5 relative">
