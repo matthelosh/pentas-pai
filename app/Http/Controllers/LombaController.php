@@ -57,7 +57,7 @@ class LombaController extends Controller
     {
         try {
             $lomba = json_decode($request->lomba);
-            Lomba::updateOrCreate(
+            $simpan = Lomba::updateOrCreate(
                 [
                     'id' => $lomba->id?? null
                 ],
@@ -70,6 +70,8 @@ class LombaController extends Controller
                     'status' => '0'
                 ]
             );
+
+            $simpan->bidangs()->attach($lomba->bidangs);
             return response()->json([
                 'status' => 'ok',
                 'msg' => 'Data Lomba Disimpan'

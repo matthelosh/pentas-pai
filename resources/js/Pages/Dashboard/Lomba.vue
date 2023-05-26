@@ -14,6 +14,7 @@ const formLomba = ref(false)
 const FormLomba = defineAsyncComponent(() => import('@/Components/Lomba/FormLomba.vue'))
 const closeLomba = () => {
     formLomba.value = false
+    selectedLomba.value = null
     router.reload({only: ['lombas']})
 }
 
@@ -68,8 +69,10 @@ const createPanitia = (lomba) => {
     panitiaMode.value = 'create'
 }
 
-
-
+const editLomba = (lomba) => {
+     formLomba.value = true
+     selectedLomba.value = lomba
+}
 
 </script>
 
@@ -77,9 +80,15 @@ const createPanitia = (lomba) => {
 <Head title="Data Perlombaan" />
 <DialogBox ref="dialogBox" />
 <AlertBox ref="alertBox" />
-<FormLomba :show="formLomba" @close="closeLomba" />
+<FormLomba :show="formLomba" @close="closeLomba" :lomba="selectedLomba" v-if="formLomba" />
+<div class="dialog-bidang fixed top-0 right-0 bottom-0 left-0 bg-gray-800 bg-opacity-60 z-40 flex items-center justify-center hidden">
+    <div class="card w-80 bg-white">
+        <h1>Lomba</h1>
+    </div>
+</div>
 <Dash>
     <Panitia v-if="mode=='panitia'" :lomba="selectedLomba" @close="mode = 'list'" />
+    
     <div class="w-full bg-white" v-if="mode == 'list'">
         <div class="toolbar bg-gray-100 h-12 flex items-center justify-between p-3 sticky top-0 print:hidden">
             <span>Data Lomba</span>
@@ -106,12 +115,14 @@ const createPanitia = (lomba) => {
                 <tbody>
                     <tr class="odd:bg-gray-100" v-for="(lomba,l) in page.props.lombas" :key="l">
                         <td class="border-e border-gray-400 text-center">{{ l+1 }}</td>
-                        <td class="border-e border-gray-400 px-3">{{ lomba.label }}</td>
+                        <td class="border-e border-gray-400 px-3 text-sky-800 hover:underline hover:cursor-pointer" @click="editLomba(lomba)">{{ lomba.label }}</td>
                         <td class="border-e border-gray-400 text-center">{{ lomba.tahun }}</td>
                         <td class="border-e border-gray-400 px-3">
                             <ul v-if="lomba.bidangs.length > 0">
                                 <li v-for="(bidang,b) in lomba.bidangs" :key="b">
-                                    {{ bidang.label }}: {{ bidang.pesertas.length }}
+                                    <span v-if="bidang.pesertas">
+                                    {{ bidang.label }} [{{ bidang.kategori }} - {{ bidang.kelompok }}]: {{ bidang.pesertas.length }}
+                                    </span>
                                 </li>
                             </ul>    
                         </td>

@@ -4,13 +4,17 @@ import PBtn from '../General/PBtn.vue';
 import axios from 'axios'
 
 const props = defineProps({
-    show: Boolean
+    show: Boolean,
+    lomba: Object
 })
 
 const lomba = ref({
     lokasi_id: '0'
 })
+
+const selectedBidangs = ref([])
 const sekolahs = ref([])
+const bidangs = ref([])
 
 const listSekolah = async() => {
     await axios.post(route('sekolah.index'))
@@ -21,17 +25,44 @@ const listSekolah = async() => {
             })
 }
 
+const listBidangs = async() => {
+    await axios.post(route('bidang.index'))
+                .then(res => {
+                    bidangs.value = res.data.bidangs
+                })
+}
+
 const simpan = async() => {
+    lomba.value.bidangs = selectedBidangs.value
+    // console.log(lomba.value)
     axios.post(route('lomba.store'), {lomba: JSON.stringify(lomba.value)})
         .then(res => {
+            lomba.value = ref({lokasi_id: '0'})
             emit('close')
         })
 }
 
 const emit = defineEmits(['close'])
-
+const tutup = () => {
+    lomba.value = ref({lokasi_id: '0'})
+    emit('close')
+}
 onMounted(() => {
     listSekolah()
+    listBidangs()
+    if(props.lomba) {
+        lomba.value = props.lomba
+        // alert(props.lomba.bidangs.length)
+        if(props.lomba.bidangs.length > 0) {
+            // alert('tes')
+            let datas = []
+            props.lomba.bidangs.forEach(bidang => {
+                datas.push(bidang.id)
+            })
+            selectedBidangs.value = datas
+        }
+    }
+    // console.log(props.lomba)
 })
 </script>
 
@@ -40,7 +71,7 @@ onMounted(() => {
     <div class="card w-full md:w-2/4 bg-white rounded">
         <div class="card-toolbar h-12 bg-sky-600 text-white p-4 flex justify-between items-center">
             Data Lomba
-            <p-btn color="red" @click="$emit('close')">Tutup</p-btn>
+            <p-btn color="red" @click="tutup">Tutup</p-btn>
         </div>
         <div class="card-content w-full p-4">
             <form @submit.prevent="simpan" ref="formLomba" class="form flex-col gap-2 flex">
@@ -79,6 +110,15 @@ onMounted(() => {
                         <option v-for="(sekolah, s) in sekolahs" :key="s" :value="sekolah.npsn">{{ sekolah.nama }}</option>
                     </select>
                 </label>
+                <label for="Kode" class="flex items-center gap-3">
+                    <span class="flex-grow">
+                        Bidang Lomba:
+                    </span>
+                    <select name="lokasi_id" v-model="selectedBidangs" class="w-3/4" multiple style="resize: vertical;">
+                        <option v-for="(bidang, b) in bidangs" :key="b" :value="bidang.id">{{ bidang.label }}</option>
+                    </select>
+                </label>
+                <!-- {{ lomba.bidangs.length }} -->
                 <label  class="w-full flex justify-between items-center border-t border-gray-400 border-dashed h-12">
                     <div></div>
                     <p-btn color="sky" type="submit">Simpan</p-btn>
