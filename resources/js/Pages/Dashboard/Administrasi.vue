@@ -46,12 +46,12 @@ const showRekap = () => {
 
 <template>
 <Head title="Administrasi Lomba" />
-<Dash>
- 
-    <transition-group name="slide-fade">
+<Dash title="Administrasi">
+  <div class="my-4 md:mt-0">
+    <transition-group name="slide-fade" >
         <div class="w-full h-full grid md:grid-cols-4 gap-3" v-if="mode == 'list'">
-            <div class="bg-white kartu-peserta rounded shadow">
-              <h3 class="w-full bg-gray-200 p-2 font-bold">Administrasi Peserta</h3>
+            <div class="bg-white kartu-peserta rounded-xl overflow-hidden shadow">
+              <h3 class="w-full bg-gray-400 py-2 px-4 ">Administrasi Peserta</h3>
               <div class="toolbar grid grid-cols-1 gap-2 p-3">
                 <button class="bg-sky-600 text-white py-1 px-3 rounded hover:bg-teal-500 duration-200 transition-all hover:shadow-lg" @click="showDialog('kartu-peserta')" v-if="isAdmin">Kartu Peserta</button>
                 <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded hover:shadow-lg" @click="showDialog('presensi-peserta')" v-if="isAdmin">Presensi</button>
@@ -59,16 +59,16 @@ const showRekap = () => {
                 <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded hover:shadow-lg sertifikat" @click="showDialog('sertifikat-peserta')" >Sertifikat Peserta</button>
               </div>
             </div>
-            <div class="bg-white kartu-peserta rounded shadow">
-              <h3  class="w-full bg-gray-200 p-2 font-bold">Administrasi Lomba</h3>
+            <div class="bg-white kartu-peserta rounded-xl overflow-hidden shadow">
+              <h3  class="w-full bg-gray-400 py-2 px-4">Administrasi Lomba</h3>
               <div class="toolbar grid grid-cols-1 gap-2 p-3">
                 <button class="bg-sky-600 text-white py-1 px-3 rounded hover:bg-teal-500 duration-200 transition-all mx-1 hover:shadow-lg active:bg-orange-400" @click="showDialog('form-nilai')" v-if="isAdmin">Form Nilai</button>
                 <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded mx-1 hover:shadow-lg active:bg-orange-400" @click="showDialog('piagam-juara')">Piagam Juara</button>
                 <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded mx-1 hover:shadow-lg active:bg-orange-400" @click="mode = 'data-juara'">Data Juara</button>
               </div>
             </div>
-            <div class="bg-white kartu-peserta rounded shadow">
-              <h3  class="w-full bg-gray-200 p-2 font-bold">Administrasi Panitia</h3>
+            <div class="bg-white kartu-peserta rounded-xl overflow-hidden shadow">
+              <h3  class="w-full bg-gray-400 py-2 px-4 shadow">Administrasi Panitia</h3>
               <div class="toolbar grid grid-cols-1 gap-2 p-3">
                 <button class="bg-sky-600 text-white py-1 px-3 rounded hover:bg-teal-500 duration-200 transition-all mx-1 hover:shadow-lg " @click="mode='sertifikat-panitia'">
                   Sertifikat Panitia
@@ -78,7 +78,7 @@ const showRekap = () => {
                 <button class="bg-sky-800 text-white py-1 px-3  hover:bg-teal-500 duration-200 transition-all rounded mx-1 hover:shadow-lg active:bg-orange-300" @click="mode = 'presensi-panitia'" v-if="isAdmin">Presensi</button>
                 </div>
             </div>
-            <div class="bg-white">dfdf</div>
+            <div class="bg-white rounded-xl overflow-hidden">dfdf</div>
         </div>
         
         <CetakKartu :lomba="selectedLomba" v-if="mode == 'kartu-peserta'" @close="mode = 'list'" />
@@ -94,7 +94,7 @@ const showRekap = () => {
     <DataJuara v-if="mode == 'data-juara'" @close="mode = 'list'" :lomba="selectedLomba" />
     <SertifikatPeserta v-if="mode == 'sertifikat-peserta'" @close="mode = 'list'" :lomba="selectedLomba" />
     <SertifikatPanitia v-if="mode == 'sertifikat-panitia'" @close="mode = 'list'" :lomba="selectedLomba" />
-    
+  </div>
 </Dash>
 
 <Kartu v-if="dialog" :dokumen="dokumen" @close="dialog=false" @cetakKartu="cetak"/>

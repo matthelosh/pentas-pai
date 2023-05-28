@@ -31,7 +31,7 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-
+Route::inertia('/about', 'About')->name('about');
 
 Route::prefix('lomba')->group(function() {
     Route::post('/', [LombaController::class, 'index'])->name('lomba.index');
@@ -39,7 +39,7 @@ Route::prefix('lomba')->group(function() {
 
 Route::prefix('sekolah')->group(function() {
     
-    Route::post('/', [SekolahController::class, 'index'])->name('sekolah.index');
+    Route::post('/', [SekolahController::class, 'index'])->name('front.sekolah.index');
     Route::post('/{id}', [SekolahController::class, 'show'])->name('sekolah.show');
 });
 

@@ -13,8 +13,9 @@ class GuruController extends Controller
 
     public function page(Request $request)
     {
+        $gurus = $request->user()->level == 'admin' ? Guru::with('sekolah', 'user')->get() : Guru::where('nip', $request->user()->userable->nip)->with('sekolah','user')->get();
         return Inertia::render('Dashboard/Guru', [
-            'gurus' => Guru::with('sekolah', 'user')->get(),
+            'gurus' => $gurus
         ], 200);
     }
     /**

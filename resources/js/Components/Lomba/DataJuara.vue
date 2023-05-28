@@ -20,16 +20,23 @@ const list = async() => {
     loading.value = true
     await axios.post(route('juara.index'))
                 .then(res => {
-                    datas.value = res.data.juaras.filter(item => {
+                    let juaras = res.data.juaras.filter(item => {
                         if ( page.props.auth.user.level == 'admin') {
                             return item
                         } else {
                             return item.peserta.sekolah_id == page.props.sekolahs[0].npsn
                         }
                     })
-                    loading.value = false
+                    // console.log(res.data.juaras)
+                    // datas.value = res.data.juaras
+                    // loading.value = false
+                    datas.value = juaras
                 })
 }
+
+const items = computed(() => {
+    return datas.value
+})
 
 const selectedJuara = ref(null)
 const cetak = (juara) => {
@@ -101,7 +108,7 @@ onMounted(() => {
     <Head title="Data Juara" />
     <div class="toolbar bg-white h-12 py-2 px-3 flex items-center justify-between shadow print:hidden sticky top-0">
         <span>
-            DATA PERAIH JUARA {{ page.props.sekolahs[0].nama }}
+            DATA PERAIH JUARA {{ page.props.auth.user.level !== 'admin' ? page.props.sekolahs[0].nama : '' }}
         </span>
         <div class="toolbar-items flex items-center gap-1">
             <input type="file" name="fileJuara" ref="fileJuara" @change="onFileJuaraPicked" accept=".xlsx, .xls, .ods, .csv" class="hidden">
@@ -157,6 +164,7 @@ onMounted(() => {
                     </tr>
                 </tbody>
             </table>
+
         </div>
 
         <div class="w-full border bg-gray-100" v-else-if="mode=='impor'">

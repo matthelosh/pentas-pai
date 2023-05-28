@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Juara;
-use App\Models\Panitia;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use App\Models\Guru;
 use App\Models\User;
 use Inertia\Inertia;
+use App\Models\Juara;
+use App\Models\Panitia;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+
 class JuaraController extends Controller
 {
     /**
@@ -18,10 +20,11 @@ class JuaraController extends Controller
         // dd($request->query('lomba'));
         try {
             if (!$request->query('lomba')) {
-                $juaras = Juara::with('peserta.sekolah', 'bidang')->orderBy('bidang_id', 'ASC')->orderBy('peringkat','ASC')->get();
+                $juaras = Juara::with('peserta.sekolah', 'bidang')->orderBy('peringkat','ASC')->get();
             } else {
-                $panitia = Panitia::where('user_id', $request->user()->id)->with('guru')->first();
-                $npsn = $panitia->guru->sekolah_id;
+                // $panitia = Panitia::where('user_id', $request->user()->id)->with('guru')->first();
+                $guru = Guru::where('id', $request->user()->userable_id)->first();
+                $npsn = $guru->sekolah_id;
                 $juaras = Juara::where('bidang_id', $request->query('lomba'))->with('peserta.sekolah')->get();
             }
             return response()->json(['status' => 'ok', 'juaras' => $juaras], 200);

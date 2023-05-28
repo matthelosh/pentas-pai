@@ -57,7 +57,7 @@ const open = (data) => {
         urlFoto.value = imgUrl(data.foto ? data.foto : '/img/peserta.png' )
     } else {
         mode.value = 'new'
-        peserta.value = {lomba_id: []}
+        peserta.value = {lomba_id: [], sekolah_id: page.props.auth.user.level == 'admin' ? '0' : page.props.sekolahs[0].npsn }
         urlFoto.value = '/img/peserta.png'
     }
 
@@ -75,11 +75,6 @@ const kirim = async () => {
     if(fileFoto.value !== null) {
         formData.append("foto", fileFoto.value)
     }
-    // let data = {
-    //     data: JSON.stringify(peserta.value),
-    //     foto: fileFoto.value
-    // }
-    // console.log(data)
     await axios.post(route(routeName, {id: peserta.value.id}), formData)
                 .then(res=> {
                     // console.log(res)
@@ -102,16 +97,10 @@ const listBidangs = () => {
                 bidangs.value = res.data.bidangs
             })
 }
-const listSekolahs = () => {
-    axios.post(route('sekolah.index'))
-            .then(res => {
-                sekolahs.value = res.data.sekolahs
-            })
-}
 
 onMounted(() => {
     listBidangs()
-    listSekolahs()
+    // listSekolahs()
 })
 </script>
 
@@ -132,7 +121,8 @@ onMounted(() => {
                 <div class="flex justify-between mb-3">
                     <label for="sekolah">Sekolah</label>
                     <select name="sekolah" class="rounded-lg w-3/4 p-1 placeholder:text-blue-500 focus:border-blue-500 bg-gray-100" placeholder="Pilih" v-model="peserta.sekolah_id">
-                        <option v-for="(sekolah,s) in sekolahs" :key="s" :value="sekolah.npsn" >{{ sekolah.nama }}</option>
+                        <option value="0">Pilih Sekolah</option>
+                        <option v-for="(sekolah,s) in page.props.sekolahs" :key="s" :value="sekolah.npsn" >{{ sekolah.nama }}</option>
                     </select>
                 </div>
                 <div class="flex justify-between mb-3">

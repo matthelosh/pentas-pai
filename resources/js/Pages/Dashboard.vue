@@ -13,7 +13,7 @@ const datas = [
 <template>
 <Head title="Dashboard" />
 <Dash title="Dashboard">
-    <div class="content grid grid-cols-4 gap-3">
+    <div class="content grid grid-cols-4 gap-3 p-3">
         <div v-for="(data,d) in page.props.datas" :key="d" class="p-3 bg-white rounded shadow">
             <h1>{{d}}: {{data.length}}</h1>
         </div>

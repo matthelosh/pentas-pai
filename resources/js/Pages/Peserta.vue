@@ -30,7 +30,7 @@ const datas = computed(() => {
 <template>
 <Head title="Data Peserta" />
 <Front>
-<div class="w-full bg-white">
+<div class="w-full bg-white rounded-xl overflow-hidden my-20 md:my-4">
     <div class="toolbar w-full h-12 bg-gray-50 rounded shadow flex items-center px-3 justify-between">
         <h1>Data Peserta</h1>
         <div class="toolbar-items flex items-center gap-2">

@@ -40,22 +40,25 @@ const closeImpor = () => {
 <Head title="Data Sekolah" />
 <ImportSekolah :show="importDialog" :datas="importedDatas" @close="closeImpor" />
 <Dash title="Data Sekolah">
-    <div class="container w-full bg-white">
+    <div class="container w-full bg-white my-4 md:mt-0 rounded-xl overflow-hidden">
         <div class="toolbar w-full h-12 flex items-center justify-between p-3 sticky top-0 bg-white shadow">
-            <span>
-                Data Sekolah
+            <span >
+                <h1 class="hidden md:block tetx-lg font-bold">
+                    Data Sekolah
+                </h1>
             </span>
             <div class="toolbar-items flex items-center gap-2">
                 <input type="file" name="fileSekolah" ref="fileSekolah" @change="onFilePicked" class="hidden" accept=".xls, .xlsx, .ods, .csv">
-                <button class="p-2 bg-teal-600 flex items-center text-white rounded hover:bg-teal-800 active:bg-orange-600" @click="$refs.fileSekolah.click()">
+                <button class="py-1 px-2 bg-teal-600 flex items-center text-white rounded hover:bg-teal-800 active:bg-orange-600" @click="$refs.fileSekolah.click()">
                     <SvgIcon type="mdi" :path="mdiFileExcelBox" class="h-6 text-white" />
                     {{ imporBtnTitle }}
                 </button>
             </div>
         </div>
-        <div class="content pb-8">
-            <table class="table w-full border border-collapse">
-                <thead class="sticky top-12">
+        <div class="content w-full bg-white p-3 mt-2 ">
+            <div class="overflow-x-auto w-full border">
+                <table class="w-[100%] table table-responsive border-collapse ">
+                <thead>
                     <tr class="bg-teal-200">
                         <th class="p-3 border-e border-gray-600">No</th>
                         <th class="p-3 border-e border-gray-600">NPSN</th>
@@ -78,6 +81,7 @@ const closeImpor = () => {
                     </tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 </Dash>

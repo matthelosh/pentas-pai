@@ -36,16 +36,16 @@ onMounted(() => {
 <AlertBox ref="alertBox" />    
 <Head title="Login" />
 <Front class="h-screen">
-<div class="container md:flex md:items-center md:h-[580px]">
-    <div class="container bg-white w-full rounded shadow-lg columns-1 md:columns-2 gap-4 md:w-9/12 mx-auto">
-        <div class="w-full h-96 flex items-center justify-center bg-teal-700">
+<div class="container md:flex md:items-center pt-16">
+    <div class="container bg-white w-full rounded-xl overflow-hidden shadow-lg columns-1 md:columns-2 gap-4 md:w-8/12 mx-auto">
+        <div class="w-full h-48 md:h-96 flex items-center justify-center bg-teal-700">
             <div>
                 <img src="img/peserta.png" alt="Avatar" class="mx-auto rounded-full aspect-square shadow-md border p-1 bg-gray-200" width="100">
                 <h3 class="text-center text-white">Selamat Datang!</h3>
             </div>
         </div>
-        <div class="w-full h-96 flex items-center justify-center">
-            <form ref="form-login" @submit.prevent="login" class="w-full px-10">
+        <div class="w-full h-80 md:h-96 flex items-center justify-center">
+            <form ref="form-login" @submit.prevent="login" class="w-full px-4 md:px-10">
                 <div class="mb-5">
                     <h3 class="text-2xl flex items-center">
                         <LockClosedIcon class="h-6 mb-1" />

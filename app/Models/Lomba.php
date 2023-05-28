@@ -36,6 +36,6 @@ class Lomba extends Model
 
     public function pesertas()
     {
-        return $this->belongsTo(Peserta::class, 'lomba_peserta', 'lomba_id', 'peserta_id');
+        return $this->belongsToMany(Peserta::class, 'lomba_peserta', 'lomba_id', 'peserta_id');
     }
 }

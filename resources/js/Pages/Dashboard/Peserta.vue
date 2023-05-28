@@ -106,9 +106,9 @@ const formPeserta = ref(null)
 const edit = async (peserta) => {
     await formPeserta.value.open(peserta)
                 .then(ok => {
-                    if (ok) {
+                    // if (ok) {
                         router.reload({only: ['pesertas']})
-                    }
+                    // }
                 })
 }
 </script> 
@@ -118,18 +118,14 @@ const edit = async (peserta) => {
 <DialogBox ref="dialog" />
 <ImportTable ref="importTable" />
 <Head title="Data Peserta" />
-<Dash>
-<div class="w-full bg-white">
-    <div class="toolbar w-full h-12 bg-gray-50 rounded shadow flex items-center px-0 md:px-3 justify-center md:justify-between print:hidden">
+<Dash title="Data Peserta">
+<div class="w-full bg-white my-4 rounded-xl overflow-hidden">
+    <div class="toolbar w-full h-12 bg-gray-50 rounded shadow flex items-center px-2 md:px-3 justify-center md:justify-between print:hidden overflow-hidden">
         <h1 class="hidden md:inline">
-            <span >Data Peserta</span>
+            <!-- <span >Data Peserta</span> -->
         </h1>
         <div class="toolbar-items flex items-center gap-2">
             <input type="file" name="filePeserta" id="filePeserta" ref="filePeserta" @change="onFilePicked" class="hidden" accept=".xlsx, .xls, .ods, .csv" />
-            <label for="select" class="mx-3 hidden md:inline" >
-                <input type="checkbox" name="select" id="select" class="rounded" v-model="select" />
-                Pilih Data
-            </label>
             <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 rounded" @click="edit(null)" >Baru</button>
             <button class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 rounded flex items-center" @click="$refs.filePeserta.click()">
                 <span class="hidden md:inline">
@@ -147,7 +143,7 @@ const edit = async (peserta) => {
 
     <div class="content w-full bg-white p-3 mt-2 ">
         <div class="overflow-x-auto w-full border">
-            <table class="w-full table table-responsive border-collapse ">
+            <table class="w-[100%] table table-responsive border-collapse ">
                 <caption class="text-left md:text-center p-2">
                     <h1 class="text-xl">Data Peserta {{ $page.props.lomba.label }}</h1>
                 </caption>
@@ -155,9 +151,8 @@ const edit = async (peserta) => {
                     <tr>
                         <th class="border text-center">
                             <span v-show="!select">No</span>
-                            <input type="checkbox" name="select" id="select" class="rounded"  v-if="select" @change="selectedAll" />
                         </th>
-                        <th class="border text-center">NISN</th>
+                        <th class="border text-center ">NISN</th>
                         <th class="border text-center">Nama</th>
                         <th class="border text-center">JK</th>
                         <th class="border text-center">Sekolah</th>
@@ -168,24 +163,24 @@ const edit = async (peserta) => {
                 <tbody>
                     <tr class="odd:bg-gray-50" v-for="(data,d) in datas.current" :key="d">
                         <td class="border p-2">
-                            <span v-show="!select">{{ d+1 }}</span>
-                            <input type="checkbox" name="select" id="select" class="rounded"  :checked="checked(data.nisn)" v-if="select" @change="selectOne($event, data)" />
+                            {{ d+1 }}
                         </td>
-                        <td class="border p-2">{{ data.nisn }}</td>
-                        <td class="border p-2">
-                            <div class="h-full grid grid-cols-2 md:flex items-center gap-2 cursor-pointer" @click="edit(data)">
+                        <td class="border p-2 text-center">{{ data.nisn }}</td>
+                        <td class="border p-2 " @click="edit(data)">
+                            <span class="flex items-center gap-1 flex-wrap justify-center md:justify-start cursor-pointer text-teal-800 hover:text-orange-600">
                                 <img :src="imgUrl(data.foto)" alt="Foto" class="h-8 aspect-square object-cover object-top rounded-full" />
-                            {{ data.nama }}
-                            </div>
-                            
+                                {{ data.nama }}
+                            </span>
                         </td>
-                        <td class="border p-2">{{ data.jk }}</td>
+                        <td class="border p-2 text-center">{{ data.jk }}</td>
                         <td class="border p-2">{{ data.sekolah.nama }}</td>
-                        <td class="border p-2 flex gap-2">
+                        <td class="border p-2">
+                            <span class="flex gap-1 flex-wrap">
                             <div class="bg-teal-200 px-2 py-1 rounded">{{ data.lomba_id }}</div>
                             <ul>
                                 <li v-for="(bidang,b) in data.bidangs" :key="b">{{ b+1 }}. {{ bidang.label }}</li>
                             </ul>
+                        </span>
                         </td>
                         <td class="text-center border p-2 print:hidden">
                             <button class="p-0 text-red-400 hover:text-red-600 active:text-orange-400" @click="hapus(data.id)">
@@ -198,7 +193,7 @@ const edit = async (peserta) => {
         </div>
         <div class="w-full bg-gray-200 flex items-center justify-between px-3  flex-wrap print:hidden">
             <div class="flex items-center gap-1">
-                Total: {{ datas.total }}
+                Total: {{ datas.dataLength }}
             </div>
             Jml Halaman: {{ datas.pageCount }}
             

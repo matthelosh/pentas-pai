@@ -42,7 +42,7 @@ const chartByBidangOptions = ref({
 
 
 const listSekolah = async () => {
-    await axios.post(route('sekolah.index'))
+    await axios.post(route('front.sekolah.index'))
                 .then(res => {
                     sekolahs.value = res.data.sekolahs
                 }).catch( err => console.log(err))
@@ -99,17 +99,17 @@ onMounted(() => {
 
 <template>
 <Report ref="report" />
-<div class="w-full md:w-3/4 mx-auto relative">
+<div class="w-full md:w-3/4 mx-auto relative mt-16 md:mt-4">
     <h1 class="text-center text-2xl md:text-4xl my-4 font-extrabold">{{lombas.label}}</h1>
     <div class="w-full grid grid-cols-1 gap-3">
-        <PolarAreaChart :chartData="chartByBidang" :plugins="[ChartDataLabels]" :options="chartByBidangOptions" class="bg-white" />
+        <PolarAreaChart :chartData="chartByBidang" :plugins="[ChartDataLabels]" :options="chartByBidangOptions" class="bg-white rounded-xl" />
         <div class="w-full md:w-2/4 md:mx-auto">
             <h3 class="text-center text-gray-800">Klik Sekolah Anda untuk melihat Data Peserta</h3>
-            <div class="h-12 text-white flex items-center justify-between px-2 my-1 border cursor-pointer"  
+            <div class="h-14 text-white flex items-center justify-between my-3 px-2 border cursor-pointer rounded-xl shadow"  
                 v-for="(sekolah, s) in dataSekolahs.current" 
                 :key="s" 
                 :style="`width: 100%;
-                background-image: linear-gradient(to right, #307845 ${ Math.ceil(((sekolah.pesertas ? sekolah.pesertas.length : 0)/17)*100) }%, transparent ${100 - Math.ceil(((sekolah.pesertas ? sekolah.pesertas.length : 0)/17)*100)}%);
+                background-image: linear-gradient(to right, #307845 ${ Math.ceil(((sekolah.pesertas ? sekolah.pesertas.length : 0)/17)*100) }%, orange ${100 - Math.ceil(((sekolah.pesertas ? sekolah.pesertas.length : 0)/17)*100)}%);
                 background-repeat: no-repeat
                 background-size: ${ Math.ceil(((sekolah.pesertas ? sekolah.pesertas.length : 0)/17)*100) }% 100%;`"
                 @click="lihat(sekolah)"
@@ -120,12 +120,12 @@ onMounted(() => {
                 </span>
                 <ArrowRightIcon class="h-8 text-white" />
             </div>
-            <div class="flex justify-between">
-                <button class="bg-white px-5 py-1" @click="sekolahPage = sekolahPage > 1 ? (sekolahPage - 1) : 1">
-                    <ArrowLeftIcon class="h-8 text-gray-400 hover:text-gray-200 active:text-gray-600"  />
+            <div class="flex justify-between mt-4 px-8">
+                <button class="bg-white px-5 py-1 rounded-full shadow" @click="sekolahPage = sekolahPage > 1 ? (sekolahPage - 1) : 1">
+                    <ArrowLeftIcon class="h-8 text-gray-600 hover:text-orange-400 active:text-gray-600"  />
                 </button>
-                <button class="bg-white px-5 py-1" @click="sekolahPage = sekolahPage < dataSekolahs.pageCount ? (sekolahPage + 1) : dataSekolahs.pageCount">
-                    <ArrowRightIcon class="h-8 text-gray-400 hover:text-gray-200 active:text-gray-600" />
+                <button class="bg-white px-5 py-1 rounded-full shadow" @click="sekolahPage = sekolahPage < dataSekolahs.pageCount ? (sekolahPage + 1) : dataSekolahs.pageCount">
+                    <ArrowRightIcon class="h-8 text-gray-600 hover:text-orange-400 active:text-gray-600" />
                 </button>
             </div>
         </div>

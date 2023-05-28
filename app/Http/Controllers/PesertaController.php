@@ -28,7 +28,7 @@ class PesertaController extends Controller
             // return auth()->user()->panitias[0]->guru;
             $page = auth()->user() ? 'Dashboard/' : '';
             if (auth()->check() && auth()->user()->level == 'panitia') {
-                $pesertas = Peserta::where('sekolah_id', auth()->user()->panitias[0]->guru->sekolah_id)->whereHas('lomba', function($q) {
+                $pesertas = Peserta::where('sekolah_id', auth()->user()->userable->sekolah_id)->whereHas('lomba', function($q) {
                     $q->where('lombas.status','1');
                 })->with('sekolah','bidangs')->get();
             } else {
@@ -120,8 +120,9 @@ class PesertaController extends Controller
     public function impor(Request $request)
     {
        try {
+        $lomba = Lomba::where('status','1')->first();
         foreach($request->data as $data) {
-            Peserta::updateOrCreate(
+            $peserta = Peserta::updateOrCreate(
                 [
                     'nisn' => $data['nisn'] ?? null
                 ],
@@ -134,7 +135,18 @@ class PesertaController extends Controller
                     'lomba_id' => $data['lomba_id']
                 ]
             );
-            
+            $bidangs = [];
+            foreach(explode(",",$data['lomba_id']) as $kode) {
+                $bidang = Bidang::where('kode', preg_replace('/\s+/', '', $kode))->select('id')->first();
+                if($bidang !== null) {
+                    array_push($bidangs, $bidang->id);
+                }
+            }
+
+            if(count($peserta->bidangs) < 1) {
+                $peserta->bidangs()->attach($bidangs);
+                $peserta->lomba()->attach($lomba->id);
+            }
         }
         return response()->json(['status' => 'ok', 'msg' => "Calon peserta disimpan"], 200);
        } catch(\Exception $e) {
@@ -170,9 +182,11 @@ class PesertaController extends Controller
             $peserta->lomba_id = implode(",",$data->lomba_id);
             $peserta->sekolah_id = $data->sekolah_id;
             $peserta->save();
-            if (count($peserta->bidangs) < count($bidangs)) {
-                $peserta->bidangs()->attach($bidangs);
-            }
+            // if (count($peserta->bidangs) < count($bidangs)) {
+            //     $peserta->bidangs()->attach($bidangs);
+            // }
+            $peserta->bidangs()->detach();
+            $peserta->bidangs()->attach($bidangs);
             return response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
         } catch(\Exception $e) {
             return response()->json(['status' => 'fail', 'msg' => $e->getMessage(), 'errCode' => $e->getCode()], 500);
