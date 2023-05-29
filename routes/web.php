@@ -81,9 +81,6 @@ Route::prefix('sekretariat')->middleware(['auth','verified'])->group(function ()
     });
 
     Route::prefix('peserta')->group(function() {
-        // Route::inertia('/', 'Dashboard/Peserta', [
-        //     'pesertas' => Peserta::with('sekolah','bidangs')->get(),
-        // ])->name('dashboard.peserta');
         Route::get('/', [PesertaController::class, 'index'])->name('dashboard.peserta');
         Route::post('/', [PesertaController::class, 'getPeserta'])->name('dashboard.peserta.index');
         Route::post('/attach', [PesertaController::class, 'attach'])->name('dashboard.peserta.attach');
@@ -91,6 +88,7 @@ Route::prefix('sekretariat')->middleware(['auth','verified'])->group(function ()
         Route::delete('/{id}', [PesertaController::class, 'destroy'])->name('dashboard.peserta.destroy');
         Route::post('/{id}', [PesertaController::class, 'update'])->name('dashboard.peserta.update');
     });
+
 
     Route::post('/bidang', function() {
         return response()->json(['bidangs' => Bidang::all()], 200);
@@ -134,6 +132,9 @@ Route::prefix('sekretariat')->middleware(['auth','verified'])->group(function ()
         // Route::inertia('/', 'Dashboard/LazyAdministrasi')->name('administrasi');
         Route::inertia('/', 'Dashboard/Administrasi')->name('administrasi');
         // Route::get('/', [JuaraController::class, 'tes'])->name('administrasi');
+        Route::get('/peserta', [AdministrasiController::class, 'peserta'])->name('administrasi.peserta');
+        Route::get('/lomba', [AdministrasiController::class, 'lomba'])->name('administrasi.lomba');
+        Route::get('/panitia', [AdministrasiController::class, 'panitia'])->name('administrasi.panitia');
     });
 });
 

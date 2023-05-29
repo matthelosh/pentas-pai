@@ -1,9 +1,9 @@
 <script setup>
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref, computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { Bars3CenterLeftIcon, XMarkIcon} from '@heroicons/vue/20/solid';
 import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiLogin } from '@mdi/js';
+import { mdiLogin, mdiViewDashboard } from '@mdi/js';
 
 const Footer = defineAsyncComponent(() => import('@/Components/Welcome/FrontFooter.vue'))
 const nav = ref(false)
@@ -12,6 +12,8 @@ const toggleNav = (e) => {
     navList.classList.toggle('hidden')
     nav.value = !nav.value
 }
+
+
 </script>
 
 <template>
@@ -48,8 +50,9 @@ const toggleNav = (e) => {
                 </li>
                 <li class=" max-0 my-0 md:mx-1">
                     <Link :href="route('dashboard')" class="flex p-2">
-                        <span class="md:hidden">Login</span>
-                        <svg-icon type="mdi" :path="mdiLogin" class="text-sky-600" />
+                        <svg-icon type="mdi" :path="$page.props.auth.user ? mdiViewDashboard : mdiLogin" class="text-sky-600" />
+                        <span class="md:hidden">{{ $page.props.auth.user ? ' Dashboard' : ' Login' }}</span>
+                        
                     </Link>
                 </li>
             </ul>

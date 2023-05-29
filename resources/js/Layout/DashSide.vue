@@ -45,17 +45,17 @@ const menus = ref([
         children: [
             {
                 label: 'Administrasi Peserta',
-                url: '#',
+                url: 'administrasi.peserta',
                 roles: ['admin','panitia']
             },
             {
                 label: 'Administrasi Lomba',
-                url: '#',
+                url: 'administrasi.lomba',
                 roles: ['admin']
             },
             {
                 label: 'Administrasi Panitia',
-                url: '#',
+                url: 'administrasi.panitia',
                 roles: ['admin','panitia']
             },
         ]
