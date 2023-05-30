@@ -166,7 +166,7 @@ class PesertaController extends Controller
             if ( $request->file('foto')) {
                 $foto = $request->file('foto');
                 $file = Storage::putFileAs('public/img/peserta', $foto, $data->nisn.'.jpg');
-                dd($foto);
+                dd(Storage::url($file));
             }
             $bidangs = [];
             foreach($data->lomba_id as $kode) {
