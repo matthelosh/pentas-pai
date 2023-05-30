@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bidang;
 use App\Models\Lomba;
 use App\Models\Peserta;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -165,6 +166,7 @@ class PesertaController extends Controller
             $data = json_decode($request->data);
             if ( $request->file('foto')) {
                 $foto = $request->file('foto');
+                Storage::delete('public/img/peserta/'.$data->nisn.'.jpg');
                 $file = Storage::putFileAs('public/img/peserta', $foto, $data->nisn.'.jpg');
                 // dd(Storage::url($file));
             }

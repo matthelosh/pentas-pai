@@ -79,7 +79,7 @@ const kirim = async () => {
                 .then(res=> {
                     // console.log(res)
                     loading.value = false
-                    rejected.value(true)
+                    resolved.value(true)
                     show.value = false
                 }).catch(err => {
                     loading.value = false

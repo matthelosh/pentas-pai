@@ -32,7 +32,7 @@ const datas = computed(() => {
     // let pages =  _.chunk(pesertas.value, 10)
 
     // return {current: pages[currentPage.value-1], pageCount: pages.length, total: length}
-    return paginate(pesertas.value, currentPage.value)
+    return paginate($page.props.pesertas, currentPage.value)
 })
 const fixData = async () => {
     loading.value = true
