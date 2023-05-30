@@ -163,11 +163,16 @@ class PesertaController extends Controller
         try {
             // dd(Peserta::find($id));
             // dd($request->file('foto'));
+            
             $data = json_decode($request->data);
+            $foto = $data->foto;
             if ( $request->file('foto')) {
                 $foto = $request->file('foto');
-                Storage::delete('public/img/peserta/'.$data->nisn.'.jpg');
-                $file = Storage::putFileAs('public/img/peserta', $foto, $data->nisn.'.jpg');
+                $delete = Storage::delete('public/img/peserta/'.$data->nisn.'.jpg');
+                $store = Storage::putFileAs('public/img/peserta', $foto, $data->nisn.'.jpg');
+                if($store) {
+                    $foto = Storage::url($store);
+                }
                 // dd(Storage::url($file));
             }
             $bidangs = [];
@@ -180,7 +185,7 @@ class PesertaController extends Controller
             $peserta->nisn = $data->nisn;
             $peserta->nama = $data->nama;
             $peserta->jk = $data->jk;
-            $peserta->foto = isset($file) ? Storage::url($file) : '/img/peserta.png';
+            $peserta->foto = $foto;
             $peserta->hp = $data->hp;
             $peserta->lomba_id = implode(",",$data->lomba_id);
             $peserta->sekolah_id = $data->sekolah_id;
