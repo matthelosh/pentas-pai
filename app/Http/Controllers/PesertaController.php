@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bidang;
 use App\Models\Lomba;
 use App\Models\Peserta;
+use Exception;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class PesertaController extends Controller
                     $q->where('lombas.status','1');
                 })->with('sekolah','bidangs')->get();
             } else {
-                $pesertas = Peserta::with('sekolah', 'bidangs')->whereHas('lomba', function($q) {
+                $pesertas = Peserta::with('sekolah')->whereHas('lomba', function($q) {
                     $q->where('lombas.status','1');
                 })->get();
             }
@@ -42,7 +43,10 @@ class PesertaController extends Controller
                 'lomba' => $this->lomba()
             ], 200);
         } catch(\Exception $e) {
-            return back()->withErrors(['msg' => $e->getMessage()]);
+            // return back()->with(['msg' => $e->getMessage()]);
+            return Inertia::render('Errors', [
+                'errors' => $e->getMEssage(),
+            ]);
         }
     }
 
@@ -72,11 +76,7 @@ class PesertaController extends Controller
                 $foto = $request->file('foto');
                 $file = Storage::putFileAs('public/img/peserta', $foto, $data->nisn.'.jpg');
             }
-            $bidangs = [];
-            foreach($data->lomba_id as $kode) {
-                $bidang = Bidang::where('kode', $kode)->select('id')->first();
-                array_push($bidangs, $bidang->id);
-            }
+            
             $peserta = new Peserta();
             $peserta->nisn = $data->nisn;
             $peserta->nama = $data->nama;
@@ -86,7 +86,7 @@ class PesertaController extends Controller
             $peserta->lomba_id = implode(",", $data->lomba_id);
             $peserta->sekolah_id = $data->sekolah_id;
             $peserta->save();
-            $peserta->bidangs()->attach($bidangs);
+            $peserta->bidangs()->attach($peserta->lomba_id);
             $peserta->lomba()->attach($lomba->id);
             return response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
         } catch(\Exception $e) {
@@ -122,6 +122,9 @@ class PesertaController extends Controller
     {
        try {
         $lomba = Lomba::where('status','1')->first();
+        if(!$lomba) {
+            throw new \Exception("Belum ada Lomba yang Aktif");
+        }
         foreach($request->data as $data) {
             $peserta = Peserta::updateOrCreate(
                 [
@@ -133,21 +136,25 @@ class PesertaController extends Controller
                     'sekolah_id' => $data['sekolah_id'],
                     'foto' => $data['foto'] ?? '/img/peserta.png',
                     'hp' => $data['hp'],
-                    'lomba_id' => $data['lomba_id']
+                    'lomba_id' => $lomba->id,
+                    'bidang_id' => $data['bidangs']
                 ]
             );
-            $bidangs = [];
-            foreach(explode(",",$data['lomba_id']) as $kode) {
-                $bidang = Bidang::where('kode', preg_replace('/\s+/', '', $kode))->select('id')->first();
-                if($bidang !== null) {
-                    array_push($bidangs, $bidang->id);
-                }
-            }
+            // $bidangs = [];
+            // foreach(explode(",",$data['lomba_id']) as $kode) {
+            //     $kelompok = $peserta->jk == 'Laki-laki' ? 'pa' : 'pi';
+            //     $kode = preg_replace('/\s+/', '', $kode);
+            //     $lomba = Lomba::where('status','1')->first();
+            //     $bidang = Bidang::where('kode', 'LIKE', $lomba->kode.'-'.$kode.'%')->select('id')->first();
+            //     if($bidang !== null) {
+            //         array_push($bidangs, $bidang->id);
+            //     }
+            // }
 
-            if(count($peserta->bidangs) < 1) {
-                $peserta->bidangs()->attach($bidangs);
-                $peserta->lomba()->attach($lomba->id);
-            }
+            // if(count($peserta->bidangs) < 1) {
+            //     $peserta->bidangs()->attach($bidangs);
+            //     $peserta->lomba()->attach($lomba->id);
+            // }
         }
         return response()->json(['status' => 'ok', 'msg' => "Calon peserta disimpan"], 200);
        } catch(\Exception $e) {
@@ -163,7 +170,7 @@ class PesertaController extends Controller
         try {
             // dd(Peserta::find($id));
             // dd($request->file('foto'));
-            
+            $lomba = Lomba::where('status','1')->first();
             $data = json_decode($request->data);
             $foto = $data->foto;
             if ( $request->file('foto')) {
@@ -174,11 +181,6 @@ class PesertaController extends Controller
                     $foto = Storage::url($store);
                 }
                 // dd(Storage::url($file));
-            }
-            $bidangs = [];
-            foreach($data->lomba_id as $kode) {
-                $bidang = Bidang::where('kode', $kode)->first();
-                array_push($bidangs, $bidang->id);
             }
             $peserta = Peserta::find($id);
             // dd($peserta);
@@ -194,7 +196,7 @@ class PesertaController extends Controller
             //     $peserta->bidangs()->attach($bidangs);
             // }
             $peserta->bidangs()->detach();
-            $peserta->bidangs()->attach($bidangs);
+            $peserta->bidangs()->attach($data->lomba_id);
             return response()->json(['status' => 'ok', 'msg' => 'Peserta dalam proses pendaftaran'], 200);
         } catch(\Exception $e) {
             return response()->json(['status' => 'fail', 'msg' => $e->getMessage(), 'errCode' => $e->getCode()], 500);

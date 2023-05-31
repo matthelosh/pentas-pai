@@ -61,6 +61,9 @@ const onFilePicked = async (ev) => {
         await importTable.value.open("Cek Calon Peserta", calons)
                                 .then(res => {
                                     router.reload({only: ['pesertas']})
+                                }).catch(err => {
+                                    filePeserta.value = null
+                                    btnImporText.value = 'Ambil File'
                                 })
                             
     }
@@ -149,7 +152,7 @@ const edit = async (peserta) => {
         <div class="overflow-x-auto w-full border">
             <table class="w-[100%] table table-responsive border-collapse ">
                 <caption class="text-left md:text-center p-2">
-                    <h1 class="text-xl">Data Peserta {{ $page.props.lomba.label }}</h1>
+                    <h1 class="text-xl">{{ $page.props.lomba ? 'Data Peserta '+$page.props.lomba.label : 'Data Lomba Bellum Diisi' }}</h1>
                 </caption>
                 <thead>
                     <tr>
@@ -181,9 +184,10 @@ const edit = async (peserta) => {
                         <td class="border p-2">
                             <span class="flex gap-1 flex-wrap">
                             <div class="bg-teal-200 px-2 py-1 rounded">{{ data.lomba_id }}</div>
-                            <ul>
+                            <!-- <ul>
                                 <li v-for="(bidang,b) in data.bidangs" :key="b">{{ b+1 }}. {{ bidang.label }}</li>
-                            </ul>
+                            </ul> -->
+                            {{ data.bidangs }}
                         </span>
                         </td>
                         <td class="text-center border p-2 print:hidden">

@@ -150,7 +150,7 @@ onMounted(() => {
                     <label for="lomba">Lomba</label>
                     <select name="lomba" class="rounded-lg w-3/4 p-1 placeholder:text-blue-500 focus:border-blue-500 bg-gray-100" placeholder="Pilih" v-model="peserta.lomba_id" multiple>
                         <!-- <option value="0" selected>Pilih</option> -->
-                        <option v-for="(lomba,l) in bidangs" :key="l" :value="lomba.kode" :selected="lomba.kode == peserta.lomba_id">{{ lomba.label }}</option>
+                        <option v-for="(bidang,l) in bidangs" :key="l" :value="bidang.id" :selected="bidang.id == peserta.lomba_id">{{ bidang.label }} [{{ bidang.kategori }} {{ bidang.kelompok }}]</option>
                         
                     </select>
                 </div>

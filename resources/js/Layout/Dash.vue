@@ -5,8 +5,8 @@ import { Link, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiExitToApp } from '@mdi/js';
-
-const SideNav = defineAsyncComponent(() => import('@/Layout/DashSide.vue'))
+import SideNav from '@/Layout/DashSide.vue'
+// const SideNav = defineAsyncComponent(() => import('@/Layout/DashSide.vue'))
 const Loading = defineAsyncComponent(() => import('@/Components/General/Loading.vue'))
 const loading = ref(false)
 
@@ -22,20 +22,6 @@ const toggleSide = () => {
     side.value = !side.value
 }
 
-const imTouched = (e) => {
-    let el = e.target
-    let icon = el.querySelector('.ikon')
-    if(!el.classList.contains('active')) {
-        icon.classList.remove('hidden')
-    }
-    
-}
-const leftBehind = (e) => {
-    let el = e.target
-    let icon = el.querySelector('.ikon')
-    if(!el.classList.contains('active'))
-    {icon.classList.add('hidden')}
-}
 
 const logout = () => {
     loading.value = true
@@ -44,21 +30,6 @@ const logout = () => {
             window.location.href= route('login')
             loading.value = false
         })
-}
-
-
-const expandChild = (e) => {
-    const li = e.target.closest('li')
-    li.querySelector('ul').classList.toggle('hidden')
-    
-}
-
-const amIActive = (url) => {
-    return route().current() == url ? true : false
-}
-
-const doesMyChildActive = (children) => {
-    return children.includes(route().current()) ? true : false
 }
 
 const admin = computed(() => {
@@ -103,9 +74,11 @@ const confirmLogout = async () => {
                 <Bars3CenterLeftIcon class="h-6 cursor-pointer md:hidden" v-else />
             </button>
         </nav>
-        <main class="px-3 md:px-0 print:p-0 print:m-0 md:rounded-br-lg md:translate-x-[263px] print:translate-x-[0]  print:col-span-12">
-            <slot />
-        </main>
+        <Transition name="page" mode="out-in" appear>
+            <main :key="$page.url" class="px-3 md:px-0 print:p-0 print:m-0 md:rounded-br-lg md:translate-x-[263px] print:translate-x-[0]  print:col-span-12">
+                <slot />
+            </main>
+        </Transition>
     </div>
 </div>
 </template>
@@ -131,24 +104,18 @@ const confirmLogout = async () => {
   filter: drop-shadow(0 0 3px rgba(0,0,0,0.5));
 }
 
-li > a.active {
-    background: white;
+.page-enter-active,
+.page-leave-active {
+    transition: all .35s linear;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
+.page-enter-from,
+.page-leave-to {
+    opacity: 0;
 }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.child-menu {
-    transition: all .35s cubic-bezier(0.075, 0.82, 0.165, 1);
-}
-.child-menu.hidden {
-    transition: all .35s cubic-bezier(0.075, 0.82, 0.165, 1);
+.page-enter-to,
+.page-leave-from {
+    opacity: 1;
 }
 </style>

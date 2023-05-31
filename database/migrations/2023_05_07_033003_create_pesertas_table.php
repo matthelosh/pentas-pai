@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('foto', 191);
             $table->string('hp', 16)->nullable();
             $table->string('lomba_id', 60);
+            $table->string('bidang_id', 60);
             $table->timestamps();
         });
     }

@@ -140,3 +140,36 @@ const leftBehind = (e) => {
     </ul>
         
 </template>
+
+<style scoped>
+li > a.active {
+    background: white;
+}
+
+/* .fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+} */
+
+.child-menu {
+    transition: all .35s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.child-menu.hidden {
+    transition: all .35s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.page-enter-active,
+    .page-leave-active {
+        transition: all .1s;
+    }
+
+.page-enter,
+.page-leave-active {
+    opacity: 0;
+}
+</style>

@@ -2,23 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Lomba;
+use Illuminate\Http\Request;
 
 class AdministrasiController extends Controller
 {
     public function peserta(Request $request)
     {
-        return Inertia::render('Dashboard/AdministrasiPeserta');
+        return Inertia::render('Dashboard/AdministrasiPeserta', [
+            'lomba' => $this->activeLomba(),
+        ]);
     }
     
     public function lomba(Request $request)
     {
-        return Inertia::render('Dashboard/AdministrasiLomba');
+        return Inertia::render('Dashboard/AdministrasiLomba', [
+            'lomba' => $this->activeLomba(),
+        ]);
     }
     
     public function panitia(Request $request)
     {
-        return Inertia::render('Dashboard/AdministrasiPanitia');
+        return Inertia::render('Dashboard/AdministrasiPanitia', [
+            'lomba' => $this->activeLomba(),
+        ]);
+    }
+
+    public function activeLomba()
+    {
+        $lomba = Lomba::where('status',1)->with('bidangs')->first();
+        return $lomba;
     }
 }

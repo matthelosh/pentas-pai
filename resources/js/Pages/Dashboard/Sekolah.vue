@@ -4,8 +4,7 @@ import { Head, router } from '@inertiajs/vue3'
 import { read, utils } from 'xlsx'
 import SvgIcon from '@jamescoyle/vue-icon'
 import { mdiFileExcelBox } from '@mdi/js'
-
-const Dash = defineAsyncComponent(() => import('@/Layout/Dash.vue'))
+import Dash from '@/Layout/Dash.vue'
 const ImportSekolah = defineAsyncComponent(() => import('@/Components/Sekolah/ImportSekolah.vue'))
 // Impor
 const imporBtnTitle = ref('Impor')

@@ -61,7 +61,7 @@ const simpan = async() => {
 const onBidangChanged = (e,b) => {
 
     lomba.value.bidangs[b].kode = `${lomba.value.kode}-${bidangs.value.filter(bid  => bid.label == e.target.value)[0].kode}-${lomba.value.bidangs[b].kategori == 'tunggal' ? 't' : 'r'}-${lomba.value.bidangs[b].kelompok[0]+lomba.value.bidangs[b].kelompok[(lomba.value.bidangs[b].kelompok.length - 1)]}`
-    lomba.value.bidangs[b].deskripsi = `Bidang Lomba ${lomba.value.bidangs[b].label} ${lomba.value.label}`
+    lomba.value.bidangs[b].deskripsi = `${lomba.value.label} Bidang  ${lomba.value.bidangs[b].label} ${lomba.value.bidangs[b].kategori} ${lomba.value.bidangs[b].kelompok} `
     console.log(e,b)
 }
 
@@ -136,7 +136,7 @@ onMounted(() => {
                             <tr>
                                 <th class="py-1 w-1/12">Kategori</th>
                                 <th class="py-1 w-1/12" >Kelompok</th>
-                                <th class="py-1 w-2/12">Label</th>
+                                <th class="py-1 w-2/12">Bidang Lomba</th>
                                 <th class="py-1 w-2/12">Kode</th>
                                 <th class="py-1 w-5/12">Deskripsi</th>
                                 <th class="py-1  flex items-center justify-center">

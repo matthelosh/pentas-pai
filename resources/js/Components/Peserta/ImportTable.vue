@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, defineAsyncComponent } from 'vue';
 import * as _ from 'lodash-es'
 import axios from 'axios';
 const show = ref(false)
@@ -9,6 +9,8 @@ const message = ref('')
 const tes = ref('Halo')
 const loading = ref(false)
 
+const AlertBox = defineAsyncComponent(() => import('@/Components/General/AlertBox.vue'))
+const alertBox = ref(null)
 
 const impor = async() => {
     await axios.post(route('dashboard.peserta.impor'), {data: items.value})
@@ -16,7 +18,11 @@ const impor = async() => {
                     show.value = false
                     resolved.value(true)
                 })
-                .catch(err => console.log(err))
+                .catch(err => {
+                    alertBox.value.open("Error", err.response.data.msg)
+                    rejected.value(err.response.data.msg)
+                    show.value = false
+                })
 }
 
 
@@ -30,6 +36,7 @@ const open = async (text, datas) => {
         rejected.value = reject
     })
 }
+
 
 const oke = async () => {
     // show.value = false
@@ -58,7 +65,8 @@ defineExpose({
 </script>
 
 <template>
-    <div class="overlay fixed top-0 right-0 bottom-0 left-0 z-50 bg-black bg-opacity-50 flex items-center justify-center" @click.self="show=false" v-if="show">
+    <AlertBox ref="alertBox" />
+    <div class="overlay fixed top-0 right-0 bottom-0 left-0 z-40 bg-black bg-opacity-50 flex items-center justify-center" @click.self="show=false" v-if="show">
         <div class="dialog min-w-[400px] min-h-[400px]  rounded shadow bg-white">
             <div class="toolbar bg-gray-100 flex items-center justify-between p-2">
                 <h3>Cek Calon Peserta</h3>
@@ -87,7 +95,7 @@ defineExpose({
                                 <td class="border p-2">{{ data.jk }}</td>
                                 <td class="border p-2">{{ data.sekolah_id }}</td>
                                 <td class="border p-2">
-                                    | {{ data.lomba_id }}
+                                    | {{ data.bidangs }}
                                     <ul>
                                         <li v-for="(bidang,b) in data.bidangs" :key="b"> {{ bidang.label }}</li>
                                     </ul>

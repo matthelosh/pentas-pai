@@ -16,7 +16,8 @@ class Peserta extends Model
         'sekolah_id',
         'foto',
         'hp',
-        'lomba_id'
+        'lomba_id',
+        'bidang_id'
     ];
 
     public function sekolah()
@@ -24,14 +25,14 @@ class Peserta extends Model
         return $this->belongsTo(Sekolah::class, 'sekolah_id', 'npsn');
     }
 
-    public function bidang()
-    {
-        return $this->belongsTo(Bidang::class, 'lomba_id', 'kode');
-    }
+    // public function bidang()
+    // {
+    //     return $this->belongsTo(Bidang::class, 'lomba_id', 'kode');
+    // }
 
     public function lomba()
     {
-        return $this->belongsToMany(Lomba::class, 'lomba_peserta', 'peserta_id', 'lomba_id');
+        return $this->belongsTo(Lomba::class);
     }
 
     public function bidangs()
