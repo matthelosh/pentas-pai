@@ -5,6 +5,8 @@ import { CheckCircleIcon } from '@heroicons/vue/20/solid';
 import { Head, router, usePage} from '@inertiajs/vue3';
 import axios from 'axios';
 import * as _ from 'lodash-es';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiMinusCircle } from '@mdi/js';
 const PBtn = defineAsyncComponent(() => import('@/Components/General/PBtn.vue'))
 const page = usePage()
 
@@ -52,10 +54,21 @@ const toggleStatus = async (lomba) => {
         axios.put(route('lomba.activate', {id: lomba.id}), {lokasi_id: selectedLokasi.value})
             .then(res => {
                 router.reload({only: ['lombas']})
-                alertBox("Ok", `${lomba.label} diaktifkan.`)
+                alertBox.value.open("Ok", `${lomba.label} diaktifkan.`)
             }).catch(err => console.log(err))
     }
 } 
+
+const removeBidang = async (bidang, lomba) => {
+    if (await dialogBox.value.open("Hapus Bidang "+ bidang.label + " pada " + lomba.label+"?")) {
+        axios.delete(route('bidang.destroy', {id: bidang.id}))
+                .then(res => {
+                    router.reload({only: ['lombas']})
+                    alertBox.value.open("Ok", res.data.msg)
+                })
+        console.log(bidang, lomba)
+    }
+}
 
 // Panitia
 const Panitia = defineAsyncComponent(() => import('@/Pages/Dashboard/Panitia.vue'))
@@ -118,9 +131,12 @@ const editLomba = (lomba) => {
                             <td class="px-3 text-sky-800 hover:underline hover:cursor-pointer" @click="editLomba(lomba)">{{ lomba.label }}</td>
                             <td class="text-center hidden md:block">{{ lomba.tahun }}</td>
                             <td class="px-3">
-                                <ul v-if="lomba.bidangs">
-                                    <li v-for="(bidang,b) in lomba.bidangs" :key="b">
-                                        {{ bidang.label }} 
+                                <ul v-if="lomba.bidangs" > 
+                                    <li v-for="(bidang,b) in lomba.bidangs" :key="b" class="my-1 group flex items-center">
+                                        {{ bidang.label }} <span class="text-orange-400 font-bold"> [{{ bidang.kelompok }}]</span>
+                                        <button class=" group-hover:inline-block hidden" @click="removeBidang(bidang, lomba)">
+                                            <SvgIcon type="mdi" :path="mdiMinusCircle" class="text-red-600" />
+                                        </button>
                                     </li>
                                 </ul>    
                             </td>

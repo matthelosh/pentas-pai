@@ -24,40 +24,5 @@ class DatabaseSeeder extends Seeder
         // $path = public_path('db/lombas.sql');
         // $sql = file_get_contents($path);
         // DB::unprepared($sql);
-        $bidangs = [
-            [
-                'kode' => 'adz', 'label' => 'Adzan', 'kategori' => 'tunggal', 'kelompok' => 'putra'
-            ],
-            [
-                'kode' => 'bjr', 'label' => 'Banjari', 'kategori' => 'regu', 'kelompok' => 'campur'
-            ],
-            [
-                'kode' => 'lcc', 'label' => 'Cerdas Cermat', 'kategori' => 'regu', 'kelompok' => 'campur'
-            ],
-            [
-                'kode' => 'pdc', 'label' => 'Pildacil', 'kategori' => 'tunggal', 'kelompok' => 'campur'
-            ],
-            [
-                'kode' => 'mhq', 'label' => 'MHQ', 'kategori' => 'tunggal', 'kelompok' => 'campur'
-            ],
-            [
-                'kode' => 'mtq', 'label' => 'MTQ', 'kategori' => 'tunggal', 'kelompok' => 'campur'
-            ],
-
-        ];
-
-        foreach($bidangs as $bidang) {
-            Bidang::updateOrCreate(
-                [
-                    'kode' => $bidang['kode'],
-                ],
-                [
-                    'label' => $bidang['label'],
-                    'kategori' => $bidang['kategori'],
-                    'kelompok' => $bidang['kelompok'],
-                    'deskripsi' => 'Bidang Lomba '.$bidang['label']
-                ]
-            );
-        }
     }
 }

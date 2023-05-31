@@ -20,7 +20,7 @@ class Lomba extends Model
 
     public function bidangs()
     {
-        return $this->belongsToMany(Bidang::class, 'bidang_lomba');
+        return $this->hasMany(Bidang::class);
     }
 
     public function sekolah()

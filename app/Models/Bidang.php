@@ -9,6 +9,7 @@ class Bidang extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'lomba_id',
         'kode',
         'label',
         'deskripsi',
@@ -18,13 +19,9 @@ class Bidang extends Model
 
     public function lombas()
     {
-        return $this->belongsToMany(Lomba::class, 'bidang_lomba');
+        return $this->belongsTo(Lomba::class);
     }
 
-    // public function pesertas()
-    // {
-    //     return $this->hasMany(Peserta::class, 'lomba_id','kode');
-    // }
     public function pesertas()
     {
         return $this->belongsToMany(Peserta::class, 'bidang_peserta','bidang_id', 'peserta_id');

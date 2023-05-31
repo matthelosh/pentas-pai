@@ -3,21 +3,21 @@
     "file": "assets/PiagamJuara-cffbc28c.css",
     "src": "PiagamJuara.css"
   },
-  "_PiagamJuara-7f8407d9.js": {
+  "_PiagamJuara-c91ee4b2.js": {
     "css": [
       "assets/PiagamJuara-cffbc28c.css"
     ],
     "dynamicImports": [
-      "_html2canvas-19f3f8de.js",
+      "_html2canvas-e6d72b75.js",
       "node_modules/dompurify/dist/purify.es.js",
       "node_modules/canvg/lib/index.es.js"
     ],
-    "file": "assets/PiagamJuara-7f8407d9.js",
+    "file": "assets/PiagamJuara-c91ee4b2.js",
     "imports": [
       "resources/js/app.js",
-      "_mdi-04930792.js",
+      "_mdi-01aa6288.js",
       "_misc-3900ca67.js",
-      "_vue-qrcode.esm-1c698c78.js",
+      "_vue-qrcode.esm-0d7be91a.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true
@@ -37,16 +37,16 @@
       "_isArrayLike-0e521b71.js"
     ]
   },
-  "_html2canvas-19f3f8de.js": {
-    "file": "assets/html2canvas-19f3f8de.js",
+  "_html2canvas-e6d72b75.js": {
+    "file": "assets/html2canvas-e6d72b75.js",
     "imports": [
       "resources/js/app.js",
-      "_PiagamJuara-7f8407d9.js"
+      "_PiagamJuara-c91ee4b2.js"
     ],
     "isDynamicEntry": true
   },
-  "_index-3d5404fe.js": {
-    "file": "assets/index-3d5404fe.js",
+  "_index-a0c473c5.js": {
+    "file": "assets/index-a0c473c5.js",
     "imports": [
       "resources/js/app.js"
     ]
@@ -54,11 +54,11 @@
   "_isArrayLike-0e521b71.js": {
     "file": "assets/isArrayLike-0e521b71.js"
   },
-  "_mdi-04930792.js": {
+  "_mdi-01aa6288.js": {
     "css": [
       "assets/mdi-3ea76a33.css"
     ],
-    "file": "assets/mdi-04930792.js",
+    "file": "assets/mdi-01aa6288.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
@@ -70,8 +70,8 @@
       "_chunk-86dfe57a.js"
     ]
   },
-  "_vue-qrcode.esm-1c698c78.js": {
-    "file": "assets/vue-qrcode.esm-1c698c78.js",
+  "_vue-qrcode.esm-0d7be91a.js": {
+    "file": "assets/vue-qrcode.esm-0d7be91a.js",
     "imports": [
       "resources/js/app.js"
     ]
@@ -84,16 +84,16 @@
     "src": "mdi.css"
   },
   "node_modules/canvg/lib/index.es.js": {
-    "file": "assets/index.es-0df58968.js",
+    "file": "assets/index.es-4458cc34.js",
     "imports": [
       "resources/js/app.js",
-      "_PiagamJuara-7f8407d9.js",
-      "_mdi-04930792.js",
+      "_PiagamJuara-c91ee4b2.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js",
       "_misc-3900ca67.js",
       "_chunk-86dfe57a.js",
       "_isArrayLike-0e521b71.js",
-      "_vue-qrcode.esm-1c698c78.js"
+      "_vue-qrcode.esm-0d7be91a.js"
     ],
     "isDynamicEntry": true,
     "src": "node_modules/canvg/lib/index.es.js"
@@ -104,27 +104,27 @@
     "src": "node_modules/dompurify/dist/purify.es.js"
   },
   "resources/js/Components/General/AlertBox.vue": {
-    "file": "assets/AlertBox-cabf3803.js",
+    "file": "assets/AlertBox-8d8e73a9.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js"
+      "_index-a0c473c5.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Components/General/AlertBox.vue"
   },
   "resources/js/Components/General/DialogBox.vue": {
-    "file": "assets/DialogBox-840f3d8a.js",
+    "file": "assets/DialogBox-5a985dd7.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js"
+      "_index-a0c473c5.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Components/General/DialogBox.vue"
   },
   "resources/js/Components/General/Loading.vue": {
-    "file": "assets/Loading-c13399ff.js",
+    "file": "assets/Loading-09baece3.js",
     "imports": [
-      "_mdi-04930792.js",
+      "_mdi-01aa6288.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
@@ -132,7 +132,7 @@
     "src": "resources/js/Components/General/Loading.vue"
   },
   "resources/js/Components/General/PBtn.vue": {
-    "file": "assets/PBtn-5f4f6342.js",
+    "file": "assets/PBtn-1d11fad5.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -144,7 +144,7 @@
       "resources/js/Components/General/Loading.vue",
       "resources/js/Components/General/AlertBox.vue"
     ],
-    "file": "assets/ImporGuru-5817e552.js",
+    "file": "assets/ImporGuru-21699362.js",
     "imports": [
       "resources/js/app.js",
       "_misc-3900ca67.js",
@@ -156,7 +156,7 @@
     "src": "resources/js/Components/Guru/ImporGuru.vue"
   },
   "resources/js/Components/Kartu.vue": {
-    "file": "assets/Kartu-79e483ca.js",
+    "file": "assets/Kartu-d1048e3b.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -164,24 +164,24 @@
     "src": "resources/js/Components/Kartu.vue"
   },
   "resources/js/Components/Lomba/DataJuara.vue": {
-    "file": "assets/DataJuara-6332c352.js",
+    "file": "assets/DataJuara-be397520.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js",
-      "_PiagamJuara-7f8407d9.js",
-      "_mdi-04930792.js",
+      "_index-a0c473c5.js",
+      "_PiagamJuara-c91ee4b2.js",
+      "_mdi-01aa6288.js",
       "_xlsx-9d47e74b.js",
       "_misc-3900ca67.js",
       "_chunk-86dfe57a.js",
       "_isArrayLike-0e521b71.js",
-      "_vue-qrcode.esm-1c698c78.js",
+      "_vue-qrcode.esm-0d7be91a.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Components/Lomba/DataJuara.vue"
   },
   "resources/js/Components/Lomba/FormLomba.vue": {
-    "file": "assets/FormLomba-aa76b9b1.js",
+    "file": "assets/FormLomba-44b11ed7.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Components/General/PBtn.vue"
@@ -190,10 +190,10 @@
     "src": "resources/js/Components/Lomba/FormLomba.vue"
   },
   "resources/js/Components/Lomba/FormNilai.vue": {
-    "file": "assets/FormNilai-0413782a.js",
+    "file": "assets/FormNilai-74b1ce27.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js",
+      "_index-a0c473c5.js",
       "_groupBy-bd6ad247.js",
       "_isArrayLike-0e521b71.js"
     ],
@@ -201,33 +201,33 @@
     "src": "resources/js/Components/Lomba/FormNilai.vue"
   },
   "resources/js/Components/Panitia/KartuPanitia.vue": {
-    "file": "assets/KartuPanitia-3ef317fb.js",
+    "file": "assets/KartuPanitia-ee78dd46.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js",
-      "_mdi-04930792.js",
-      "_vue-qrcode.esm-1c698c78.js",
+      "_index-a0c473c5.js",
+      "_mdi-01aa6288.js",
+      "_vue-qrcode.esm-0d7be91a.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Components/Panitia/KartuPanitia.vue"
   },
   "resources/js/Components/Panitia/PresensiPanitia.vue": {
-    "file": "assets/PresensiPanitia-fc009096.js",
+    "file": "assets/PresensiPanitia-f41a9a39.js",
     "imports": [
       "resources/js/app.js",
-      "_mdi-04930792.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Components/Panitia/PresensiPanitia.vue"
   },
   "resources/js/Components/Panitia/SertifikatPanitia.vue": {
-    "file": "assets/SertifikatPanitia-2b810c14.js",
+    "file": "assets/SertifikatPanitia-135f2f9e.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js",
-      "_vue-qrcode.esm-1c698c78.js"
+      "_index-a0c473c5.js",
+      "_vue-qrcode.esm-0d7be91a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Components/Panitia/SertifikatPanitia.vue"
@@ -240,21 +240,21 @@
     "css": [
       "assets/Surat-ee561522.css"
     ],
-    "file": "assets/Surat-83f116ea.js",
+    "file": "assets/Surat-d6784bc4.js",
     "imports": [
       "resources/js/app.js",
-      "_mdi-04930792.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Components/Panitia/Surat.vue"
   },
   "resources/js/Components/Peserta/CetakKartu.vue": {
-    "file": "assets/CetakKartu-6573180f.js",
+    "file": "assets/CetakKartu-065c7e1e.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js",
-      "_vue-qrcode.esm-1c698c78.js",
+      "_index-a0c473c5.js",
+      "_vue-qrcode.esm-0d7be91a.js",
       "_misc-3900ca67.js",
       "_groupBy-bd6ad247.js",
       "_chunk-86dfe57a.js",
@@ -264,9 +264,9 @@
     "src": "resources/js/Components/Peserta/CetakKartu.vue"
   },
   "resources/js/Components/Peserta/PresensiPeserta.vue": {
-    "file": "assets/PresensiPeserta-886d69aa.js",
+    "file": "assets/PresensiPeserta-27f9e341.js",
     "imports": [
-      "_index-3d5404fe.js",
+      "_index-a0c473c5.js",
       "_misc-3900ca67.js",
       "resources/js/app.js",
       "_chunk-86dfe57a.js",
@@ -276,10 +276,10 @@
     "src": "resources/js/Components/Peserta/PresensiPeserta.vue"
   },
   "resources/js/Components/Peserta/RekapPeserta.vue": {
-    "file": "assets/RekapPeserta-70194478.js",
+    "file": "assets/RekapPeserta-6a23f875.js",
     "imports": [
       "resources/js/app.js",
-      "_mdi-04930792.js",
+      "_mdi-01aa6288.js",
       "_misc-3900ca67.js",
       "_groupBy-bd6ad247.js",
       "__plugin-vue_export-helper-c27b6911.js",
@@ -290,11 +290,11 @@
     "src": "resources/js/Components/Peserta/RekapPeserta.vue"
   },
   "resources/js/Components/Peserta/SertifikatPeserta.vue": {
-    "file": "assets/SertifikatPeserta-c7230b44.js",
+    "file": "assets/SertifikatPeserta-a25cfaf7.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js",
-      "_vue-qrcode.esm-1c698c78.js",
+      "_index-a0c473c5.js",
+      "_vue-qrcode.esm-0d7be91a.js",
       "_misc-3900ca67.js",
       "_chunk-86dfe57a.js",
       "_isArrayLike-0e521b71.js"
@@ -307,7 +307,7 @@
       "resources/js/Components/General/Loading.vue",
       "resources/js/Components/General/AlertBox.vue"
     ],
-    "file": "assets/ImportSekolah-e4e8e533.js",
+    "file": "assets/ImportSekolah-2e5f475e.js",
     "imports": [
       "resources/js/app.js",
       "_misc-3900ca67.js",
@@ -318,9 +318,9 @@
     "src": "resources/js/Components/Sekolah/ImportSekolah.vue"
   },
   "resources/js/Components/Welcome/FrontFooter.vue": {
-    "file": "assets/FrontFooter-f413605e.js",
+    "file": "assets/FrontFooter-d3d9b42e.js",
     "imports": [
-      "_mdi-04930792.js",
+      "_mdi-01aa6288.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
@@ -340,21 +340,21 @@
       "resources/js/Components/General/Loading.vue",
       "resources/js/Components/General/DialogBox.vue"
     ],
-    "file": "assets/Dash-51e70e2a.js",
+    "file": "assets/Dash-b39d9b28.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js",
-      "_mdi-04930792.js",
+      "_index-a0c473c5.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Layout/Dash.vue"
   },
   "resources/js/Layout/DashSide.vue": {
-    "file": "assets/DashSide-ec276912.js",
+    "file": "assets/DashSide-bfaf00f4.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js"
+      "_index-a0c473c5.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Layout/DashSide.vue"
@@ -363,36 +363,36 @@
     "dynamicImports": [
       "resources/js/Components/Welcome/FrontFooter.vue"
     ],
-    "file": "assets/Front-9e3f2bc3.js",
+    "file": "assets/Front-c7f92311.js",
     "imports": [
       "resources/js/app.js",
-      "_index-3d5404fe.js",
-      "_mdi-04930792.js",
+      "_index-a0c473c5.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Layout/Front.vue"
   },
   "resources/js/Pages/About.vue": {
-    "file": "assets/About-28756c70.js",
+    "file": "assets/About-55576bdf.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Layout/Front.vue",
-      "_mdi-04930792.js",
-      "_index-3d5404fe.js",
+      "_mdi-01aa6288.js",
+      "_index-a0c473c5.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/About.vue"
   },
   "resources/js/Pages/Auth/Login.vue": {
-    "file": "assets/Login-271b0c9a.js",
+    "file": "assets/Login-4b4fef03.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Layout/Front.vue",
-      "_index-3d5404fe.js",
+      "_index-a0c473c5.js",
       "resources/js/Components/General/AlertBox.vue",
-      "_mdi-04930792.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
@@ -402,22 +402,22 @@
     "dynamicImports": [
       "resources/js/Layout/Front.vue"
     ],
-    "file": "assets/Daftar-617bb7a2.js",
+    "file": "assets/Daftar-2c43b862.js",
     "imports": [
       "resources/js/app.js",
-      "_mdi-04930792.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Daftar.vue"
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard-ba7e44b5.js",
+    "file": "assets/Dashboard-84eaeb95.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Layout/Dash.vue",
-      "_index-3d5404fe.js",
-      "_mdi-04930792.js",
+      "_index-a0c473c5.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
@@ -440,18 +440,18 @@
       "resources/js/Components/Panitia/KartuPanitia.vue",
       "resources/js/Components/Panitia/PresensiPanitia.vue",
       "resources/js/Components/Lomba/FormNilai.vue",
-      "_PiagamJuara-7f8407d9.js",
+      "_PiagamJuara-c91ee4b2.js",
       "resources/js/Components/Lomba/DataJuara.vue",
       "resources/js/Components/Peserta/SertifikatPeserta.vue",
       "resources/js/Components/Panitia/SertifikatPanitia.vue"
     ],
-    "file": "assets/Administrasi-5dfbb7b1.js",
+    "file": "assets/Administrasi-7f89f815.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Layout/Dash.vue",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_index-3d5404fe.js",
-      "_mdi-04930792.js"
+      "_index-a0c473c5.js",
+      "_mdi-01aa6288.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Dashboard/Administrasi.vue"
@@ -460,7 +460,7 @@
     "dynamicImports": [
       "resources/js/Layout/Dash.vue"
     ],
-    "file": "assets/AdministrasiLomba-4ead4f0e.js",
+    "file": "assets/AdministrasiLomba-016ca21d.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -471,7 +471,7 @@
     "dynamicImports": [
       "resources/js/Layout/Dash.vue"
     ],
-    "file": "assets/AdministrasiPanitia-83575a46.js",
+    "file": "assets/AdministrasiPanitia-218d2332.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -482,7 +482,7 @@
     "dynamicImports": [
       "resources/js/Layout/Dash.vue"
     ],
-    "file": "assets/AdministrasiPeserta-be6a792e.js",
+    "file": "assets/AdministrasiPeserta-86479104.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -494,19 +494,19 @@
       "resources/js/Components/General/AlertBox.vue",
       "resources/js/Components/Guru/ImporGuru.vue"
     ],
-    "file": "assets/Guru-51157702.js",
+    "file": "assets/Guru-811ccc2e.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Layout/Dash.vue",
-      "_mdi-04930792.js",
-      "_index-3d5404fe.js",
+      "_mdi-01aa6288.js",
+      "_index-a0c473c5.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Dashboard/Guru.vue"
   },
   "resources/js/Pages/Dashboard/Juara.vue": {
-    "file": "assets/Juara-64d22098.js",
+    "file": "assets/Juara-1117c2ba.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
@@ -522,12 +522,12 @@
       "resources/js/Components/General/DialogBox.vue",
       "resources/js/Pages/Dashboard/Panitia.vue"
     ],
-    "file": "assets/Lomba-5459c32e.js",
+    "file": "assets/Lomba-523f3d45.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Layout/Dash.vue",
-      "_index-3d5404fe.js",
-      "_mdi-04930792.js",
+      "_index-a0c473c5.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
@@ -541,24 +541,24 @@
     "css": [
       "assets/Panitia-7c262154.css"
     ],
-    "file": "assets/Panitia-bc69b768.js",
+    "file": "assets/Panitia-1a49d1fd.js",
     "imports": [
-      "_index-3d5404fe.js",
+      "_index-a0c473c5.js",
       "resources/js/app.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Dashboard/Panitia.vue"
   },
   "resources/js/Pages/Dashboard/Peserta.vue": {
-    "file": "assets/Peserta-813d30ab.js",
+    "file": "assets/Peserta-77b3feeb.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Layout/Dash.vue",
       "_xlsx-9d47e74b.js",
-      "_mdi-04930792.js",
+      "_mdi-01aa6288.js",
       "resources/js/Components/General/DialogBox.vue",
       "_chunk-86dfe57a.js",
-      "_index-3d5404fe.js",
+      "_index-a0c473c5.js",
       "_misc-3900ca67.js",
       "__plugin-vue_export-helper-c27b6911.js",
       "_isArrayLike-0e521b71.js"
@@ -571,24 +571,24 @@
       "resources/js/Layout/Dash.vue",
       "resources/js/Components/Sekolah/ImportSekolah.vue"
     ],
-    "file": "assets/Sekolah-1027ebec.js",
+    "file": "assets/Sekolah-a66c7502.js",
     "imports": [
       "resources/js/app.js",
       "_xlsx-9d47e74b.js",
-      "_mdi-04930792.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Dashboard/Sekolah.vue"
   },
   "resources/js/Pages/Peserta.vue": {
-    "file": "assets/Peserta-292df8a2.js",
+    "file": "assets/Peserta-cc61dd9d.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Layout/Front.vue",
       "_chunk-86dfe57a.js",
-      "_index-3d5404fe.js",
-      "_mdi-04930792.js",
+      "_index-a0c473c5.js",
+      "_mdi-01aa6288.js",
       "__plugin-vue_export-helper-c27b6911.js",
       "_isArrayLike-0e521b71.js"
     ],
@@ -596,7 +596,7 @@
     "src": "resources/js/Pages/Peserta.vue"
   },
   "resources/js/Pages/Piagam.vue": {
-    "file": "assets/Piagam-524324eb.js",
+    "file": "assets/Piagam-c8bc541d.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -604,7 +604,7 @@
     "src": "resources/js/Pages/Piagam.vue"
   },
   "resources/js/Pages/Verifikasi.vue": {
-    "file": "assets/Verifikasi-cf243e66.js",
+    "file": "assets/Verifikasi-8eab6c0a.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -619,13 +619,13 @@
     "css": [
       "assets/Welcome-8dccc473.css"
     ],
-    "file": "assets/Welcome-9eaa7ef1.js",
+    "file": "assets/Welcome-0a831388.js",
     "imports": [
       "resources/js/app.js",
       "_groupBy-bd6ad247.js",
       "_isArrayLike-0e521b71.js",
-      "_index-3d5404fe.js",
-      "_mdi-04930792.js",
+      "_index-a0c473c5.js",
+      "_mdi-01aa6288.js",
       "_chunk-86dfe57a.js",
       "resources/js/Layout/Front.vue",
       "__plugin-vue_export-helper-c27b6911.js"
@@ -661,7 +661,7 @@
       "resources/js/Pages/Verifikasi.vue",
       "resources/js/Pages/Welcome.vue"
     ],
-    "file": "assets/app-04e4d755.js",
+    "file": "assets/app-e9d63d34.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }

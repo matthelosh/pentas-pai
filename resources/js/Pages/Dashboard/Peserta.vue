@@ -23,16 +23,20 @@ const pesertas = ref($page.props.pesertas)
 const loading = ref(false)
 
 const filter = () => {
-    pesertas.value = $page.props.pesertas.filter((peserta) => {
+    return $page.props.pesertas.filter((peserta) => {
         return peserta.nama.toLowerCase().includes(search.value.toLowerCase()) || peserta.nisn.toLowerCase().includes(search.value.toLowerCase()) || peserta.sekolah.nama.toLowerCase().includes(search.value.toLowerCase())
     })
 }
 const datas = computed(() => {
-    // let length = pesertas.value.length
-    // let pages =  _.chunk(pesertas.value, 10)
-
-    // return {current: pages[currentPage.value-1], pageCount: pages.length, total: length}
-    return paginate($page.props.pesertas, currentPage.value)
+    let datas = []
+    if (search.value !== null) {
+        datas = $page.props.pesertas.filter((peserta) => {
+            return peserta.nama.toLowerCase().includes(search.value.toLowerCase()) || peserta.nisn.toLowerCase().includes(search.value.toLowerCase()) || peserta.sekolah.nama.toLowerCase().includes(search.value.toLowerCase())
+        })
+    } else {
+        datas = $page.props.pesertas
+    }
+    return paginate(datas, currentPage.value)
 })
 const fixData = async () => {
     loading.value = true

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bidang;
 use App\Models\Lomba;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
@@ -71,7 +72,22 @@ class LombaController extends Controller
                 ]
             );
 
-            $simpan->bidangs()->attach($lomba->bidangs);
+            // $simpan->bidangs()->attach($lomba->bidangs);
+            if($lomba->bidangs) {
+                foreach($lomba->bidangs as $bidang) {
+                    Bidang::updateOrCreate(
+                        ['id' => $bidang->id ?? null],
+                        [
+                            'lomba_id' => $lomba->id ?? $simpan->id,
+                            'kode' => $bidang->kode,
+                            'label' => $bidang->label,
+                            'kategori' => $bidang->kategori,
+                            'kelompok' => $bidang->kelompok,
+                            'deskripsi' => $bidang->deskripsi
+                        ]
+                        );
+                }
+            }
             return response()->json([
                 'status' => 'ok',
                 'msg' => 'Data Lomba Disimpan'

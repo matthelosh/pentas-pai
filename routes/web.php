@@ -89,10 +89,14 @@ Route::prefix('sekretariat')->middleware(['auth','verified'])->group(function ()
         Route::post('/{id}', [PesertaController::class, 'update'])->name('dashboard.peserta.update');
     });
 
+    Route::prefix('bidang')->group(function() {
+        Route::post('/bidang', function() {
+            return response()->json(['bidangs' => Bidang::all()], 200);
+        })->name('bidang.index');
+        Route::delete('/{id}', [BidangController::class, 'destroy'])->name('bidang.destroy');
+    });
 
-    Route::post('/bidang', function() {
-        return response()->json(['bidangs' => Bidang::all()], 200);
-    })->name('bidang.index');
+   
 
     Route::prefix('panitia')->group(function() {
         Route::get('/', [PanitiaController::class, 'page'])->name('dashboard.panitia');

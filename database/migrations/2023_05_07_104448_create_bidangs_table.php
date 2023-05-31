@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('bidangs', function (Blueprint $table) {
             $table->id();
-            $table->string('kode', 10);
+            $table->integer('lomba_id');
+            $table->string('kode', 30);
             $table->string('label', 60);
             $table->enum('kategori', ['tunggal','regu'])->default('tunggal');
             $table->enum('kelompok', ['putra', 'putri', 'campur']);
-            $table->string('deskripsi', 191);
+            $table->string('deskripsi', 191)->nullable();
             $table->timestamps();
         });
     }
