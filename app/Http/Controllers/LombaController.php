@@ -68,7 +68,7 @@ class LombaController extends Controller
                     'tahun'=> $lomba->tahun,
                     'tanggal'=> $lomba->tanggal,
                     'lokasi_id'=> $lomba->lokasi_id,
-                    'status' => '0'
+                    'status' => $lomba->status ?? '0'
                 ]
             );
 
@@ -80,7 +80,7 @@ class LombaController extends Controller
                         [
                             'lomba_id' => $lomba->id ?? $simpan->id,
                             'kode' => $bidang->kode,
-                            'label' => $bidang->label,
+                            'label' => $bidang->label.' '. ucfirst($bidang->kelompok),
                             'kategori' => $bidang->kategori,
                             'kelompok' => $bidang->kelompok,
                             'deskripsi' => $bidang->deskripsi

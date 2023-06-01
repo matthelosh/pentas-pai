@@ -6,6 +6,9 @@ import { mdiHumanMale, mdiHumanFemale, mdiHumanMaleFemale, mdiChevronDoubleDown,
 
 import Dash from '@/Layout/Dash.vue';
 
+const KartuPeserta = defineAsyncComponent(() => import('@/Components/Peserta/KartuPeserta.vue'))
+
+const mode = ref('list')
 const contentShow = ref(false)
 const toggleContent = (e) => {
     // contentShow.value = !contentShow.value
@@ -21,37 +24,64 @@ const toggleContent = (e) => {
     card.classList.toggle("bottom-0")
     // console.log(e.target.closest('button'))
 }
+
+const selectedBidang = ref(null)
+const kartuPeserta = async(bidang) => {
+    mode.value = 'kartu-peserta'
+    selectedBidang.value = bidang
+}
 </script>
 
 <template>
 <Head title="Administrasi Peserta" />
 <Dash title="Administrasi Peserta">
-    <div class="w-full grid  grid-cols-1 md:grid-cols-3 gap-4 py-4 md:pt-0">
-        <div class="card w-full bg-white rounded-xl overflow-hidden shadow" v-for="(bidang,b) in $page.props.lomba.bidangs" :key="b">
-            <div class="toolbar w-full h-12 bg-teal-600 text-white flex items-center justify-between p-3 shadow">
-                <h1>
-                    <SvgIcon type="mdi" :path="bidang.kelompok == 'putra' ? mdiHumanMale : (bidang.kelompok == 'putri' ? mdiHumanFemale : mdiHumanMaleFemale)" class="inline" />
-                    {{ bidang.label }} {{ bidang.kategori }} {{ bidang.kelompok }}
-                </h1>
-                <div class="toolbar-items flex items-center">
-                    <button @click="toggleContent($event)" class="btnChevron">
-                        <SvgIcon type="mdi" :path="mdiChevronDoubleDown" class=" duration-500" />
-                    </button>
+    <Transition name="slide-fade">
+        <div class="content" v-if="mode == 'list'">
+            <h1 class=" text-center my-4 font-bold tracking-wider text-white drop-shadow text-3xl hidden md:block">Adminstrasi Peserta Lomba</h1>
+            <div class="w-full grid my-4 md:my-0  grid-cols-1 md:grid-cols-3 gap-4 py-4 md:pt-0 relative">
+                <div class="card w-full bg-white rounded-xl overflow-hidden shadow" v-for="(bidang,b) in $page.props.lomba.bidangs" :key="b">
+                    <div class="toolbar w-full h-12 bg-teal-600 text-white flex items-center justify-between p-3 shadow">
+                        <h1>
+                            <SvgIcon type="mdi" :path="bidang.kelompok == 'putra' ? mdiHumanMale : (bidang.kelompok == 'putri' ? mdiHumanFemale : mdiHumanMaleFemale)" class="inline" />
+                            {{ bidang.label }} {{ bidang.kategori }}
+                        </h1>
+                        <div class="toolbar-items flex items-center">
+                            <button @click="toggleContent($event)" class="btnChevron">
+                                <SvgIcon type="mdi" :path="mdiChevronDoubleDown" class=" duration-500" />
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content bg-white flex-col gap-2 hidden p-3 duration-500 transition-all">
+                        <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="kartuPeserta(bidang)">
+                            Kartu Peserta
+                        </button>
+                        <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950">
+                            Rekap Peserta
+                        </button>
+                        <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950">
+                            Sertifikat Peserta
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="content bg-white flex-col gap-2 hidden p-3 duration-500 transition-all">
-                <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950">
-                    Kartu Peserta
-                </button>
-                <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950">
-                    Rekap Peserta
-                </button>
-                <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950">
-                    Sertifikat Peserta
-                </button>
-            </div>
         </div>
-        
-    </div>
+        <KartuPeserta v-else-if="mode == 'kartu-peserta'" :bidang="selectedBidang" @close="mode='list'" />
+    </Transition> 
 </Dash>
 </template>
+
+<style scoped>
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+</style>

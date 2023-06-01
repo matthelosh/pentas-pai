@@ -90,9 +90,8 @@ Route::prefix('sekretariat')->middleware(['auth','verified'])->group(function ()
     });
 
     Route::prefix('bidang')->group(function() {
-        Route::post('/bidang', function() {
-            return response()->json(['bidangs' => Bidang::all()], 200);
-        })->name('bidang.index');
+        Route::post('/', [BidangController::class,'index'])->name('bidang.index');
+        Route::post('/{id}', [BidangController::class, 'show'])->name('bidang.show');
         Route::delete('/{id}', [BidangController::class, 'destroy'])->name('bidang.destroy');
     });
 

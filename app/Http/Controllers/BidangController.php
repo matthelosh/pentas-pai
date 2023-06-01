@@ -10,9 +10,17 @@ class BidangController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+            if($request->query('id')) {
+                if ($request->user()->level == 'admin') {
+                    // $bidangs = Bidang::where('kode')
+                }
+            }
+        } catch (\Exception $e) {
+            //throw $th;
+        }
     }
 
     /**
@@ -34,9 +42,25 @@ class BidangController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Bidang $bidang)
+    public function show(Bidang $bidang, $id)
     {
-        //
+        try {
+            if(auth()->user()->level == 'admin') {
+                $bidang = Bidang::where('id',$id)->with('pesertas.sekolah')->first();
+            } else {
+                $bidang = Bidang::where('id',$id)->with('pesertas.sekolah', function($q) {
+                    $q->where('pesertas.sekolah_id', '20518848');
+                })->first();
+            }
+
+            return response()->json([
+                'status' => 'Ok',
+                'bidang' => $bidang
+            ], 200);
+        } catch (\Exception $e) {
+            //throw $th;
+            dd($e);
+        }
     }
 
     /**

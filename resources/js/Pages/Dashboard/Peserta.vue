@@ -1,7 +1,7 @@
 <script setup>
 import { Head, usePage, router } from '@inertiajs/vue3';
 import Dash from '@/Layout/Dash.vue';
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch, defineAsyncComponent } from 'vue';
 import * as _ from 'lodash-es';
 import axios from 'axios';
 import {read, utils} from 'xlsx'
@@ -15,6 +15,9 @@ import { ArrowPathIcon } from '@heroicons/vue/20/solid';
 import {imgUrl, paginate} from '@/Plugins/misc';
 import FormPeserta from '@/Components/Peserta/FormPeserta.vue';
 
+const Loading = defineAsyncComponent(() => import('@/Components/General/Loading.vue'))
+const AlertBox = defineAsyncComponent(() => import('@/Components/General/AlertBox.vue'))
+const alertBox = ref(null)
 
 const $page = usePage()
 const currentPage = ref(1)
@@ -43,6 +46,10 @@ const fixData = async () => {
     await axios.post(route('dashboard.peserta.attach'), {pesertas: JSON.stringify($page.props.pesertas)})
             .then(res => {
                 router.reload({only: ['pesertas']})
+                loading.value = false
+            }).catch(err => {
+                // alert(err.response.data.msg)
+                alertBox.value.open("Error", err.response.data.msg)
                 loading.value = false
             })
 }
@@ -113,16 +120,19 @@ const formPeserta = ref(null)
 const edit = async (peserta) => {
     await formPeserta.value.open(peserta)
                 .then(ok => {
-                    // if (ok) {
+                        alertBox.value.open("Ok", ok)
                         router.reload({only: ['pesertas']})
-                    // }
+                }).catch(err => {
+                    alertBox.value.open("Error", err)
                 })
 }
 </script> 
 
 <template>
 <FormPeserta ref="formPeserta" />
+<Loading :show="loading" v-if="loading" />
 <DialogBox ref="dialog" />
+<AlertBox ref="alertBox" />
 <ImportTable ref="importTable" />
 <Head title="Data Peserta" />
 <Dash title="Data Peserta">
@@ -155,42 +165,45 @@ const edit = async (peserta) => {
                     <h1 class="text-xl">{{ $page.props.lomba ? 'Data Peserta '+$page.props.lomba.label : 'Data Lomba Bellum Diisi' }}</h1>
                 </caption>
                 <thead>
-                    <tr>
-                        <th class="border text-center">
-                            <span v-show="!select">No</span>
-                        </th>
-                        <th class="border text-center ">NISN</th>
-                        <th class="border text-center">Nama</th>
-                        <th class="border text-center">JK</th>
-                        <th class="border text-center">Sekolah</th>
-                        <th class="border text-center">Lomba</th>
-                        <th class="border text-center print:hidden">Opsi</th>
+                    <tr class="bg-gray-200"> 
+                        <th class="border text-center py-2">No</th>
+                        <th class="border text-center py-2 ">NISN</th>
+                        <th class="border text-center py-2">Nama</th>
+                        <th class="border text-center py-2">JK</th>
+                        <th class="border text-center py-2">Sekolah</th>
+                        <th class="border text-center py-2">Lomba</th>
+                        <th class="border text-center py-2">Bidang</th>
+                        <th class="border text-center py-2 print:hidden">Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="odd:bg-gray-50" v-for="(data,d) in datas.current" :key="d">
+                    <tr class="odd:bg-gray-100 hover:bg-lime-100" v-for="(data,d) in datas.current" :key="d">
                         <td class="border p-2">
                             {{ d+1 }}
                         </td>
-                        <td class="border p-2 text-center">{{ data.nisn }}</td>
-                        <td class="border p-2 " @click="edit(data)">
+                        <td class="p-2 text-center">{{ data.nisn }}</td>
+                        <td class="p-2 " @click="edit(data)">
                             <span class="flex items-center gap-1 flex-wrap justify-center md:justify-start cursor-pointer text-teal-800 hover:text-orange-600">
                                 <img :src="imgUrl(data.foto)" alt="Foto" class="h-8 aspect-square object-cover object-top rounded-full" />
                                 {{ data.nama }}
                             </span>
                         </td>
-                        <td class="border p-2 text-center">{{ data.jk }}</td>
-                        <td class="border p-2">{{ data.sekolah.nama }}</td>
-                        <td class="border p-2">
+                        <td class="p-2 text-center">{{ data.jk }}</td>
+                        <td class="p-2">{{ data.sekolah.nama }}</td>
+                        <td class="p-2">
                             <span class="flex gap-1 flex-wrap">
-                            <div class="bg-teal-200 px-2 py-1 rounded">{{ data.lomba_id }}</div>
-                            <!-- <ul>
-                                <li v-for="(bidang,b) in data.bidangs" :key="b">{{ b+1 }}. {{ bidang.label }}</li>
-                            </ul> -->
-                            {{ data.bidangs }}
-                        </span>
+                            <div class="bg-teal-200 px-2 py-1 rounded">{{ data.lomba.label }}</div>
+                            
+                            </span>
                         </td>
-                        <td class="text-center border p-2 print:hidden">
+                        <td>
+                            {{ data.bidang_id }}
+
+                            <ul v-if="data.bidangs">
+                                <li v-for="(bidang,b) in data.bidangs" :key="b">{{ b+1 }}. {{ bidang.label }}</li>
+                            </ul>
+                        </td>
+                        <td class="text-center p-2 print:hidden">
                             <button class="p-0 text-red-400 hover:text-red-600 active:text-orange-400" @click="hapus(data.id)">
                                 <SvgIcon type="mdi" :path="mdiDelete" :size="18" />
                             </button>

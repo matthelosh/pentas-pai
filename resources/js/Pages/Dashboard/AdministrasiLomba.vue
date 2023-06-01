@@ -26,6 +26,7 @@ const toggleContent = (e) => {
 <Head title="Administrasi Lomba" />
 <Dash title="Administrasi Lomba">
     <div class="w-full grid  grid-cols-1 md:grid-cols-3 gap-4 py-4 md:pt-0">
+        
         <div class="card w-full bg-white rounded-xl overflow-hidden shadow" v-for="(bidang,b) in $page.props.lomba.bidangs" :key="b">
             <div class="toolbar w-full h-12 bg-teal-600 text-white flex items-center justify-between p-3 shadow">
                 <h1>

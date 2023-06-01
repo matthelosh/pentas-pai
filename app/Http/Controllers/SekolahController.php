@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bidang;
+use App\Models\Peserta;
 use Inertia\Inertia;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SekolahController extends Controller
 {
@@ -83,7 +86,13 @@ class SekolahController extends Controller
      */
     public function show(Sekolah $sekolah, $id)
     {
-        $sekolah =  $sekolah::where('id',$id)->with('pesertas.bidangs')->first();
+        $sekolah =  $sekolah::find($id);
+        $npsn = $sekolah->npsn;
+        // $sekolah['pesertas'] = Peserta::where('sekolah_id', $sekolah->npsn)->whereHas('bidangs')->with('bidangs')->get();
+        $sekolah['bidangs'] = Bidang::whereHas('pesertas')->with('pesertas', function ($q) use($npsn) {
+            $q->where('sekolah_id',$npsn);
+        })->get();
+        
         return response()->json(['status' => 'ok', 'sekolah' => $sekolah], 200);
     }
 

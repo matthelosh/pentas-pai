@@ -47,12 +47,14 @@ const open = (data) => {
             sekolah_id: data.sekolah_id,
             foto: data.foto,
             hp: data.hp,
-            lomba_id: []
+            lomba_id: data.lomba_id,
+            bidangIds: []
         }
-        if(data.lomba_id.includes(",")) {
-            peserta.value.lomba_id = data.lomba_id.split(",")
-        } else {
-            peserta.value.lomba_id.push(data.lomba_id)
+        if(data.bidangs) {
+            data.bidangs.forEach(bidang => {
+                peserta.value.bidangIds.push(bidang.id)
+            })
+            
         }
         urlFoto.value = imgUrl(data.foto ? data.foto : '/img/peserta.png' )
     } else {
@@ -79,7 +81,7 @@ const kirim = async () => {
                 .then(res=> {
                     // console.log(res)
                     loading.value = false
-                    resolved.value(true)
+                    resolved.value(res.data.msg)
                     show.value = false
                 }).catch(err => {
                     loading.value = false
@@ -90,6 +92,7 @@ const kirim = async () => {
 defineExpose({
     open
 })
+
 
 const listBidangs = () => {
     axios.post(route('bidang.index'))
@@ -148,9 +151,9 @@ onMounted(() => {
                 </div>
                 <div class="flex justify-between mb-3">
                     <label for="lomba">Lomba</label>
-                    <select name="lomba" class="rounded-lg w-3/4 p-1 placeholder:text-blue-500 focus:border-blue-500 bg-gray-100" placeholder="Pilih" v-model="peserta.lomba_id" multiple>
+                    <select name="lomba" class="rounded-lg w-3/4 p-1 placeholder:text-blue-500 focus:border-blue-500 bg-gray-100" placeholder="Pilih" v-model="peserta.bidangIds" multiple>
                         <!-- <option value="0" selected>Pilih</option> -->
-                        <option v-for="(bidang,l) in bidangs" :key="l" :value="bidang.id" :selected="bidang.id == peserta.lomba_id">{{ bidang.label }} [{{ bidang.kategori }} {{ bidang.kelompok }}]</option>
+                        <option v-for="(bidang,l) in bidangs" :key="l" :value="bidang.id">{{ bidang.label }} [{{ bidang.kategori }} {{ bidang.kelompok }}]</option>
                         
                     </select>
                 </div>
@@ -161,7 +164,7 @@ onMounted(() => {
                 <div class="flex justify-center mb-3">
                     <button type="submit" class=" bg-blue-600 text-white rounded px-3 py-1 hover:bg-blue-800 flex items-center disabled:bg-blue-300 disabled:text-gray-300" :disabled="loading">
                         <ArrowPathIcon class=" animate-spin w-5 mr-1" v-if="loading" />
-                        Daftar
+                        {{ mode == 'edit' ? 'Perbarui' : 'Daftarkan'}}
                         
                     </button>
                 </div>
