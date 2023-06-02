@@ -214,7 +214,7 @@ const edit = async (peserta) => {
         </div>
         <div class="w-full bg-gray-200 flex items-center justify-between px-3  flex-wrap print:hidden">
             <div class="flex items-center gap-1">
-                Total: {{ datas.dataLength }}
+                Total: {{ datas.dataLength }} 
             </div>
             Jml Halaman: {{ datas.pageCount }}
             
