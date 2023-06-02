@@ -55,13 +55,25 @@ class PesertaController extends Controller
     {
         try {
             if($request->query('bidang')) {
-                $pesertas = Peserta::where('lomba_id', 'LIKE', '%'.$request->query('bidang').'%')->with('sekolah','bidangs')->get();
+                // $pesertas = Peserta::where('lomba_id', 'LIKE', '%'.$request->query('bidang').'%')->with('sekolah','bidangs')->get();
+                if($request->user()->level == 'admin') {
+                    $bidangId = $request->query('bidang');
+                    $pesertas = Peserta::whereHas('bidangs', function($q) use ($bidangId) {
+                        $q->where('bidangs.id', $bidangId);
+                    })->with('bidangs','sekolah')->get();
+                } else {
+                    $bidangId = $request->query('bidang');
+                    $pesertas = Peserta::where('sekolah_id', auth()->user()->userable->sekolah_id)->whereHas('bidangs', function($q) use ($bidangId) {
+                        $q->where('bidangs.id', $bidangId);
+                    })->with('bidangs','sekolah')->get();
+                }
             } else {
                 $pesertas = Peserta::with('sekolah')->get();
             }
             return response()->json(['status' => 'ok', 'pesertas' => $pesertas], 200);
         } catch(\Exception $e) {
-            return response()->json(['status' => 'ok', 'msg' => $e->getMEssage()], 500);
+            // return response()->json(['status' => 'ok', 'msg' => $e->getMessage()], 500);
+            dd($e);
         }
     }
 
@@ -119,14 +131,9 @@ class PesertaController extends Controller
                         array_push($bidangs, $bidang->id);
                     }
                 }
-
                 $peserta->bidangs()->attach($bidangs);
             }
-            // dd($bidangs);
             return response()->json(['status' => 'ok', 'msg' => 'Peserta didaftarkan berdasarkan bidang_id'], 200);
-        
-        
-            // throw new \Exception("Sementara tidak dapat menggunakan fitur ini. Update satu persatu peserta untuk memasukkan ke dalam lomba");
         } catch (\Exception $e) {
             return response()->json(['status' => 'fail', 'msg' => $e->getMessage()], 500);
         }

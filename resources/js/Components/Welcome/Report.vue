@@ -60,7 +60,7 @@ onMounted( () => {
 <Transition type="fade">
     <div class="report fixed top-0 right-0 bottom-0 left-0 z-50 bg-white overflow-y-auto" v-if="show">
         <div class="report-body w-full min-w-full">
-            <div class="report-toolbar p-3 flex justify-between items-center shadow sticky top-0 bg-white">
+            <div class="report-toolbar p-3 flex justify-between items-center shadow sticky top-0 bg-white z-20">
                 {{ title }}
                 <div class="toolbar-items flex items-center">
                         <button class="rounded-full bg-red-400 shadow" @click="show = false">
@@ -71,7 +71,7 @@ onMounted( () => {
             <div class="h-screen w-full flex items-center justify-center" v-if="loading">
                 <ArrowPathIcon class="w-28 animate-spin text-teal-600" />
             </div>
-            <div class="report-content py-4 md:mx-72 h-[92vh] flex items-center justify-center" v-if="!loading">
+            <div class="report-content py-4 md:mx-72 h-[92vh] flex items-center justify-center my-20" v-if="!loading">
                 <div>
                     <h3 class="text-center text-gray-600 text-xl">Peserta Yang Terdaftar Bidang Lomba</h3>
                     <h1 class="text-center text-gray-800 text-8xl font-extrabold relative">{{ jumlah }} <small class="text-xl absolute bottom-2 -translate-x-4 text-sky-400 drop-shadow-sm">Pendaftaran</small></h1>

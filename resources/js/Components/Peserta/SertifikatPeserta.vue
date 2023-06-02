@@ -1,10 +1,11 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import { XCircleIcon, PrinterIcon, Bars3Icon } from '@heroicons/vue/20/solid';
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import { imgUrl } from '@/Plugins/misc';
 import axios from 'axios';
+import { paginate } from '@/Plugins/misc'
 
 onMounted(() => {
     list()
@@ -12,34 +13,36 @@ onMounted(() => {
 
 const page = usePage()
 const props = defineProps({
-    lomba: Object
+    bidang: Object
 })
 
 const mode = ref('list')
 
 
-const pesertas = ref('')
+const pesertas = ref([])
 
+const sekolahs = computed(() => {
+    return pesertas.value.map(peserta => peserta.sekolah)
+})
+
+const sekolah = ref('0')
 const list = async () => {
     await axios.post(route('dashboard.peserta.index', {
-            _query: {bidang: props.lomba.kode}
+            _query: {bidang: props.bidang.id}
         })).then(res => {
-            pesertas.value = res.data.pesertas.filter(item => {
-                if(page.props.auth.user.level == 'admin') {
-                    return item
-                } else {
-                    return item.sekolah_id == page.props.sekolahs[0].npsn
-                }
-            })
+            pesertas.value = res.data.pesertas
 
         })
 }
 
+const currentPage = ref(1)
+
+const items = computed(() => {
+    let datas = sekolah.value == '0' ? pesertas.value : pesertas.value.filter(peserta => peserta.sekolah_id == sekolah.value)
+    return paginate(datas, currentPage.value)
+})
+
 const selectedPeserta = ref({})
-const setLomba = (peserta) => {
-    let lombas = peserta.bidangs.filter(item => item.kode == props.lomba.kode)
-    return peserta.bidangs.length > 0 ? lombas[0] : 'Tidak Ikut lomba'
-}
 
 const viewSertificate = (peserta) => {
     mode.value = 'cetak'
@@ -63,9 +66,13 @@ const headTitle = ref('Sertifikat Peserta')
 <div class="w-full bg-white">
     <div class="toolbar w-full h-12  bg-white flex items-center justify-between p-3 shadow sticky top-0 z-10 print:hidden">
         <span class="toolbar-title">
-            Sertifikat Peserta Lomba {{ lomba.label }}
+            Sertifikat Peserta Lomba {{ props.bidang.label }}
         </span>
         <div class="toolbar-items flex items-center gap-2">
+            <select name="sekolah" v-model="sekolah">
+                <option value="0">Semua Sekolah</option>
+                <option v-for="(school,s) in sekolahs" :value="school.npsn">{{ school.nama }}</option>
+            </select>
             <button class="bg-sky-400 hover:bg-sky-600 active:bg-orange-400 text-white flex gap-1 items-center py-1 px-2 rounded" @click="mode='list'">
                 Lihat
                 <Bars3Icon class="h-8" />
@@ -80,33 +87,49 @@ const headTitle = ref('Sertifikat Peserta')
         </div>
     </div>
     <div class="content">
-        <table class="table w-full bg-white border border-collapse" v-if="mode == 'list'">
-            <caption class="text-xl my-4">Data Peserta Bidang Lomba {{ lomba.label }}</caption>
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">No</th>
-                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">NISN</th>
-                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Nama</th>
-                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">JK</th>
-                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Sekolah</th>
-                    <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Bidang Lomba</th>
-                    <th class="py-2 px-3 text-gray-800 print:hidden">Opsi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="odd:bg-gray-100 hover:bg-lime-100" v-for="(peserta,p) in pesertas" :key="p">
-                    <td class="text-center py-1 px-2 border-e border-gray-400">{{ p+1 }}</td>
-                    <td class="py-1 px-2 border-e border-gray-400">{{ peserta.nisn }}</td>
-                    <td class="py-1 px-2 border-e border-gray-400">{{ peserta.nama }}</td>
-                    <td class="py-1 px-2 border-e border-gray-400">{{ peserta.jk }}</td>
-                    <td class="py-1 px-2 border-e border-gray-400">{{ peserta.sekolah.nama }}</td>
-                    <td class="py-1 px-2 border-e border-gray-400 text-center">{{ setLomba(peserta).label }}</td>
-                    <td class="py-1 px-2 print:hidden text-center" >
-                        <button class="py-1 px-2 rounded hover:bg-green-600 active:bg-orange-400 bg-green-400 text-white" @click="viewSertificate(peserta)">Cetak</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table w-full" v-if="mode == 'list'">
+            <table class="table w-full bg-white border border-collapse" >
+                <caption class="text-xl my-4">Data Peserta Bidang Lomba {{ props.bidang.label }}</caption>
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="py-2 px-3 text-gray-800 border-e border-gray-400">No</th>
+                        <th class="py-2 px-3 text-gray-800 border-e border-gray-400">NISN</th>
+                        <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Nama</th>
+                        <th class="py-2 px-3 text-gray-800 border-e border-gray-400">JK</th>
+                        <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Sekolah</th>
+                        <th class="py-2 px-3 text-gray-800 border-e border-gray-400">Bidang Lomba</th>
+                        <th class="py-2 px-3 text-gray-800 print:hidden">Opsi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="odd:bg-gray-100 hover:bg-lime-100" v-for="(peserta,p) in items.current" :key="p">
+                        <td class="text-center py-1 px-2 border-e border-gray-400">{{ p+1 }}</td>
+                        <td class="py-1 px-2 border-e border-gray-400">{{ peserta.nisn }}</td>
+                        <td class="py-1 px-2 border-e border-gray-400">{{ peserta.nama }}</td>
+                        <td class="py-1 px-2 border-e border-gray-400">{{ peserta.jk }}</td>
+                        <td class="py-1 px-2 border-e border-gray-400">{{ peserta.sekolah.nama }}</td>
+                        <td class="py-1 px-2 border-e border-gray-400 text-center">{{ props.bidang.label }}</td>
+                        <td class="py-1 px-2 print:hidden text-center" >
+                            <button class="py-1 px-2 rounded hover:bg-green-600 active:bg-orange-400 bg-green-400 text-white" @click="viewSertificate(peserta)">Cetak</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination p-1">
+                <div class="w-full bg-gray-200 flex items-center justify-between px-3  flex-wrap print:hidden">
+                    <div class="flex items-center gap-1">
+                        Total: {{ items.dataLength }} 
+                    </div>
+                    Jml Halaman: {{ items.pageCount }}
+                    
+                </div>
+                <div class="w-full flex flex-wrap md:justify-end print:hidden">
+                        <button @click="currentPage-=1" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0" :disabled="currentPage == 1">&lt;</button>
+                        <button v-for="b in items.pageCount" :key="b" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0" :class="b == currentPage ? 'bg-sky-600 text-white': ''" @click="currentPage=b">{{ b }}</button>
+                        <button @click="currentPage+=1" class="flex justify-center w-8 border border-gray-500 flex-grow md:flex-grow-0" :disabled="currentPage >= items.pageCount">&gt;</button>
+                    </div>
+            </div>
+        </div>
 
         <div class="paper mx-auto print:m-0 bg-white bg-[url('/img/piagam-peserta.jpg')] bg-cover h-[210mm] w-[297mm] p-10 relative break-after-page print:shadow-none rounded" v-if="mode=='cetak'">
             <img src="/img/kkgpaimalangkab.png" alt="Logo KKG" class="absolute h-20">
@@ -121,7 +144,7 @@ const headTitle = ref('Sertifikat Peserta')
                     <h4 class="peringkat text-4xl mt-4">Sebagai Peserta</h4>
                 </div>
             </div>
-            <p class="mt-4 mx-20">dalam perlombaan <span class="font-extrabold">{{ lomba.label }}</span> pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
+            <p class="mt-4 mx-20">dalam perlombaan <span class="font-extrabold">{{ props.bidang.label }}</span> pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
             <div class="grid grid-cols-3 w-10/12 mx-auto">
                 <div class="relative">
                     <p class="text-center mt-14">Ketua KKG PAI Kec. Wagir</p>

@@ -16,7 +16,7 @@ const list = async () => {
 }
 
 const perBidangs = (pesertas) => {
-    return _.groupBy(pesertas, 'lomba_id')
+    return _.groupBy(pesertas, 'bidang_id')
 }
 
 onMounted(() => {
@@ -26,17 +26,17 @@ onMounted(() => {
 
 <template>
 
-<div class="w-full bg-white">
+<div class="w-full bg-white rounded-xl">
     <Head title="Rekapitulasi Peserta" />
-    <div class="toolbar p-3 flex items-center justify-between">
+    <div class="toolbar p-3 flex items-center justify-between sticky top-0 bg-gray-100 shadow rounded-t-xl">
         Rekapitulasi Peserta
         <div class="toolbar-items flex items-center">
-            <button class="rounded-full" @click="$emit('close')">
-                <SvgIcon type="mdi" :path="mdiClose" :size="28" class="text-red-400" />
+            <button class="rounded-full bg-red-400 p-1 hover:rotate-45 transition-transform duration-200" @click="$emit('close')">
+                <SvgIcon type="mdi" :path="mdiClose" :size="24" class="text-gray-100" />
             </button>
         </div>
     </div>
-    <div class="content">
+    <div class="content bg-white p-3">
         <table class="border border-separate border-spacing-1 w-full">
             <thead>
                 <tr class="bg-gray-100">

@@ -7,6 +7,8 @@ import { mdiHumanMale, mdiHumanFemale, mdiHumanMaleFemale, mdiChevronDoubleDown,
 import Dash from '@/Layout/Dash.vue';
 
 const KartuPeserta = defineAsyncComponent(() => import('@/Components/Peserta/KartuPeserta.vue'))
+const RekapPeserta = defineAsyncComponent(() => import('@/Components/Peserta/RekapPeserta.vue'))
+const SertifikatPeserta = defineAsyncComponent(() => import('@/Components/Peserta/SertifikatPeserta.vue'))
 
 const mode = ref('list')
 const contentShow = ref(false)
@@ -30,6 +32,16 @@ const kartuPeserta = async(bidang) => {
     mode.value = 'kartu-peserta'
     selectedBidang.value = bidang
 }
+
+const rekapPeserta = async(bidang) => {
+    mode.value = 'rekap-peserta'
+    selectedBidang.value = bidang
+}
+
+const sertifikatPeserta = async(bidang) => {
+    mode.value = 'sertifikat-peserta'
+    selectedBidang.value = bidang
+}
 </script>
 
 <template>
@@ -46,7 +58,7 @@ const kartuPeserta = async(bidang) => {
                             {{ bidang.label }} {{ bidang.kategori }}
                         </h1>
                         <div class="toolbar-items flex items-center">
-                            <button @click="toggleContent($event)" class="btnChevron">
+                            <button @click="toggleContent($event)" class="btnChevron hover:border border-gray-50 rounded-full">
                                 <SvgIcon type="mdi" :path="mdiChevronDoubleDown" class=" duration-500" />
                             </button>
                         </div>
@@ -55,10 +67,10 @@ const kartuPeserta = async(bidang) => {
                         <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="kartuPeserta(bidang)">
                             Kartu Peserta
                         </button>
-                        <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950">
+                        <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="rekapPeserta(bidang)">
                             Rekap Peserta
                         </button>
-                        <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950">
+                        <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="sertifikatPeserta(bidang)">
                             Sertifikat Peserta
                         </button>
                     </div>
@@ -66,6 +78,8 @@ const kartuPeserta = async(bidang) => {
             </div>
         </div>
         <KartuPeserta v-else-if="mode == 'kartu-peserta'" :bidang="selectedBidang" @close="mode='list'" />
+        <RekapPeserta v-else-if="mode == 'rekap-peserta'" :bidang="selectedBidang" @close="mode='list'" />
+        <SertifikatPeserta v-else-if="mode == 'sertifikat-peserta'" :bidang="selectedBidang" @close="mode='list'" />
     </Transition> 
 </Dash>
 </template>
