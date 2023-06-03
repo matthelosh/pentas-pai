@@ -18,7 +18,7 @@ const listGuru = async() => {
             res.data.gurus.forEach(guru => {
                 datas.push({nip: guru.nip, label: guru.nama})
             })
-            gurus.value = datas
+            dataGurus.value = datas
         })
 }
 
@@ -26,7 +26,10 @@ const props = defineProps({
     lomba: Object
 })
 
-const gurus = ref([])
+const dataGurus = ref([])
+const gurus = computed(() => {
+    return guru.value !== null ?  dataGurus.value.filter(g => g.label.toLowerCase().includes(guru.value.toLowerCase())) : dataGurus.value
+})
 
 const panitia = ref({
 })
@@ -47,12 +50,19 @@ const closeMenu = (e) => {
     menu.classList.add("hidden")
 }
 
+const guru = ref(null)
+
 const setPanitia = (guru) => {
-    panitia.value[selectedJabatan.value] = {guru_id: guru.nip, nama: guru.label}
+    panitia.value[selectedJabatan.value] = {guru_id: guru.nip, nama: guru.label, jabatan: selectedJabatan.value}
     closeMenu()
 }
 
-
+const simpan = async () => {
+    // console.log(panitia.value)
+    await axios.post(route('panitia.store'), {data: JSON.stringify(panitia.value)})
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+}
 
 const side = computed(() => {
     return (window.innerWidth/5)
@@ -60,8 +70,9 @@ const side = computed(() => {
 </script>
 
 <template>
-    <div class="context-menu h-72 overflow-auto w-80 fixed hidden shadow-lg bg-gray-200 rounded border border-gray-200 z-20" style="-ms-overflow-style: none; scrollbar-width: none;" v-on-click-outside="closeMenu">
-        <ul class="p-2">
+    <div class="context-menu  w-80 fixed hidden shadow-lg bg-gray-200 rounded border border-gray-200 z-20" style="-ms-overflow-style: none; scrollbar-width: none;" v-on-click-outside="closeMenu" @keyup.esc="closeMenu">
+        <input type="text" name="filter" v-model="guru" placeholder="Cari Guru" class="w-full absolute " />
+        <ul class="p-2 h-72 overflow-auto mt-10">
             <li v-for="(guru,g) in gurus" :key="g" class="hover:bg-gray-400 hover:text-white hover:cursor-pointer"  @click="setPanitia(guru)">
                 {{ g }}. {{ guru.label }}
             </li>
@@ -72,7 +83,8 @@ const side = computed(() => {
             <span>
                 Susunan Panitia {{ lomba.label }}
             </span> 
-            <div class="toolbar-items flex items-center">
+            <div class="toolbar-items flex items-center gap-2">
+                <button @click="simpan">Simpan</button>
                 <button @click="emit('close')">
                     <XMarkIcon class="h-8 bg-red-400 bg-opacity-30 rounded-full text-red-200 hover:bg-red-400 active:bg-orange-400" />
                 </button>

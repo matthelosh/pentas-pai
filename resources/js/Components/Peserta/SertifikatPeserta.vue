@@ -63,13 +63,13 @@ const headTitle = ref('Sertifikat Peserta')
 
 <template>
 <Head :title="headTitle" />
-<div class="w-full bg-white">
-    <div class="toolbar w-full h-12  bg-white flex items-center justify-between p-3 shadow sticky top-0 z-10 print:hidden">
-        <span class="toolbar-title">
+<div class="w-full bg-white rounded-xl">
+    <div class="toolbar w-full h-12  bg-white flex items-center justify-between p-3 shadow sticky top-0 z-10 print:hidden mt-4 md:mt-0 rounded-t-xl">
+        <span class="toolbar-title hidden md:block">
             Sertifikat Peserta Lomba {{ props.bidang.label }}
         </span>
-        <div class="toolbar-items flex items-center gap-2">
-            <select name="sekolah" v-model="sekolah">
+        <div class="toolbar-items flex items-center gap-2 justify-end w-full md:w-auto">
+            <select name="sekolah" v-model="sekolah" class="hidden md:block">
                 <option value="0">Semua Sekolah</option>
                 <option v-for="(school,s) in sekolahs" :value="school.npsn">{{ school.nama }}</option>
             </select>
@@ -86,7 +86,7 @@ const headTitle = ref('Sertifikat Peserta')
             </button>
         </div>
     </div>
-    <div class="content">
+    <div class="content p-3 overflow-auto">
         <div class="table w-full" v-if="mode == 'list'">
             <table class="table w-full bg-white border border-collapse" >
                 <caption class="text-xl my-4">Data Peserta Bidang Lomba {{ props.bidang.label }}</caption>

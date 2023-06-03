@@ -40,7 +40,11 @@ class LombaController extends Controller
     public function rekap(Request $request)
     {
         // $datas = Sekolah::with('pesertas.bidangs')->get();
-        $datas = Sekolah::with('pesertas.bidangs')->get();
+        if($request->user()->level == 'admin') {
+            $datas = Sekolah::with('pesertas.bidangs')->get();
+        } else {
+            $datas = Sekolah::where('npsn', auth()->user()->userable->sekolah_id)->with('pesertas.bidangs')->get();
+        }
         return response()->json(['status' => 'ok', 'sekolahs' => $datas], 200);
     }
 

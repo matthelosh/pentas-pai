@@ -32,31 +32,24 @@ const printMe = () => {
 }
 
 const sideBg = (kode) => {
-    let bg = 'bg-lime-800'
-    switch(kode) {
-        default:
-            bg = 'bg-lime-800'
-            break
-        case kode.includes("lcc"):
-            bg = 'bg-red-800'
-            break
-        case "pdc":
-            bg = 'bg-green-800'
-            break
-        case "adz":
-            bg = 'bg-teal-800'
-            break
-        case "mtq":
-            bg = 'bg-green-800'
-            break
-        case "mhq":
-            bg = 'bg-sky-800'
-            break
-        case "bjr":
-            bg = 'bg-orange-800'
-            break
+    if(kode.includes("lcc")) {
+        return 'bg-orange-600'
+    } 
+    else if(kode.includes("bjr")) {
+        return 'bg-sky-600'
     }
-    return bg+' bg-opacity-90'
+    else if(kode.includes("mtq")) {
+        return 'bg-teal-600'
+    }
+    else if(kode.includes("mhq")) {
+        return 'bg-lime-600'
+    }
+    else if(kode.includes("pdc")) {
+        return 'bg-pink-600'
+    }
+    else if(kode.includes("adz")) {
+        return 'bg-orange-600'
+    }
 }
 
 const pesertas = ref([])
@@ -95,7 +88,7 @@ const grouped = computed(() => {
         })
         return grouped
     } else {
-        return datas.value
+        return pesertas.value
     }
 })
 
@@ -105,7 +98,7 @@ const grouped = computed(() => {
 <Loading v-if="loading" :show="loading" />
 <div class="w-full bg-white rounded shadow print:shadow-none relative print:pt-0 mt-4 md:mt-0">
     <div class="toolbar h-12 bg-[#fefefe] shadow items-center p-2 print:hidden flex justify-between sticky w-full z-10 top-0">
-        <span class="hidden md:block">Kartu Peserta {{ $page.props.lomba.label }}</span>
+        <span class="hidden md:block">Kartu Peserta {{ props.bidang.label }}</span>
         <div class="toolbar-items  flex justify-between gap-2 items-center">
             <select name="sekolah_id" v-model="sekolah"  class="py-1 rounded-full">
                 <option value="0">Pilih Sekolah</option>
@@ -121,9 +114,9 @@ const grouped = computed(() => {
     <div class="w-full" v-if="pesertas.length > 0">
         <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-1 print:gap-2 print:p-0 p-3 relative" v-if="props.bidang.kategori !== 'regu'">
             <div v-for="(peserta,p) in items" :key="p" class=" border-gray-800 border shadow print:shadow-none  print:break-inside-avoid print:my-1 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[500px] print:h-[350px]" >
-                <div class="left h-full relative block pt-5" :class="sideBg(props.bidang.kode)">
-                    <h1 class="absolute text-uppercase whitespace-nowrap uppercase top-12 font-extrabold w-[100%] text-4xl rotate-90 text-white">{{ label }}</h1>
-                    <h1 class="text-4xl font-extrabold absolute bg-white aspect-square w-16 text-center  rounded-lg bottom-2 -right-6 border-2 border-black flex justify-center items-center">{{ p+1 }}</h1>
+                <div class="left h-full relative flex flex-col justify-between p-4 items-center bg-opacity-90" :class="sideBg(props.bidang.kode)">
+                    <h1 class="text-uppercase whitespace-nowrap uppercase  font-extrabold w-[100%] text-4xl print:text-2xl text-white mt-0 flex items-center" style="writing-mode: vertical-lr;">{{ label }}</h1>
+                    <h1 class="text-4xl bg-white aspect-square print:w-12 w-20 text-center rounded-full flex justify-center items-center">{{ p+1 }}</h1>
                 </div>
                 <div class="col-span-3 ">
                     <div class="logo flex gap-1 items-end justify-center mt-6">
@@ -149,7 +142,7 @@ const grouped = computed(() => {
             <div v-for="(group,g) in items" :key="g">
                 <div class="w-full grid grid-cols-3 gap-1 print:gap-2 print:p-0 p-3 relative">
                     <div v-for="(peserta,p) in group.data" :key="p" class=" border-gray-800 border shadow print:shadow-none  print:break-inside-avoid print:my-1 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[500px] print:h-[350px]" >
-                        <div class="left h-full relative flex flex-col justify-between p-4  items-center" :class="sideBg(bidang.kode)">
+                        <div class="left h-full relative flex flex-col justify-between p-4 items-center bg-opacity-90" :class="sideBg(props.bidang.kode)">
                             <h1 class="text-uppercase whitespace-nowrap uppercase  font-extrabold w-[100%] text-4xl print:text-2xl text-white" style="writing-mode: vertical-lr;">{{ label }}</h1>
                             <h1 class="text-4xl bg-white aspect-square print:w-12 w-20 text-center rounded-full flex justify-center items-center">{{ group.no }}</h1>
                         </div>

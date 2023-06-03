@@ -49,6 +49,7 @@ class PanitiaController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->data);
+        dd($data);
         try {
             $lomba = Lomba::where('tahun', date('Y'))->first();
             // dd($lomba);

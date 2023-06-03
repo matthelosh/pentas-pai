@@ -48,8 +48,16 @@ const sertifikatPeserta = async(bidang) => {
 <Head title="Administrasi Peserta" />
 <Dash title="Administrasi Peserta">
     <Transition name="slide-fade">
-        <div class="content" v-if="mode == 'list'">
-            <h1 class=" text-center my-4 font-bold tracking-wider text-white drop-shadow text-3xl hidden md:block">Adminstrasi Peserta Lomba</h1>
+        <div class="content relative w-full" v-if="mode == 'list'">
+            <h1 class=" text-center md:my-4 font-bold tracking-wider text-white drop-shadow text-3xl ">
+                <span class="hidden md:block">
+                    Adminstrasi Peserta Lomba <br>
+                </span>
+                <button class="bg-gray-50 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950 mx-auto mt-6 text-lg" @click="rekapPeserta(bidang)">
+                Rekap Peserta
+            </button>
+            </h1>
+            
             <div class="w-full grid my-4 md:my-0  grid-cols-1 md:grid-cols-3 gap-4 py-4 md:pt-0 relative">
                 <div class="card w-full bg-white rounded-xl overflow-hidden shadow" v-for="(bidang,b) in $page.props.lomba.bidangs" :key="b">
                     <div class="toolbar w-full h-12 bg-teal-600 text-white flex items-center justify-between p-3 shadow">
@@ -67,15 +75,14 @@ const sertifikatPeserta = async(bidang) => {
                         <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="kartuPeserta(bidang)">
                             Kartu Peserta
                         </button>
-                        <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="rekapPeserta(bidang)">
-                            Rekap Peserta
-                        </button>
+                        
                         <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="sertifikatPeserta(bidang)">
                             Sertifikat Peserta
                         </button>
                     </div>
                 </div>
             </div>
+            
         </div>
         <KartuPeserta v-else-if="mode == 'kartu-peserta'" :bidang="selectedBidang" @close="mode='list'" />
         <RekapPeserta v-else-if="mode == 'rekap-peserta'" :bidang="selectedBidang" @close="mode='list'" />

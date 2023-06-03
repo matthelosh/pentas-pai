@@ -26,7 +26,7 @@ onMounted(() => {
 
 <template>
 
-<div class="w-full bg-white rounded-xl">
+<div class="w-full bg-white rounded-xl mt-3 md:mt-0">
     <Head title="Rekapitulasi Peserta" />
     <div class="toolbar p-3 flex items-center justify-between sticky top-0 bg-gray-100 shadow rounded-t-xl">
         Rekapitulasi Peserta
@@ -36,7 +36,7 @@ onMounted(() => {
             </button>
         </div>
     </div>
-    <div class="content bg-white p-3">
+    <div class="content bg-white p-3 w-full overflow-auto">
         <table class="border border-separate border-spacing-1 w-full">
             <thead>
                 <tr class="bg-gray-100">
@@ -57,7 +57,7 @@ onMounted(() => {
                                 <ul class="w-full" v-if="peserta">
                                     <li v-for="(item, it) in peserta" :key="it" class="flex items-center gap-1"> 
                                         {{it+1}} . {{ item.nama }} [ NISN: {{ item.nisn }} ]
-                                        <img :src="imgUrl(item.foto)" alt="" class="w-12 aspect-square rounded-full object-cover object-top">
+                                        <img :src="imgUrl(item.foto)" alt="" class="w-12 aspect-square rounded-full object-cover object-top hidden md:block">
                                     </li>
                                 </ul>
                             </div>
