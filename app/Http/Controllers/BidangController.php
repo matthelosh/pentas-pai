@@ -15,11 +15,20 @@ class BidangController extends Controller
         try {
             if($request->query('id')) {
                 if ($request->user()->level == 'admin') {
-                    // $bidangs = Bidang::where('kode')
+                    $bidangs = Bidang::find($request->query('id'));
                 }
+            } else {
+                $bidangs = Bidang::all();
             }
+            return response()->json([
+                'status' => 'ok',
+                'bidangs' => $bidangs
+            ], 200);
         } catch (\Exception $e) {
-            //throw $th;
+            return response()->json([
+                'status' => 'ok',
+                'msg' => $e->getMessage()
+            ], 500);
         }
     }
 
