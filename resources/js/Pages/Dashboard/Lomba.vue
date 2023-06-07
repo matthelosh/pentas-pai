@@ -119,7 +119,6 @@ const editLomba = (lomba) => {
                             <th class="py-2 px-3 ">Label</th>
                             <th class="py-2 px-3 hidden md:block">Tahun</th>
                             <th class="py-2 px-3 ">Bidang Lomba dan Peserta</th>
-                            <th class="py-2 px-3 ">Peserta</th>
                             <th class="py-2 px-3 ">Lokasi</th>
                             <th class="py-2 px-3 ">Panitia</th>
                             <th class="py-2 px-3 print:hidden">Opsi</th>
@@ -133,15 +132,12 @@ const editLomba = (lomba) => {
                             <td class="px-3">
                                 <ul v-if="lomba.bidangs" > 
                                     <li v-for="(bidang,b) in lomba.bidangs" :key="b" class="my-1 group flex items-center">
-                                        {{ bidang.label }} <span class="text-orange-400 font-bold"> [{{ bidang.kelompok }}]</span>
+                                        {{ bidang.label }} &nbsp; <span class="text-orange-400 font-bold"> [{{ bidang.pesertas.length }} orang]</span>
                                         <button class=" group-hover:inline-block hidden" @click="removeBidang(bidang, lomba)">
                                             <SvgIcon type="mdi" :path="mdiMinusCircle" class="text-red-600" />
                                         </button>
                                     </li>
                                 </ul>    
-                            </td>
-                            <td class="px-3">
-                                {{ lomba.pesertas.length }}
                             </td>
                             <td class="px-3">
                                 {{ lomba.sekolah.nama }}

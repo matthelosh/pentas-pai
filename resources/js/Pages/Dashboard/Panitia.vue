@@ -71,7 +71,7 @@ const side = computed(() => {
 
 <template>
     <div class="context-menu  w-80 fixed hidden shadow-lg bg-gray-200 rounded border border-gray-200 z-20" style="-ms-overflow-style: none; scrollbar-width: none;" v-on-click-outside="closeMenu" @keyup.esc="closeMenu">
-        <input type="text" name="filter" v-model="guru" placeholder="Cari Guru" class="w-full absolute " />
+        <input type="text" name="filter" v-model="guru" placeholder="Cari Guru" class="w-full absolute" autofocus />
         <ul class="p-2 h-72 overflow-auto mt-10">
             <li v-for="(guru,g) in gurus" :key="g" class="hover:bg-gray-400 hover:text-white hover:cursor-pointer"  @click="setPanitia(guru)">
                 {{ g }}. {{ guru.label }}

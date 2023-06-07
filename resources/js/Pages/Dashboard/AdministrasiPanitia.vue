@@ -6,7 +6,10 @@ import { mdiHumanMale, mdiHumanFemale, mdiHumanMaleFemale, mdiChevronDoubleDown,
 
 const page = usePage()
 
+const mode = ref('list')
+
 const admin = computed(() => page.props.auth.user.level == 'admin')
+const KartuPanitia = defineAsyncComponent(() => import('@/Components/Panitia/KartuPanitia.vue'))
 
 import Dash from '@/Layout/Dash.vue';
 
@@ -15,23 +18,40 @@ import Dash from '@/Layout/Dash.vue';
 <template>
 <Head title="Administrasi Panitia" />
 <Dash title="Administrasi Panitia">
-    <div class="container w-full p-3">
-        <div class="row w-full flex justify-center items-center mb-3">
-            <h1 class="text-white drop-shadow text-2xl">Administrasi Panitia</h1>
-        </div>
-        <div class="row w-full">
-            <div class="w-full  grid grid-cols-1 md:grid-cols-3 gap-3">
-                <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-                    Kartu Panitia
-                </div>
-                <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-                    Presensi Panitia
-                </div>
-                <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-                    Sertifikat Panitia
+    <Transition name="fade">
+        <div class="container w-full p-3" v-if="mode == 'list'">
+            <div class="row w-full flex justify-center items-center mb-3">
+                <h1 class="text-white drop-shadow text-2xl">Administrasi Panitia</h1>
+            </div>
+            <div class="row w-full">
+                <div class="w-full  grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" @click="mode='kartu-panitia'">
+                        Kartu Panitia
+                    </div>
+                    <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                        Presensi Panitia
+                    </div>
+                    <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                        Sertifikat Panitia
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <KartuPanitia v-else-if="mode =='kartu-panitia'" @close="mode='list'" />
+        
+    </Transition>
 </Dash>
 </template>
+
+<style scoped>
+    .fade-enter-active,
+    .fade-leave-active {
+        opacity: 0;
+        transition: all .35s linear;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 1;
+    }
+</style>

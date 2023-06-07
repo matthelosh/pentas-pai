@@ -48,29 +48,29 @@ class PanitiaController extends Controller
      */
     public function store(Request $request)
     {
-        $data = json_decode($request->data);
-        dd($data);
+        $datas = json_decode($request->data);
+        
         try {
-            $lomba = Lomba::where('tahun', date('Y'))->first();
+            $lomba = Lomba::where('status', '1')->first();
             // dd($lomba);
-            if($data->jabatan !== '0') {
+            foreach($datas as $data) {
+                $guru = Guru::where('nip', $data->guru_id)->with('user')->first();
                 Panitia::updateOrCreate(
                     [
                         'id' => $data->id ?? null
                     ],
                     [
                         'jabatan' => $data->jabatan,
-                        'guru_id' => $data->guru_id,
-                        'lomba_id' => $data->lomba_id ?? $lomba->id, //Sementara
-                        'user_id' => $data->user_id ?? $this->setUser($data->guru_id)
+                        'guru_id' => $guru->id,
+                        'lomba_id' =>  $lomba->id, //Sementara
+                        'user_id' => $guru->user->id
                     ]
                 );
-            } else {
-                $panitia = Panitia::find($data->id);
-                $panitia->delete();
+                
             }
             return response()->json(['status' => 'ok', 'msg' => 'Panitia Disimpan'], 200);
         } catch (\Exception $e) {
+            dd($e);
             return response()->json(['status' => 'ok', 'msg' => $e->getMessage()], 500);
         }
     }

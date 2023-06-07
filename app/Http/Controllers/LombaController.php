@@ -13,7 +13,7 @@ class LombaController extends Controller
     public function page(Request $request)
     {
         return Inertia::render('Dashboard/Lomba', [
-            'lombas' => Lomba::with('sekolah', 'panitias','bidangs','pesertas')->get(),
+            'lombas' => Lomba::with('sekolah', 'panitias','bidangs.pesertas')->get(),
         ], 200);
     }
 

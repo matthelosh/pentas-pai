@@ -85,11 +85,18 @@ class BidangController extends Controller
      */
     public function destroy(Bidang $bidang, $id)
     {
-        $bidang::destroy($id);
+        try {
+            $bidang::find($id);
+            $bidang->pesertas()->detach();
+            $bidang::destroy($id);
 
-        return response()->json([
-            'status' => 'ok',
-            'msg' => 'Bidang Dihapus'
-        ],200);
+            return response()->json([
+                'status' => 'ok',
+                'msg' => 'Bidang Dihapus'
+            ],200);
+        }
+        catch(\Exception $e) {
+            dd($e);
+        }
     }
 }
