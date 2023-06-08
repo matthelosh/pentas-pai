@@ -20,5 +20,6 @@ jobs:
             git pull prod main
             git status
             yarn --only=prod
+            yarn build
             
       
