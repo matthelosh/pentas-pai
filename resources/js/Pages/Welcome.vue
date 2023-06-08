@@ -14,7 +14,7 @@ const tes = (e) => {
     <Halo />
     <div class="w-full p-4 md:p-10">
         <div class="w-auto bg-white p-2 md:p-8 shadow relative rounded-lg">
-            <img src="img/foto-gpai.jpg" alt="Foto GPAI" class="shadow-lg object-cover mx-auto">
+            <img src="img/foto-pentaspai-2023.jpg" alt="Foto GPAI" class="shadow-lg object-cover mx-auto">
         </div>
     </div>
 </Front>
