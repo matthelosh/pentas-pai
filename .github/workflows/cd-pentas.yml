@@ -16,7 +16,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            cd /home/users/pentaspai/htdocs/pentaspai.kkgpaiwagir.or.id
+            cd /home/pentaspai/htdocs/pentaspai.kkgpaiwagir.or.id
             git pull prod main
             git status
             yarn --only=prod
