@@ -124,7 +124,7 @@ const editLomba = (lomba) => {
                             <th class="py-2 px-3 print:hidden">Opsi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="page.props.lombas">
                         <tr class="odd:bg-gray-100 hover:bg-lime-50" v-for="(lomba,l) in page.props.lombas" :key="l">
                             <td class="text-center">{{ l+1 }}</td>
                             <td class="px-3 text-sky-800 hover:underline hover:cursor-pointer" @click="editLomba(lomba)">{{ lomba.label }}</td>

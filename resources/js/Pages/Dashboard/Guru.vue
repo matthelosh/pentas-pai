@@ -3,7 +3,7 @@ import Dash from '@/Layout/Dash.vue';
 import { Head, usePage, router } from '@inertiajs/vue3';
 import axios from 'axios';
 import { ref, defineAsyncComponent } from 'vue';
-import { mdiAccountPlusOutline, mdiAccountMinus, mdiAccountTie, mdiFileExcel } from '@mdi/js';
+import { mdiAccountPlusOutline, mdiAccountMultiple, mdiAccountMinus, mdiAccountTie, mdiFileExcel } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import {jabatans} from '@/Plugins/Datas'
 
@@ -83,6 +83,12 @@ const mode = ref('list')
                     </span>
                     <SvgIcon  type="mdi" :path="mdiFileExcel" />
                  </button>
+                <button class="bg-sky-600 hover:bg-sky-800 active:bg-sky-200 active:text-gray-800 py-1 px-2 text-white rounded flex" @click="bulkAccount">
+                    <span class="hidden md:inline">
+                        Buat Akun
+                    </span>
+                    <SvgIcon type="mdi" :path="mdiAccountMultiple" />
+                </button>
                 <button class="bg-sky-600 hover:bg-sky-800 active:bg-sky-200 active:text-gray-800 py-1 px-2 text-white rounded flex" @click="newGuru">
                     <span class="hidden md:inline">
                         Tambah

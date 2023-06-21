@@ -3,8 +3,12 @@ import { ref, defineAsyncComponent } from 'vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiHumanMale, mdiHumanFemale, mdiHumanMaleFemale, mdiChevronDoubleDown, mdiChevronDoubleUp } from '@mdi/js';
+import * as _ from 'lodash-es';
 
 import Dash from '@/Layout/Dash.vue';
+import { computed } from 'vue';
+
+const page = usePage()
 
 const KartuPeserta = defineAsyncComponent(() => import('@/Components/Peserta/KartuPeserta.vue'))
 const RekapPeserta = defineAsyncComponent(() => import('@/Components/Peserta/RekapPeserta.vue'))
@@ -19,13 +23,20 @@ const toggleContent = (e) => {
     button.classList.toggle('rotate-180')
     card.querySelector(".content").classList.toggle("flex")
     card.querySelector(".content").classList.toggle("hidden")
-    card.classList.toggle("absolute")
-    card.classList.toggle("z-10")
-    card.classList.toggle("left-0")
-    card.classList.toggle("top-0")
-    card.classList.toggle("bottom-0")
+    card.classList.toggle("h-12")
+    // card.classList.toggle("z-10")
+    // card.classList.toggle("left-0")
+    // card.classList.toggle("top-0")
+    // card.classList.toggle("bottom-0")
     // console.log(e.target.closest('button'))
 }
+
+const bidangs = computed(() => {
+let i, j, resArray=[], chunk = 1;
+const datas = page.props.lomba.bidangs;
+const chunks = datas.length % 4;
+return _.chunk(datas, 2)
+})
 
 const selectedBidang = ref(null)
 const kartuPeserta = async(bidang) => {
@@ -58,27 +69,32 @@ const sertifikatPeserta = async(bidang) => {
             </button>
             </h1>
             
-            <div class="w-full grid my-4 md:my-0  grid-cols-1 md:grid-cols-3 gap-4 py-4 md:pt-0 relative">
-                <div class="card w-full bg-white rounded-xl overflow-hidden shadow" v-for="(bidang,b) in $page.props.lomba.bidangs" :key="b">
-                    <div class="toolbar w-full h-12 bg-teal-600 text-white flex items-center justify-between p-3 shadow">
-                        <h1>
-                            <SvgIcon type="mdi" :path="bidang.kelompok == 'putra' ? mdiHumanMale : (bidang.kelompok == 'putri' ? mdiHumanFemale : mdiHumanMaleFemale)" class="inline" />
-                            {{ bidang.label }} {{ bidang.kategori }}
-                        </h1>
-                        <div class="toolbar-items flex items-center">
-                            <button @click="toggleContent($event)" class="btnChevron hover:border border-gray-50 rounded-full">
-                                <SvgIcon type="mdi" :path="mdiChevronDoubleDown" class=" duration-500" />
+            <div class="w-full grid grid-cols-3 gap-3 items-start">
+                <div class="grid gap-3" v-for="(cols, c) in bidangs" :key="c">
+                    <div 
+                        class="card w-full bg-white h-12"
+                        v-for="(bidang,b) in cols"
+                        :key="b" 
+                    >
+                        <div class="card-toolbar w-full flex items-center justify-between p-3 bg-teal-600 text-white">
+                            <span>
+                                {{ bidang.label }}
+                            </span>
+                            <div class="toolbar-items flex items-center">
+                                <button @click="toggleContent($event)" class="btnChevron hover:border border-gray-50 rounded-full">
+                                    <SvgIcon type="mdi" :path="mdiChevronDoubleDown" class=" duration-500" />
+                                </button>
+                            </div>
+                        </div>
+                        <div class="content card-content bg-white flex-col gap-2 hidden p-3 duration-500 transition-all">
+                            <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="kartuPeserta(bidang)">
+                                Kartu Peserta
+                            </button>
+                            
+                            <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="sertifikatPeserta(bidang)">
+                                Sertifikat Peserta
                             </button>
                         </div>
-                    </div>
-                    <div class="content bg-white flex-col gap-2 hidden p-3 duration-500 transition-all">
-                        <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="kartuPeserta(bidang)">
-                            Kartu Peserta
-                        </button>
-                        
-                        <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="sertifikatPeserta(bidang)">
-                            Sertifikat Peserta
-                        </button>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ const datas = [
 <Head title="Dashboard" />
 <Dash title="Dashboard">
     <div class="content">
-        <h1 class="text-4xl font-extrabold uppercase text-gray-50 text-center mt-4 mb-2 drop-shadow-lg">{{ $page.props.lomba.label }}</h1>
+        <h1 class="text-4xl font-extrabold uppercase text-gray-50 text-center mt-4 mb-2 drop-shadow-lg">{{ $page.props.lomba ? $page.props.lomba.label : 'Belum Ada Lomba' }}</h1>
         <div class=" grid grid-cols-4 gap-3 p-3">
             <div v-for="(data,d) in page.props.datas" :key="d" class="p-3 bg-white rounded shadow">
                 <h1>{{d}}: {{data.length}}</h1>
