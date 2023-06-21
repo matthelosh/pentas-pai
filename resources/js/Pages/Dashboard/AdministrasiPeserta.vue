@@ -61,18 +61,18 @@ const sertifikatPeserta = async(bidang) => {
     <Transition name="slide-fade">
         <div class="content relative w-full" v-if="mode == 'list'">
             <h1 class=" text-center md:my-4 font-bold tracking-wider text-white drop-shadow text-3xl ">
-                <span class="hidden md:block">
+                <span>
                     Adminstrasi Peserta Lomba <br>
                 </span>
                 <button class="bg-gray-50 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950 mx-auto mt-6 text-lg" @click="rekapPeserta(bidang)">
-                Rekap Peserta
-            </button>
+                    Rekap Peserta
+                </button>
             </h1>
             
-            <div class="w-full grid grid-cols-3 gap-3 items-start">
+            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-3 items-start mt-8">
                 <div class="grid gap-3" v-for="(cols, c) in bidangs" :key="c">
                     <div 
-                        class="card w-full bg-white h-12"
+                        class="card w-full bg-white h-12 rounded-xl overflow-hidden"
                         v-for="(bidang,b) in cols"
                         :key="b" 
                     >
@@ -87,11 +87,11 @@ const sertifikatPeserta = async(bidang) => {
                             </div>
                         </div>
                         <div class="content card-content bg-white flex-col gap-2 hidden p-3 duration-500 transition-all">
-                            <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="kartuPeserta(bidang)">
+                            <button class="bg-teal-600 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-teal-50" @click="kartuPeserta(bidang)">
                                 Kartu Peserta
                             </button>
                             
-                            <button class="bg-gray-300 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-gray-950" @click="sertifikatPeserta(bidang)">
+                            <button class="bg-teal-600 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-teal-50" @click="sertifikatPeserta(bidang)">
                                 Sertifikat Peserta
                             </button>
                         </div>

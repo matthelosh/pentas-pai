@@ -1,12 +1,30 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import { XCircleIcon } from '@heroicons/vue/20/solid';
 import * as _ from 'lodash-es';
+import axios from 'axios';
 
 const props = defineProps({
-    lomba:Object
+    bidang:Object
 })
+
+const selectedBidang = ref({})
+
+onMounted(() => {
+    list()
+})
+
+const list = async() => {
+    await axios.post(route('bidang.show', {
+                id: props.bidang.id,
+                _query: {
+                    peserta: true
+                }
+            })).then(res => {
+                selectedBidang.value = res.data.bidang
+            })
+}
 
 const kriterias = ref([
     {
@@ -28,23 +46,27 @@ const kriterias = ref([
     {
         lomba: 'bjr',
         aspeks: ['Adab', 'Vokal', 'Syair', 'Musik']
+    }, 
+    {
+        lomba: 'lcc',
+        aspeks: ['Penyisihan', 'Semifinal','Final']
     }
 ])
 
 const bidang = computed(() => {
-    return kriterias.value.filter(item => item.lomba == props.lomba.kode)
+    return kriterias.value.filter(item => props.bidang.kode.includes(item.lomba))
 })
 
 const pesertas = computed(() => {
-    if(props.lomba.kode == 'bjr' || props.lomba.kode == 'lcc') {
-        return _.groupBy(props.lomba.pesertas, 'sekolah.nama')
+    if(props.bidang.kode.includes('bjr') || props.bidang.kode.includes('lcc')) {
+        return _.groupBy(selectedBidang.value.pesertas, 'sekolah.nama')
     } else {
-        return props.lomba.pesertas
+        return selectedBidang.value.pesertas
     }
 })
 
-const banjari = (kode) => {
-    return ['bjr'].includes(kode)   
+const group = (kode) => {
+    return kode.includes('bjr') || kode.includes('lcc')   
 }
 
 </script>
@@ -54,7 +76,7 @@ const banjari = (kode) => {
     <Head title="Form Nilai" />
     <div class="toolbar bg-gray-50 h-12 flex items-center justify-between p-3 shadow print:hidden">
         <div class="toolbar-title">
-            Formulir Nilai {{ props.lomba.label }}
+            Formulir Nilai {{ props.bidang.label }} {{ props.bidang.kode }}
         </div>
         <div class="toolbar-items flex items-center gap-1">
             <XCircleIcon class="text-red-600 h-8 cursor-pointer" @click="$emit('close')" />
@@ -64,15 +86,15 @@ const banjari = (kode) => {
         <div class="form-nilai break-after-page">
             <table class="table w-full border border-black border-collapse table-auto">
                 <caption class="my-4 print:mt-0">
-                    <h1 class="text-center text-xl">Form Nilai Lomba {{ props.lomba.label }}</h1>
-                    <h2 class="text-center text-2xl">{{ lomba.label }}</h2>
+                    <h1 class="text-center text-xl">Form Nilai Lomba {{ $page.props.lomba.label }}</h1>
+                    <h2 class="text-center text-2xl">{{ props.bidang.label }}</h2>
                 </caption>
                 <thead>
                     <tr>
-                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2">{{ banjari(lomba.kode) ? 'Grup/Sekolah' : 'No' }}</th>
-                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2" v-if="!banjari(lomba.kode)">NISN</th>
-                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2">{{ banjari(lomba.kode) ? 'Peserta' : 'Nama' }}</th>
-                        <th class="border border-black py-1 print:py-0 px-3" :colspan="banjari(lomba.kode) ? '0' : bidang[0].aspeks.length">Skor</th>
+                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2">{{ group(props.bidang.kode) ? 'Grup/Sekolah' : 'No' }}</th>
+                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2" v-if="!group(props.bidang.kode)">NISN</th>
+                        <th class="border border-black py-1 print:py-0 px-3" rowspan="2">{{ group(props.bidang.kode) ? 'Peserta' : 'Nama' }}</th>
+                        <th class="border border-black py-1 print:py-0 px-3" :colspan="bidang[0].aspeks.length">Skor</th>
                         <th class="border border-black py-1 print:py-0 px-3" rowspan="2">Nilai</th>
                     </tr>
                     <tr>
@@ -81,10 +103,10 @@ const banjari = (kode) => {
                 </thead>
                 <tbody>
                     <tr v-for="(peserta,p) in pesertas" class=" odd:bg-gray-50">
-                        <td class="text-center py-1 px-3 border border-black">{{ banjari(lomba.kode) ? p : p+1 }}</td>
-                        <td class="text-center py-1 px-3 border border-black" v-if="!banjari(lomba.kode)">{{ peserta.nisn }}</td>
+                        <td class="text-center py-1 px-3 border border-black">{{ group(props.bidang.kode) ? p : p+1 }}</td>
+                        <td class="text-center py-1 px-3 border border-black" v-if="!group(props.bidang.kode)">{{ peserta.nisn }}</td>
                         <td class="py-1 px-3 border border-black">
-                            <ul v-if="banjari(lomba.kode)">
+                            <ul v-if="group(props.bidang.kode)">
                                 <li v-for="(pes, i) in peserta" :key="i">{{ i+1 }}. {{ pes.nama }}</li>
                             </ul>
                             <span v-else>{{ peserta.nama }} <small class=" font-bold">[{{ peserta.sekolah.nama }}]</small></span>
@@ -98,7 +120,7 @@ const banjari = (kode) => {
             <div class="ttd w-full grid grid-cols-3 mt-2">
                 <div >
                     <p>&nbsp;</p>
-                    <p class="text-center">Koordinator {{ lomba.label }}</p>
+                    <p class="text-center">Koordinator {{ props.bidang.label }}</p>
 
                     <p class="underline mt-16 text-center">.......................................................................</p>
                     <p>NIP.</p>
@@ -106,7 +128,7 @@ const banjari = (kode) => {
                 <div></div>
                 <div>
                     <p class="text-center">Wagir, 16 Mei 2023</p>
-                    <p class="text-center">Juri {{ lomba.label }}</p>
+                    <p class="text-center">Juri {{ props.bidang.label }}</p>
 
                     <p class="underline mt-16 text-center">.......................................................................</p>
                     <p>NIP.</p>
@@ -115,9 +137,9 @@ const banjari = (kode) => {
         </div>
         <div class="berita-acara">
             <h1 class="text-center text-lg">BERITA ACARA PELAKSANAAN</h1>
-            <h2 class="text-center text-xl">BIDANG LOMBA {{ props.lomba.label }}</h2>
+            <h2 class="text-center text-xl">BIDANG LOMBA {{ props.bidang.label }}</h2>
 
-            <p class="mt-10">Pada hari ini _____________, tanggal ___, bulan ________________, tahun _________ kami Koordinator bidang lomba {{ props.lomba.label }} {{$page.props.lomba.label}} beserta juri yang bertugas telah melaksanakan dengan keterangan sebagai berikut:</p>
+            <p class="mt-10">Pada hari ini _____________, tanggal ___, bulan ________________, tahun _________ kami Koordinator bidang lomba {{ props.bidang.label }} {{$page.props.lomba.label}} beserta juri yang bertugas telah melaksanakan dengan keterangan sebagai berikut:</p>
             <table>
                 <tr>
                     <td>Bidang Lomba</td><td>:</td><td>______________________</td>
@@ -170,7 +192,7 @@ const banjari = (kode) => {
             <div class="ttd w-full grid grid-cols-3 mt-2">
                 <div >
                     <p>&nbsp;</p>
-                    <p class="text-center">Koordinator {{ lomba.label }}</p>
+                    <p class="text-center">Koordinator {{ props.bidang.label }}</p>
 
                     <p class="underline mt-16 text-center">.......................................................................</p>
                     <p>NIP.</p>
@@ -178,7 +200,7 @@ const banjari = (kode) => {
                 <div></div>
                 <div>
                     <p class="text-center">Wagir, 16 Mei 2023</p>
-                    <p class="text-center">Juri {{ lomba.label }}</p>
+                    <p class="text-center">Juri {{ props.bidang.label }}</p>
 
                     <p class="underline mt-16 text-center">.......................................................................</p>
                     <p>NIP.</p>
