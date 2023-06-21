@@ -998,6 +998,11 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
+autobind-decorator@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/autobind-decorator/-/autobind-decorator-2.4.0.tgz#ea9e1c98708cf3b5b356f7cf9f10f265ff18239c"
+  integrity sha512-OGYhWUO72V6DafbF8PM8rm3EPbfuyMZcJhtm5/n26IDwO18pohE4eNazLoCGhPiXOCD0gEGmrbU3849QvM8bbw==
+
 autoprefixer@^10.4.12:
   version "10.4.14"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.14.tgz#e28d49902f8e759dd25b153264e862df2705f79d"
@@ -1204,6 +1209,11 @@ convert-source-map@^1.7.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.9.0.tgz#7faae62353fb4213366d0ca98358d22e8368b05f"
   integrity sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==
+
+core-js@^3.28.0:
+  version "3.31.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.31.0.tgz#4471dd33e366c79d8c0977ed2d940821719db344"
+  integrity sha512-NIp2TQSGfR6ba5aalZD+ZQ1fSxGhDo/s1w0nx3RYzf2pnJxt7YynxFlFScP6eV7+GZsKO95NSjGxyJsU3DZgeQ==
 
 core-js@^3.6.0, core-js@^3.8.3:
   version "3.30.2"
@@ -1670,6 +1680,21 @@ jiti@^1.18.2:
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.18.2.tgz#80c3ef3d486ebf2450d9335122b32d121f2a83cd"
   integrity sha512-QAdOptna2NYiSSpv0O/BwoHBSmz4YhpzJHyi+fnMRTXFjp7B8i/YG5Z8IfusxB1ufjcD2Sre1F3R+nX3fvy7gg==
+
+jodit-vue@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/jodit-vue/-/jodit-vue-3.0.0.tgz#ae36115b9319fa5c699776e8bf90019e73b591c8"
+  integrity sha512-it3tVUFBbZF0NcVyeekQUGUgIa8u7IjUbmL4wlG0abv6PLnltvT3xt/hnDQNxkt3/jYcvTluu12G1B6G6nlQSQ==
+  dependencies:
+    jodit "^3.24.5"
+
+jodit@^3.24.5:
+  version "3.24.9"
+  resolved "https://registry.yarnpkg.com/jodit/-/jodit-3.24.9.tgz#575a0218996f31003c230f81db0f056132dea9b5"
+  integrity sha512-t2d73v7GFbGI08ZzdCTwrzi8ZtoOG4icGzD6IIN2e+ghlpUKYxcHZ/Rmy6/mc6055172z+tv7QSr9BcOz6IOFQ==
+  dependencies:
+    autobind-decorator "^2.4.0"
+    core-js "^3.28.0"
 
 js-tokens@^4.0.0:
   version "4.0.0"

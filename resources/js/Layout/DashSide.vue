@@ -58,6 +58,11 @@ const menus = ref([
                 url: 'administrasi.panitia',
                 roles: ['admin','panitia']
             },
+            {
+                label: 'Administrasi Persuratan',
+                url: 'administrasi.surat',
+                roles: ['admin','panitia']
+            },
         ]
     },
     {

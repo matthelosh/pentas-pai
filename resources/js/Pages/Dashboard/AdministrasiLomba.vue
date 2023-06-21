@@ -10,11 +10,9 @@ import { computed } from 'vue';
 
 const page = usePage()
 
-const KartuPeserta = defineAsyncComponent(() => import('@/Components/Peserta/KartuPeserta.vue'))
-const RekapPeserta = defineAsyncComponent(() => import('@/Components/Peserta/RekapPeserta.vue'))
-const SertifikatPeserta = defineAsyncComponent(() => import('@/Components/Peserta/SertifikatPeserta.vue'))
 
 const FormNilai = defineAsyncComponent(() => import('@/Components/Lomba/FormNilai.vue'))
+const PresensiPeserta = defineAsyncComponent(() => import('@/Components/Lomba/PresensiPeserta.vue'))
 
 const mode = ref('list')
 const contentShow = ref(false)
@@ -26,11 +24,6 @@ const toggleContent = (e) => {
     card.querySelector(".content").classList.toggle("flex")
     card.querySelector(".content").classList.toggle("hidden")
     card.classList.toggle("h-12")
-    // card.classList.toggle("z-10")
-    // card.classList.toggle("left-0")
-    // card.classList.toggle("top-0")
-    // card.classList.toggle("bottom-0")
-    // console.log(e.target.closest('button'))
 }
 
 const bidangs = computed(() => {
@@ -39,13 +32,14 @@ return _.chunk(datas, 2)
 })
 
 const selectedBidang = ref(null)
-const kartuPeserta = async(bidang) => {
-    mode.value = 'kartu-peserta'
-    selectedBidang.value = bidang
-}
 
 const formNilai = async(bidang) => {
     mode.value= 'form-nilai'
+    selectedBidang.value = bidang
+}
+
+const presensiPeserta = (bidang) => {
+    mode.value = 'presensi-peserta'
     selectedBidang.value = bidang
 }
 
@@ -84,8 +78,8 @@ const formNilai = async(bidang) => {
                                 Form Nilai
                             </button>
                             
-                            <button class="bg-teal-600 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-teal-50" @click="sertifikatPeserta(bidang)">
-                                Sertifikat Peserta
+                            <button class="bg-teal-600 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-teal-50" @click="presensiPeserta(bidang)">
+                                Presensi Peserta
                             </button>
                         </div>
                     </div>
@@ -94,8 +88,7 @@ const formNilai = async(bidang) => {
             
         </div>
         <FormNilai v-else-if="mode == 'form-nilai'" :bidang="selectedBidang" @close="mode='list'" />
-        <KartuPeserta v-else-if="mode == 'kartu-peserta'" :bidang="selectedBidang" @close="mode='list'" />
-        <SertifikatPeserta v-else-if="mode == 'sertifikat-peserta'" :bidang="selectedBidang" @close="mode='list'" />
+        <PresensiPeserta v-else-if="mode == 'presensi-peserta'" :bidang="selectedBidang" @close="mode='list'" />
     </Transition> 
 </Dash>
 </template>

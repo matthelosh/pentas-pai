@@ -15,4 +15,10 @@ export const paginate = (datas, currentPage) => {
     return { current: pages[currentPage-1], pageCount: pages.length, dataLength: datas.length}
 }
 
+export const tanggal = (date) => {
+    const tanggal = new Date(date)
+    const bulans = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    return tanggal.getDate()+' '+bulans[tanggal.getMonth()]+' '+tanggal.getFullYear()
+}
+
 export default {imgUrl}
