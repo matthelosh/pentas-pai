@@ -5,6 +5,8 @@ import { XCircleIcon } from '@heroicons/vue/20/solid';
 import * as _ from 'lodash-es';
 import axios from 'axios';
 
+import {tanggal} from '@/Plugins/misc'
+
 const props = defineProps({
     bidang:Object
 })
@@ -127,7 +129,7 @@ const group = (kode) => {
                 </div>
                 <div></div>
                 <div>
-                    <p class="text-center">Wagir, 16 Mei 2023</p>
+                    <p class="text-center">Wagir, {{tanggal($page.props.lomba.tanggal)}}</p>
                     <p class="text-center">Juri {{ props.bidang.label }}</p>
 
                     <p class="underline mt-16 text-center">.......................................................................</p>
@@ -199,7 +201,7 @@ const group = (kode) => {
                 </div>
                 <div></div>
                 <div>
-                    <p class="text-center">Wagir, 16 Mei 2023</p>
+                    <p class="text-center">Wagir, {{ tanggal($page.props.lomba.tanggal) }}</p>
                     <p class="text-center">Juri {{ props.bidang.label }}</p>
 
                     <p class="underline mt-16 text-center">.......................................................................</p>

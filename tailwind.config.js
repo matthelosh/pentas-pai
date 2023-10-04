@@ -16,7 +16,11 @@ module.exports = {
             },
             screens: {
                 print: {raw: 'print'},
-                screen: { raw: 'screen'}
+                screen: { raw: 'screen'},
+                'sm': '640px',
+                'md': '768px',
+                'lg': '1024px',
+                'xl': '1440px',
             }
         },
     },

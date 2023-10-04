@@ -28,6 +28,12 @@ class AdministrasiController extends Controller
             'lomba' => $this->activeLomba(),
         ]);
     }
+    public function surat(Request $request)
+    {
+        return Inertia::render('Dashboard/AdministrasiSurat', [
+            'lomba' => $this->activeLomba(),
+        ]);
+    }
 
     public function activeLomba()
     {
