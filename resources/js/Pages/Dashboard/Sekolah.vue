@@ -52,6 +52,7 @@ const closeImpor = () => {
                     <SvgIcon type="mdi" :path="mdiFileExcelBox" class="h-6 text-white" />
                     {{ imporBtnTitle }}
                 </button>
+                
             </div>
         </div>
         <div class="content w-full bg-white p-3 mt-2 ">

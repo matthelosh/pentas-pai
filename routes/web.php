@@ -140,6 +140,8 @@ Route::prefix('sekretariat')->middleware(['auth','verified'])->group(function ()
         Route::get('/panitia', [AdministrasiController::class, 'panitia'])->name('administrasi.panitia');
         Route::get('/surat', [AdministrasiController::class, 'surat'])->name('administrasi.surat');
     });
+
+    Route::inertia('setting', 'Dashboard/Setting')->name('setting');
 });
 
 require __DIR__.'/auth.php';
