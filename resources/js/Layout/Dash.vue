@@ -50,7 +50,7 @@ const confirmLogout = async () => {
 <template>
 <Loading v-if="loading" />
 <DialogBox ref="dialogBox" />
-<div class="h-min-full h-screen w-screen  relative grid grid-cols-12 gap-3 md:p-3">
+<div class="h-min-full h-screen w-screen  relative grid grid-cols-12 gap-3 md:p-3 print:p-0 print:m-0">
     <div id="sidebar" class="sidebar h-[100vh] md:h-[95vh] overflow-y-hidden w-2/4 z-20 md:w-2/12 bg-teal-400 md:rounded-xl fixed top-0 md:top-3 md:fixed md:block md:col-span-2 -translate-x-[100%] md:-translate-x-0 transition-all duration-300 shadow-lg md:shadow-lg overflow-x-hidden print:hidden">
         <div class="w-full p-3 flex md:hidden items-center bg-teal-100 top-0">Pentas PAIS</div>
         
@@ -66,7 +66,7 @@ const confirmLogout = async () => {
         </ul>
         <SideNav /> 
     </div>
-    <div class="main-wrap col-span-12 md:col-span-10 md:px-3 print:col-span-12  lg:translate-x-[230px] screen:xl:translate-x-[325px] w-min-full">
+    <div class="main-wrap col-span-12 md:col-span-10 md:px-3 print:col-span-12  lg:translate-x-[230px] screen:xl:translate-x-[325px] print:translate-x-0 w-min-full print:p-0 print:m-0">
         <nav class="bg-white p-3 md:rounded-xl shadow z-20 top-0 right-0 left-0 flex md:hidden justify-between items-center print:hidden md:translate-x-[263px]">
             {{ props.title }}
             <button @click="toggleSide">
@@ -75,7 +75,7 @@ const confirmLogout = async () => {
             </button>
         </nav>
         <Transition name="page" mode="out-in" appear>
-            <main :key="$page.url" class="px-3 md:px-0 print:p-0 print:m-0 md:rounded-br-lg  print:translate-x-[0]  print:col-span-12 w-full">
+            <main :key="$page.url" class="px-3 md:px-0 print:p-0 print:m-0 md:rounded-br-lg  print:translate-x-0  print:col-span-12 w-full">
                 <slot />
             </main>
         </Transition>
@@ -84,6 +84,13 @@ const confirmLogout = async () => {
 </template>
 
 <style>
+@media print {
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--secondary) var(--primary);

@@ -51,7 +51,30 @@ const viewSertificate = (peserta) => {
 }
 
 const cetak = () => {
-    window.print()
+    // let paper = document.querySelector(".paper")
+
+    // let win = window.open("","_blank", "width=1024,height=800")
+    // let html = `<!doctype html>
+    //             <html>
+    //                 <head>
+    //                     <title>Sertifikat ${page.props.lomba.label} ${props.bidang.label} - ${selectedPeserta.value.nama} - ${selectedPeserta.value.sekolah.nama} </title>  
+    //                     <link href="http://pentaspai.test:5173/resources/css/app.css" rel="stylesheet" />  
+    //                     <style>
+                           
+    //                     </style>
+    //                 </head>
+    //                 <body>
+    //                     ${paper.outerHTML}    
+    //                 </body>
+    //             </html>
+
+    // `
+    // win.document.write(html)
+
+    setTimeout(() => {
+        window.print()
+    }, 500)
+
 }
 
 const nama = (nama) => {
@@ -131,20 +154,23 @@ const headTitle = ref('Sertifikat Peserta')
             </div>
         </div>
 
-        <div class="paper mx-auto print:m-0 bg-white bg-[url('/img/piagam-peserta.jpg')] bg-cover h-[210mm] w-[297mm] p-10 relative break-after-page print:shadow-none rounded" v-if="mode=='cetak'">
-            <img src="/img/kkgpaimalangkab.png" alt="Logo KKG" class="absolute h-20">
-            <img src="/img/logo.png" alt="Logo KKG" class="absolute left-32 mt-4 w-20" />
+        <div class="paper" style="width:100%;padding:20px;height:21.5cm;background: url('/img/piagam-peserta.jpg');background-size: cover;" v-if="mode=='cetak'">
+            <div class="logo" style="display:flex; align-items: center; justify-content: center; width: 200px; position:absolute;">
+                <img src="/img/kkgpaimalangkab.png" alt="Logo KKG" style="width: 64px">
+                <img src="/img/logo.png" alt="Logo Pentas PAI"  style="width: 64px" />
+            </div>
+            
             <h1 style="font-family:Dancing Script!important;" class="text-6xl text-center mt-20">Sertifikat</h1>
             <h2 class="text-center mt-6 text-xl">Diberikan Kepada:</h2>
             <div class="flex justify-center items-center w-10/12 mx-auto gap-4">
                 <img :src="imgUrl(selectedPeserta.foto)" alt="Foto" class="aspect-square border-4 border-gray-800 rounded-full h-40 object-cover object-center">
                 <div class="bio">
-                    <h1 class="nama text-[3.2rem]  mt-4 capitalize" style="font-family: Pacifico!important; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{nama(selectedPeserta.nama)}}</h1>
+                    <h1 class="nama text-[3.2rem]  mt-4 capitalize" style="font-family: Pacifico!important; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{selectedPeserta.nama.toUpperCase()}}</h1>
                     <h4 class="sekolah text-xl mt-4">{{selectedPeserta.sekolah.nama}}</h4>
                     <h4 class="peringkat text-4xl mt-4">Sebagai Peserta</h4>
                 </div>
             </div>
-            <p class="mt-4 mx-20">dalam perlombaan <span class="font-extrabold">{{ props.bidang.label }}</span> pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
+            <p class="mt-4 mx-20 text-xl text-justify">dalam perlombaan <span class="font-extrabold">{{ props.bidang.label }}</span> pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
             <div class="grid grid-cols-3 w-10/12 mx-auto">
                 <div class="relative">
                     <p class="text-center mt-14">Ketua KKG PAI Kec. Wagir</p>
@@ -164,7 +190,7 @@ const headTitle = ref('Sertifikat Peserta')
             </div>
             
             <div class="absolute bottom-2 left-6 print:relative">
-                <vue-qrcode :value="`https://pentaspais.kkgpaiwagir.or.id/verifikasi/sertifikat?id=${selectedPeserta.nisn}`" :options="{width: 75}"  class="shadow" />
+                <vue-qrcode :value="`https://pentaspai.kkgpaiwagir.or.id/verifikasi/sertifikat?id=${selectedPeserta.nisn}`" :options="{width: 75}"  class="shadow" />
                 <span class="text-teal-800 bg-white bg-opacity-50">https://pentaspais.kkgpaiwagir.or.id</span>
             </div>
             
