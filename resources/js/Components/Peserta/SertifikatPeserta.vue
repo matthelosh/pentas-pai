@@ -71,7 +71,9 @@ const cetak = () => {
     // `
     // win.document.write(html)
 
+    headTitle.value = `Sertifikat ${page.props.lomba.label} ${props.bidang.label} - ${selectedPeserta.value.nama} - ${selectedPeserta.value.sekolah.nama} `
     setTimeout(() => {
+        
         window.print()
     }, 500)
 
