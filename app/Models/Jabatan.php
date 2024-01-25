@@ -13,4 +13,8 @@ class Jabatan extends Model
         'label',
         'deskripsi'
     ];
+
+    function panitia() {
+        return $this->hasOne(Panitia::class, 'jabatan', 'kode');
+    }
 }

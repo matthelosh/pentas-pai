@@ -31,4 +31,9 @@ class Panitia extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function jab() {
+        // return $this->belongsTo(Jabatan::class, 'jabatan', 'kode');
+        return $this->hasOne(Jabatan::class, 'kode', 'jabatan');
+    }
+
 }

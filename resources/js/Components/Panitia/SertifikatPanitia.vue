@@ -35,17 +35,26 @@ const viewSertificate = (panitia) => {
 }
 
 const cetak = () => {
-    window.print()
+    pageTitle.value = pageTitle.value+" - "+selectedPanitia.value.jabatan+" - "+selectedPanitia.value.guru.nama+
+
+    setTimeout(() => {
+        window.print()
+        pageTitle.value = "Sertifikat Panitia"
+    }, 500)
+    
 }
 
 const nama = (nama) => {
     return nama.toLowerCase()
 }
+
+const pageTitle = ref('Sertifikat Panitia')
 </script>
 
 <template>
-<Head title="Sertifikat Peserta" />
+
 <div class="w-full bg-white">
+    <Head :title="pageTitle" />
     <div class="toolbar w-full h-12  bg-white flex items-center justify-between p-3 shadow sticky top-0 z-10 print:hidden">
         <span class="toolbar-title">
             Sertifikat Panitia
@@ -101,7 +110,7 @@ const nama = (nama) => {
                 <div class="bio">
                     <h1 class="nama text-[3.2rem]  mt-4 underline capitalize" style="font-family: Pacifico!important;">{{nama(selectedPanitia.guru.nama)}}</h1>
                     <h4 class="sekolah text-xl  text-center">{{selectedPanitia.guru.sekolah ? selectedPanitia.guru.sekolah.nama : '-'}}</h4>
-                    <h4 class="peringkat text-4xl text-center mt-4">Sebagai {{ selectedPanitia.jabatan }}</h4>
+                    <h4 class="peringkat text-4xl text-center mt-4">Sebagai {{ selectedPanitia.jab ? selectedPanitia.jab.label : selectedPanitia.jabatan }}</h4>
                 </div>
             </div>
             <p class="mt-4 mx-20 text-lg">pada kegiatan <span class="font-extrabold">{{ $page.props.lomba.label }}</span> yang diselenggarakan oleh KKG PAI Kecamatan Wagir. Semoga dapat menjadi motivasi di masa depan.</p>
@@ -124,8 +133,8 @@ const nama = (nama) => {
             </div>
             
             <div class="absolute bottom-2 left-6 print:relative">
-                <vue-qrcode :value="`https://pentaspais.kkgpaiwagir.or.id/verifikasi/sertifikat?id=${selectedPanitia.guru.nip}`" :options="{width: 75}"  class="shadow rounded" />
-                <span class="text-teal-800 bg-white bg-opacity-50">https://pentaspais.kkgpaiwagir.or.id</span>
+                <vue-qrcode :value="`https://pentaspai.kkgpaiwagir.or.id/verifikasi/sertifikat?id=${selectedPanitia.guru.nip}`" :options="{width: 75}"  class="shadow rounded" />
+                <span class="text-teal-800 bg-white bg-opacity-50">https://pentaspai.kkgpaiwagir.or.id</span>
             </div>
             
         </div>

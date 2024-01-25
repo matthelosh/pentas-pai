@@ -10,6 +10,8 @@ const mode = ref('list')
 
 const admin = computed(() => page.props.auth.user.level == 'admin')
 const KartuPanitia = defineAsyncComponent(() => import('@/Components/Panitia/KartuPanitia.vue'))
+const SertifikatPanitia = defineAsyncComponent(() => import('@/Components/Panitia/SertifikatPanitia.vue'))
+const PresensiPanitia = defineAsyncComponent(() => import('@/Components/Panitia/PresensiPanitia.vue'))
 
 import Dash from '@/Layout/Dash.vue';
 
@@ -28,16 +30,18 @@ import Dash from '@/Layout/Dash.vue';
                     <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" @click="mode='kartu-panitia'">
                         Kartu Panitia
                     </div>
-                    <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                    <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" @click="mode='presensi-panitia'">
                         Presensi Panitia
                     </div>
-                    <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                    <div class="card shadow rounded-xl bg-white w-full p-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" @click="mode='sertifikat-panitia'">
                         Sertifikat Panitia
                     </div>
                 </div>
             </div>
         </div>
         <KartuPanitia v-else-if="mode =='kartu-panitia'" @close="mode='list'" />
+        <PresensiPanitia v-else-if="mode =='presensi-panitia'" @close="mode='list'" />
+        <SertifikatPanitia v-else-if="mode =='sertifikat-panitia'" @close="mode='list'" />
         
     </Transition>
 </Dash>
