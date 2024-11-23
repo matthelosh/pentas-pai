@@ -12,7 +12,7 @@ use Inertia\Inertia;
 
 class PanitiaController extends Controller
 {
-    
+
     public function page()
     {
         return Inertia::render('Dashboard/Panitia', [
@@ -24,9 +24,9 @@ class PanitiaController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->user()->level == 'admin') {
-            $panitias = Panitia::with('guru.sekolah','lomba')->with('jab', function($q) {
-                $q->where('jabatans.kode', '=','ketua1');
+        if ($request->user()->level == 'admin') {
+            $panitias = Panitia::with('guru.sekolah', 'lomba')->with('jab', function ($q) {
+                $q->where('jabatans.kode', '=', 'ketua1');
             })->get();
         } else {
             $panitias = Panitia::where('user_id', $request->user()->id)->with('guru.sekolah', 'jab')->get();
@@ -51,24 +51,31 @@ class PanitiaController extends Controller
     public function store(Request $request)
     {
         $datas = json_decode($request->data);
-        
+        // dd($datas);
         try {
             $lomba = Lomba::where('status', '1')->first();
             // dd($lomba);
-            foreach($datas as $data) {
-                $guru = Guru::where('nip', $data->guru_id)->with('user')->first();
-                Panitia::updateOrCreate(
-                    [
-                        'id' => $data->id ?? null
-                    ],
-                    [
-                        'jabatan' => $data->jabatan,
-                        'guru_id' => $guru->id,
-                        'lomba_id' =>  $lomba->id, //Sementara
-                        'user_id' => $guru->user->id
-                    ]
-                );
-                
+            foreach ($datas as $data) {
+                // dd($data->guru_id);
+                // dd($guru);
+                if (is_array($data) || \is_object($data)) {
+                    $guru = Guru::where('nip', $data->guru_id)->with('user')->first();
+                    $panitia = Panitia::updateOrCreate(
+                        [
+                            'id' => $data->id ?? null
+                        ],
+                        [
+                            'jabatan' => $data->jabatan,
+                            'guru_id' => $guru->id,
+                            'lomba_id' =>  $lomba->id, //Sementara
+                            'user_id' => $guru->user->id
+                        ]
+                    );
+
+                    // dd($panitia);
+                } else {
+                    continue;
+                }
             }
             return response()->json(['status' => 'ok', 'msg' => 'Panitia Disimpan'], 200);
         } catch (\Exception $e) {
@@ -80,11 +87,11 @@ class PanitiaController extends Controller
     public function setUser($guru_id)
     {
         $guru = Guru::where('id', $guru_id)->first();
-        $nama = explode(",",$guru->nama);
+        $nama = explode(",", $guru->nama);
         $user = new User();
-        $i = rand(1,100);
-        $user->name = str_replace([",","."," "],"", strtolower(strlen($nama[0]) >= 3 ? $nama[0] : $nama[1]));
-        $user->email = $user->name.$i.'@kkgpaiwagir.or.id';
+        $i = rand(1, 100);
+        $user->name = str_replace([",", ".", " "], "", strtolower(strlen($nama[0]) >= 3 ? $nama[0] : $nama[1]));
+        $user->email = $user->name . $i . '@kkgpaiwagir.or.id';
         $user->password = Hash::make('12345');
         $user->level = 'panitia';
         $user->save();
@@ -96,13 +103,13 @@ class PanitiaController extends Controller
     {
         try {
             $panitias = Panitia::all();
-            foreach($panitias as $panitia) {
+            foreach ($panitias as $panitia) {
                 Panitia::find($panitia->id)->update(['user_id' => $this->setUser($panitia->guru_id)]);
                 // dd($this->setUser($panitia->guru_id));
             }
 
             return response()->json(['status' => 'ok', 'msg' => 'Akun Dibuat'], 200);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['status' => 'fail', 'msg' => $e->getMessage()], 500);
         }
     }

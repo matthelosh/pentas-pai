@@ -21,7 +21,7 @@ class SekolahController extends Controller
                 'status' => 'ok',
                 'sekolahs' => Sekolah::with('pesertas')->get(),
             ], 200);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'fail',
                 'msg' => $e->getMessage(),
@@ -40,16 +40,15 @@ class SekolahController extends Controller
 
     public function impor(Request $request)
     {
-        try{
-            foreach(json_decode($request->sekolahs) as $data)
-            {
+        try {
+            foreach (json_decode($request->sekolahs) as $data) {
                 Sekolah::updateOrCreate(
                     [
                         'id' => $data->id ?? null,
                         'npsn' => $data->npsn,
                     ],
                     [
-                        'nama' => $data->name,
+                        'nama' => $data->nama,
                         'alamat' => $data->alamat,
                         'telp' => $data->telp ?? null,
                         'email' => $data->email ?? null,
@@ -57,13 +56,13 @@ class SekolahController extends Controller
                         'kepsek' => $data->kepsek ?? null,
                         'nip_kepsek' => $data->nip_kepsek ?? null
                     ]
-                    );
+                );
             }
             return response()->json([
                 'status' => 'ok',
                 'msg' => 'Data Sekolah sukses diimpor'
             ], 200);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'fail',
                 'msg' => $e->getMessage(),
@@ -89,10 +88,10 @@ class SekolahController extends Controller
         $sekolah =  $sekolah::find($id);
         $npsn = $sekolah->npsn;
         // $sekolah['pesertas'] = Peserta::where('sekolah_id', $sekolah->npsn)->whereHas('bidangs')->with('bidangs')->get();
-        $sekolah['bidangs'] = Bidang::whereHas('pesertas')->with('pesertas', function ($q) use($npsn) {
-            $q->where('sekolah_id',$npsn);
+        $sekolah['bidangs'] = Bidang::whereHas('pesertas')->with('pesertas', function ($q) use ($npsn) {
+            $q->where('sekolah_id', $npsn);
         })->get();
-        
+
         return response()->json(['status' => 'ok', 'sekolah' => $sekolah], 200);
     }
 

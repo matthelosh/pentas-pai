@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bidang;
+use App\Models\Lomba;
 use Illuminate\Http\Request;
 
 class BidangController extends Controller
@@ -13,12 +14,13 @@ class BidangController extends Controller
     public function index(Request $request)
     {
         try {
-            if($request->query('id')) {
+            $lomba = Lomba::whereStatus('1')->first();
+            if ($request->query('id')) {
                 if ($request->user()->level == 'admin') {
                     $bidangs = Bidang::find($request->query('id'));
                 }
             } else {
-                $bidangs = Bidang::all();
+                $bidangs = Bidang::where('lomba_id', $lomba->id)->get();
             }
             return response()->json([
                 'status' => 'ok',
@@ -54,13 +56,13 @@ class BidangController extends Controller
     public function show(Bidang $bidang, $id)
     {
         try {
-            if(auth()->user()->level == 'admin') {
-                $bidang = Bidang::where('id',$id)->with('pesertas.sekolah')->first();
+            if (auth()->user()->level == 'admin') {
+                $bidang = Bidang::where('id', $id)->with('pesertas.sekolah')->first();
             } else {
                 $npsn = auth()->user()->userable->sekolah_id;
-                $bidang = Bidang::where('id',$id)->whereHas('pesertas', function($q) use($npsn) {
+                $bidang = Bidang::where('id', $id)->whereHas('pesertas', function ($q) use ($npsn) {
                     $q->where('pesertas.sekolah_id', $npsn);
-                } )->with('pesertas.sekolah')->first();
+                })->with('pesertas.sekolah')->first();
             }
 
             return response()->json([
@@ -102,9 +104,8 @@ class BidangController extends Controller
             return response()->json([
                 'status' => 'ok',
                 'msg' => 'Bidang Dihapus'
-            ],200);
-        }
-        catch(\Exception $e) {
+            ], 200);
+        } catch (\Exception $e) {
             dd($e);
         }
     }
