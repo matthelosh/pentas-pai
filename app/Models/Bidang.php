@@ -17,19 +17,18 @@ class Bidang extends Model
         'kelompok'
     ];
 
-    public function lombas()
+    public function lomba()
     {
         return $this->belongsTo(Lomba::class);
     }
 
     public function pesertas()
     {
-        return $this->belongsToMany(Peserta::class, 'bidang_peserta','bidang_id', 'peserta_id');
+        return $this->belongsToMany(Peserta::class, 'bidang_peserta', 'bidang_id', 'peserta_id');
     }
 
     public function juris()
     {
         return $this->hasMany(Juri::class, 'lomba_id', 'kode');
     }
-
 }

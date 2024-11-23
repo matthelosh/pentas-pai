@@ -13,7 +13,7 @@ class LombaController extends Controller
     public function page(Request $request)
     {
         return Inertia::render('Dashboard/Lomba', [
-            'lombas' => Lomba::with('sekolah', 'panitias','bidangs.pesertas')->get(),
+            'lombas' => Lomba::with('sekolah', 'panitias', 'bidangs.pesertas')->get(),
         ], 200);
     }
 
@@ -28,19 +28,19 @@ class LombaController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->query('q') == 'select') {
+        if ($request->query('q') == 'select') {
             $lombas = Lomba::where('status', '1')->with('bidangs')->first();
         } else {
             $lombas = Lomba::where('status', '1')->with('bidangs.pesertas.sekolah')->get();
         }
-        
+
         return response()->json(['status' => 'ok', 'lombas' => $lombas], 200);
     }
 
     public function rekap(Request $request)
     {
         // $datas = Sekolah::with('pesertas.bidangs')->get();
-        if($request->user()->level == 'admin') {
+        if ($request->user()->level == 'admin') {
             $datas = Sekolah::with('pesertas.bidangs')->get();
         } else {
             $datas = Sekolah::where('npsn', auth()->user()->userable->sekolah_id)->with('pesertas.bidangs')->get();
@@ -51,9 +51,23 @@ class LombaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function formNilai(Request $request)
     {
-        //
+        try {
+            $lomba = Lomba::where('status', '1')->first();
+            $bidangs = Bidang::where('lomba_id', $lomba->id)
+                ->with('lomba', 'pesertas')
+                ->get();
+
+            return Inertia::render(
+                'Dashboard/FormNilai',
+                [
+                    'bidangs' => $bidangs
+                ]
+            );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -65,39 +79,39 @@ class LombaController extends Controller
             $lomba = json_decode($request->lomba);
             $simpan = Lomba::updateOrCreate(
                 [
-                    'id' => $lomba->id?? null
+                    'id' => $lomba->id ?? null
                 ],
                 [
-                    'kode'=> $lomba->kode,
-                    'label'=> $lomba->label,
-                    'tahun'=> $lomba->tahun,
-                    'tanggal'=> $lomba->tanggal,
-                    'lokasi_id'=> $lomba->lokasi_id,
+                    'kode' => $lomba->kode,
+                    'label' => $lomba->label,
+                    'tahun' => $lomba->tahun,
+                    'tanggal' => $lomba->tanggal,
+                    'lokasi_id' => $lomba->lokasi_id,
                     'status' => $lomba->status ?? '0'
                 ]
             );
 
             // $simpan->bidangs()->attach($lomba->bidangs);
-            if($lomba->bidangs) {
-                foreach($lomba->bidangs as $bidang) {
+            if ($lomba->bidangs) {
+                foreach ($lomba->bidangs as $bidang) {
                     Bidang::updateOrCreate(
                         ['id' => $bidang->id ?? null],
                         [
                             'lomba_id' => $lomba->id ?? $simpan->id,
                             'kode' => $bidang->kode,
-                            'label' => $bidang->label.' '. ucfirst($bidang->kelompok),
+                            'label' => $bidang->label . ' ' . ucfirst($bidang->kelompok),
                             'kategori' => $bidang->kategori,
                             'kelompok' => $bidang->kelompok,
                             'deskripsi' => $bidang->deskripsi
                         ]
-                        );
+                    );
                 }
             }
             return response()->json([
                 'status' => 'ok',
                 'msg' => 'Data Lomba Disimpan'
             ], 200);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'fail',
                 'msg' => $e->getMessage(),
