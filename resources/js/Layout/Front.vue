@@ -121,9 +121,9 @@ const toggleNav = (e) => {
                 </ul>
             </div>
         </nav>
-        <main class="relative py-2 px-3 md:py-1 md:px-0">
+        <main class="relative pt-2 pb-8 px-3 md:py-1 md:px-0">
             <slot />
         </main>
     </div>
-    <Footer class="bottom-0 sticky left-0 right-0" />
+    <Footer class="bottom-0 fixed left-0 right-0" />
 </template>
