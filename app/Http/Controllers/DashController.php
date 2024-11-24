@@ -15,16 +15,15 @@ class DashController extends Controller
 {
     public function index(Request $request)
     {
+        $lomba =  Lomba::where('status', '1')->with('bidangs')->first();
         return Inertia::render('Dashboard', [
             'datas' => [
-                'lomba' => $request->user()->level == 'admin' ? Lomba::all() : Lomba::where('status','1')->get(),
                 'sekolah' => $request->user()->level == 'admin' ? Sekolah::all() : Sekolah::where('npsn', $request->user()->userable->sekolah_id)->get(),
                 'guru' => $request->user()->level == 'admin' ? Guru::all() : Guru::where('id', $request->user()->userable_id)->get(),
-                'bidang' => Bidang::all(),
-                'peserta' => Peserta::all(),
+                'bidang' => $lomba->bidangs,
+                'peserta' => Peserta::where('lomba_id', $lomba->id)->get(),
                 'juara' => Juara::all()
-                ]
+            ]
         ]);
     }
-
 }

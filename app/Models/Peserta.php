@@ -35,8 +35,12 @@ class Peserta extends Model
         return $this->belongsTo(Lomba::class);
     }
 
+    public function nilais()
+    {
+        return $this->hasMany(Nilai::class, 'siswa_id', 'nisn');
+    }
     public function bidangs()
     {
-        return $this->belongsToMany(Bidang::class, 'bidang_peserta', 'peserta_id','bidang_id');
+        return $this->belongsToMany(Bidang::class, 'bidang_peserta', 'peserta_id', 'bidang_id');
     }
 }

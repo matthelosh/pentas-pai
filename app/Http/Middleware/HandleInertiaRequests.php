@@ -43,6 +43,9 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'flash' => [
+                'message' => fn() => $request->session()->get('message')
+            ],
             'lomba' => $this->lomba() ?? null,
             'sekolahs' => $request->user() ? $this->sekolahs($request->user()) : null,
         ]);
@@ -56,13 +59,13 @@ class HandleInertiaRequests extends Middleware
     public function sekolahs($user)
     {
         $sekolahs = [];
-        if($user->level !== 'admin') {
+        if ($user->level !== 'admin') {
             $sekolah = Sekolah::where('npsn', $user->userable->sekolah_id)->first();
             array_push($sekolahs, $sekolah);
         } else {
             $sekolahs = Sekolah::all();
         }
-        
+
         // $sekolahs = Sekolah::where('npsn', $panitia->guru->seklah_id)->get();
         return $sekolahs;
     }

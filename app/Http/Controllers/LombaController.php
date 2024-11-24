@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bidang;
 use App\Models\Lomba;
+use App\Models\Nilai;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,7 +14,13 @@ class LombaController extends Controller
     public function page(Request $request)
     {
         return Inertia::render('Dashboard/Lomba', [
-            'lombas' => Lomba::with('sekolah', 'panitias', 'bidangs.pesertas')->get(),
+            'lombas' => Lomba::with('sekolah', 'panitias')
+                ->with([
+                    'bidangs.pesertas',
+                    'bidangs.aspeks'
+                ])
+
+                ->get(),
         ], 200);
     }
 
@@ -53,10 +60,17 @@ class LombaController extends Controller
      */
     public function formNilai(Request $request)
     {
+
         try {
             $lomba = Lomba::where('status', '1')->first();
             $bidangs = Bidang::where('lomba_id', $lomba->id)
-                ->with('lomba', 'pesertas')
+                ->with('lomba', 'aspeks.nilais')
+                ->with([
+                    'pesertas' => function ($s) {
+                        $s->with('sekolah');
+                        $s->with('nilais');
+                    }
+                ])
                 ->get();
 
             return Inertia::render(
@@ -65,6 +79,32 @@ class LombaController extends Controller
                     'bidangs' => $bidangs
                 ]
             );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function storeNilai(Request $request)
+    {
+        // dd($request->all());
+        try {
+            foreach ($request->skors as $skor) {
+
+                $nilai = Nilai::updateOrCreate(
+                    [
+                        'id' => $skor['id'] ?? null,
+                        'siswa_id' => $request->siswa_id,
+                        'bidang_id' => $request->bidang_id,
+                        'aspek_id' => $skor['aspek_id']
+                    ],
+                    [
+                        'user_id' => $request->user()->id,
+                        'nilai' => $skor['skor']
+                    ]
+                );
+            }
+
+            return back()->with('message', 'Skor disimpan');
         } catch (\Throwable $th) {
             throw $th;
         }

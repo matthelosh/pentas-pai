@@ -17,9 +17,7 @@ const toggleNav = (e) => {
 </script>
 
 <template>
-    <div
-        class="relative min-h-[96vh] bg-white bg-opacity-5 md:p-3 md:pb-0 pb-0"
-    >
+    <div class="relative h-screen bg-white bg-opacity-5 md:p-3 md:pb-0 pb-0">
         <nav
             class="px-3 h-16 fixed md:sticky md:top-0 shadow w-full bg-white md:flex items-center md:justify-between rounded-b-lg z-10 md:rounded-xl"
         >

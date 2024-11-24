@@ -92,6 +92,14 @@ Route::prefix('sekretariat')->middleware(['auth', 'verified'])->group(function (
 
     Route::prefix('bidang')->group(function () {
         Route::post('/', [BidangController::class, 'index'])->name('bidang.index');
+
+        route::prefix("aspek")->group(
+            function () {
+                Route::post('/store', [AspekController::class, 'store'])->name('dashboard.lomba.bidang.aspek.store');
+                Route::delete('/{id}', [AspekController::class, 'destroy'])->name('dashboard.lomba.bidang.aspek.destroy');
+            }
+        );
+
         Route::post('/{id}', [BidangController::class, 'show'])->name('bidang.show');
         Route::delete('/{id}', [BidangController::class, 'destroy'])->name('bidang.destroy');
     });
@@ -116,7 +124,12 @@ Route::prefix('sekretariat')->middleware(['auth', 'verified'])->group(function (
         Route::get('/', [LombaController::class, 'page'])->name('dashboard.lomba');
         Route::post('/', [LombaController::class, 'index'])->name('lomba.index');
 
-        Route::get('/form-nilai', [LombaController::class, 'formNilai'])->name('dashboard.lomba.nilai.form');
+        Route::prefix('nilai')->group(
+            function () {
+                Route::get('/form', [LombaController::class, 'formNilai'])->name('dashboard.lomba.nilai.form');
+                Route::post('/store', [LombaController::class, 'storeNilai'])->name('dashboard.lomba.nilai.store');
+            }
+        );
 
         Route::post('/store', [LombaController::class, 'store'])->name('lomba.store');
         Route::put('/{id}', [LombaController::class, 'activate'])->name('lomba.activate');

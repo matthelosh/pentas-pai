@@ -45,7 +45,7 @@ onMounted(() => {
 <template>
     <AlertBox ref="alertBox" />
     <Head title="Login" />
-    <Front class="h-screen">
+    <Front>
         <div class="container md:flex md:items-center pt-16 mx-auto">
             <div
                 class="container bg-white w-full rounded-xl overflow-hidden shadow-lg columns-1 md:columns-2 gap-4 md:w-8/12 mx-auto"

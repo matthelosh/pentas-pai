@@ -55,7 +55,7 @@ const confirmLogout = async () => {
     <Loading v-if="loading" />
     <DialogBox ref="dialogBox" />
     <div
-        class="h-min-full h-screen w-screen relative grid grid-cols-12 gap-3 md:p-3 print:p-0 print:m-0"
+        class="h-min-full h-screen w-screen max-w-screen relative grid grid-cols-12 gap-3 md:p-3 print:p-0 print:m-0"
     >
         <div
             id="sidebar"
@@ -89,7 +89,7 @@ const confirmLogout = async () => {
             <SideNav />
         </div>
         <div
-            class="main-wrap col-span-12 md:col-span-10 md:px-3 print:col-span-12 lg:translate-x-[230px] screen:xl:translate-x-[325px] print:translate-x-0 w-min-full print:p-0 print:m-0"
+            class="max-w-screen main-wrap col-span-12 md:col-span-10 md:px-3 print:col-span-12 lg:translate-x-[230px] screen:xl:translate-x-[325px] print:translate-x-0 w-min-full print:p-0 print:m-0"
         >
             <nav
                 class="bg-white p-3 md:rounded-xl shadow z-20 top-0 right-0 left-0 flex md:hidden justify-between items-center print:hidden md:translate-x-[263px]"
