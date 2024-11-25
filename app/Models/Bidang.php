@@ -34,6 +34,6 @@ class Bidang extends Model
 
     public function juris()
     {
-        return $this->hasMany(Juri::class, 'lomba_id', 'kode');
+        return $this->hasMany(Juri::class, 'lomba_id', 'id');
     }
 }

@@ -17,9 +17,9 @@ class LombaController extends Controller
             'lombas' => Lomba::with('sekolah', 'panitias')
                 ->with([
                     'bidangs.pesertas',
-                    'bidangs.aspeks'
+                    'bidangs.aspeks',
+                    'bidangs.juris.guru'
                 ])
-
                 ->get(),
         ], 200);
     }

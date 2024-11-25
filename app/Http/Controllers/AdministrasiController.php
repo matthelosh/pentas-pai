@@ -14,14 +14,14 @@ class AdministrasiController extends Controller
             'lomba' => $this->activeLomba(),
         ]);
     }
-    
+
     public function lomba(Request $request)
     {
         return Inertia::render('Dashboard/AdministrasiLomba', [
             'lomba' => $this->activeLomba(),
         ]);
     }
-    
+
     public function panitia(Request $request)
     {
         return Inertia::render('Dashboard/AdministrasiPanitia', [
@@ -37,7 +37,12 @@ class AdministrasiController extends Controller
 
     public function activeLomba()
     {
-        $lomba = Lomba::where('status',1)->with('bidangs')->first();
+        $lomba = Lomba::where('status', 1)->with([
+            'bidangs' => function ($b) {
+                $b->with('aspeks');
+                $b->with('pesertas');
+            }
+        ])->first();
         return $lomba;
     }
 }

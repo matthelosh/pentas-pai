@@ -17,7 +17,7 @@ class Juri extends Model
 
     public function lomba()
     {
-        return $this->belongsTo(Bidang::class, 'lomba_id','kode');
+        return $this->belongsTo(Bidang::class, 'lomba_id', 'id');
     }
 
     public function guru()

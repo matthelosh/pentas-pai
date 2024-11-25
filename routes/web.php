@@ -100,6 +100,13 @@ Route::prefix('sekretariat')->middleware(['auth', 'verified'])->group(function (
             }
         );
 
+        route::prefix("juri")->group(
+            function () {
+                Route::post('/store', [JuriController::class, 'store'])->name('dashboard.lomba.bidang.juri.store');
+                Route::delete('/{id}', [JuriController::class, 'destroy'])->name('dashboard.lomba.bidang.juri.destroy');
+            }
+        );
+
         Route::post('/{id}', [BidangController::class, 'show'])->name('bidang.show');
         Route::delete('/{id}', [BidangController::class, 'destroy'])->name('bidang.destroy');
     });

@@ -125,12 +125,34 @@ const closeFormAspek = () => {
     selectedBidang.value = null;
     formAspek.value = false;
 };
+
+// Form Juri
+const FormJuri = defineAsyncComponent(() =>
+    import("@/Components/Lomba/FormJuri.vue")
+);
+const formJuri = ref(false);
+const showFormJuri = (item) => {
+    // console.log(item);
+    selectedBidang.value = item;
+    formJuri.value = true;
+};
+
+const closeFormJuri = () => {
+    formJuri.value = false;
+    selectedBidang.value = null;
+};
 </script>
 
 <template>
     <Head title="Data Perlombaan" />
     <DialogBox ref="dialogBox" />
     <AlertBox ref="alertBox" />
+    <FormJuri
+        v-if="formJuri"
+        :selectedBidang="selectedBidang"
+        :open="formJuri"
+        @close="closeFormJuri"
+    />
     <FormLomba
         :show="formLomba"
         @close="closeLomba"
@@ -333,8 +355,10 @@ const closeFormAspek = () => {
                                           bidang.label.split(" ")[1]
                                         : bidang.label.split(" ")[0]
                                 }}
+                            </div>
+                            <div class="flex items-center gap-2">
                                 <span
-                                    class="flex items-center gap-1 text-sky-700 bg-sky-50 p-1 rounded border-sky-200"
+                                    class="flex items-center gap-1 text-sky-700 bg-sky-50 p-2 rounded border-sky-200"
                                 >
                                     <Icon
                                         icon="mdi-human"
@@ -344,31 +368,33 @@ const closeFormAspek = () => {
                                         {{ bidang.pesertas.length }}
                                     </span>
                                 </span>
-
-                                <span
-                                    class="flex items-center gap-1 text-sky-700 bg-teal-50 p-1 rounded border-teal-200"
-                                >
-                                    <Icon
-                                        icon="mdi-check-all"
-                                        class="text-teal-500"
-                                    />
-                                    <span class="font-bold">
-                                        {{ bidang.aspeks.length }}
-                                    </span>
-                                </span>
-                            </div>
-                            <div class="flex items-center gap-2">
                                 <button
-                                    class="text-teal-700 rounded-full p-1"
+                                    class="text-teal-700 rounded p-2 flex items-center gap-1 bg-teal-100"
                                     @click="showFormAspek(bidang)"
                                 >
                                     <Icon icon="mdi:list-status" />
+                                    <span class="font-bold">
+                                        {{ bidang.aspeks.length }}
+                                    </span>
                                 </button>
                                 <button
-                                    class="text-red-700 rounded-full p-1"
+                                    class="text-sky-700 rounded p-2 flex items-center gap-1 bg-sky-100 relative"
+                                    @click="showFormJuri(bidang)"
+                                >
+                                    <Icon
+                                        icon="mdi:account-tie"
+                                        class="text-2xl"
+                                    />
+                                    <span
+                                        class="badge absolute bg-red-500 text-white rounded-full text-sm h-6 w-6 flex items-center justify-center -top-2 -right-2"
+                                        >{{ bidang.juris.length }}</span
+                                    >
+                                </button>
+                                <button
+                                    class="text-red-700 rounded p-2 flex items-center gap-1 bg-red-100"
                                     @click="removeBidang(bidang, lomba)"
                                 >
-                                    <Icon icon="mdi-trash" />
+                                    <Icon icon="mdi-trash" class="text-2xl" />
                                 </button>
                             </div>
                         </li>
