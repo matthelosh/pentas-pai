@@ -291,7 +291,7 @@ const closeKuitansi = () => {
                         </thead>
                         <tbody>
                             <tr
-                                class="odd:bg-gray-100 hover:bg-lime-100"
+                                class="odd:bg-gray-100 hover:bg-lime-50"
                                 v-for="(data, d) in datas.current"
                                 :key="d"
                             >
@@ -318,7 +318,7 @@ const closeKuitansi = () => {
                                         class="flex gap-1 flex-wrap justify-center"
                                     >
                                         <div
-                                            class="bg-teal-200 px-2 py-1 rounded"
+                                            class="border border-slate-400 px-2 py-1 rounded"
                                         >
                                             {{ data.lomba.label }}
                                         </div>

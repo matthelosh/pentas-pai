@@ -30,6 +30,12 @@ const cetak = () => window.print();
         >
             <h3>Kuitansi Pembayaran Registrasi</h3>
             <div class="flex items-center gap-2">
+                Masukkan Nilai Uang:
+                <input
+                    type="number"
+                    placeholder="Tentukan Harga"
+                    v-model="uang"
+                />
                 <button
                     @click="cetak"
                     class="mr-4 flex items-center gap-1 rounded border border-slate-500 hover:bg-slate-600 transition-all duration-300 linear hover:text-white py-1 px-3 bg-slate-100"
