@@ -10,6 +10,7 @@ class AdministrasiController extends Controller
 {
     public function peserta(Request $request)
     {
+        // dd('tes');
         return Inertia::render('Dashboard/AdministrasiPeserta', [
             'lomba' => $this->activeLomba(),
         ]);
@@ -37,7 +38,7 @@ class AdministrasiController extends Controller
 
     public function activeLomba()
     {
-        $lomba = Lomba::where('status', 1)->with([
+        $lomba = Lomba::where('status', '1')->with([
             'bidangs' => function ($b) {
                 $b->with('aspeks');
                 $b->with('pesertas');

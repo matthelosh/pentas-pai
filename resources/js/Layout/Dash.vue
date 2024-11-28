@@ -101,7 +101,7 @@ const confirmLogout = async () => {
                         v-if="side"
                     />
                     <Bars3CenterLeftIcon
-                        class="h-6 cursor-pointer md:hidden"
+                        class="h-6 cursor-pointer md:hidden text-teal-600"
                         v-else
                     />
                 </button>

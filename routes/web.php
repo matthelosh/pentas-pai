@@ -138,6 +138,12 @@ Route::prefix('sekretariat')->middleware(['auth', 'verified'])->group(function (
             }
         );
 
+        Route::prefix('hasil')->group(
+            function () {
+                Route::get("/", [LombaController::class, 'showResult'])->name('dashboard.lomba.hasil');
+            }
+        );
+
         Route::post('/store', [LombaController::class, 'store'])->name('lomba.store');
         Route::put('/{id}', [LombaController::class, 'activate'])->name('lomba.activate');
     });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bidang;
 use App\Models\Lomba;
 use App\Models\Nilai;
+use App\Models\Peserta;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,14 +14,32 @@ class LombaController extends Controller
 {
     public function page(Request $request)
     {
-        return Inertia::render('Dashboard/Lomba', [
-            'lombas' => Lomba::with('sekolah', 'panitias')
+        // dd($request->user()->level);
+        if ($request->user()->level == 'admin') {
+            $lombas = Lomba::with('sekolah', 'panitias')
                 ->with([
                     'bidangs.pesertas',
                     'bidangs.aspeks',
                     'bidangs.juris.guru'
                 ])
-                ->get(),
+                ->get();
+        } else {
+            $user = $request->user();
+            $guruId = $user->guru->id;
+            if ($user->guru->has('juri')) {
+                $lombas = Lomba::with('sekolah', 'panitias')
+                    ->with([
+                        'bidangs' => function ($b) use ($guruId) {
+                            $b->where('bidangs.guru_id', $guruId);
+                            $b->with('pesertas', 'aspeks', 'juris.guru');
+                        }
+                    ])
+                    ->get();
+            }
+        }
+
+        return Inertia::render('Dashboard/Lomba', [
+            'lombas' => $lombas,
         ], 200);
     }
 
@@ -50,7 +69,16 @@ class LombaController extends Controller
         if ($request->user()->level == 'admin') {
             $datas = Sekolah::with('pesertas.bidangs')->get();
         } else {
-            $datas = Sekolah::where('npsn', auth()->user()->userable->sekolah_id)->with('pesertas.bidangs')->get();
+            $lombaId = Lomba::whereStatus('1')->value('id');
+            $datas = Sekolah::where('npsn', auth()->user()->userable->sekolah_id)
+                ->with(
+                    [
+                        'pesertas' => function ($p) use ($lombaId) {
+                            $p->where('lomba_id', $lombaId);
+                            $p->with('bidangs');
+                        }
+                    ]
+                )->get();
         }
         return response()->json(['status' => 'ok', 'sekolahs' => $datas], 200);
     }
@@ -63,15 +91,35 @@ class LombaController extends Controller
 
         try {
             $lomba = Lomba::where('status', '1')->first();
-            $bidangs = Bidang::where('lomba_id', $lomba->id)
-                ->with('lomba', 'aspeks.nilais')
-                ->with([
-                    'pesertas' => function ($s) {
-                        $s->with('sekolah');
-                        $s->with('nilais');
-                    }
-                ])
-                ->get();
+            if ($request->user()->level == 'admin') {
+                $bidangs = Bidang::where('lomba_id', $lomba->id)
+                    ->with('lomba', 'aspeks.nilais')
+                    ->with([
+                        'pesertas' => function ($s) {
+                            $s->with('sekolah');
+                            $s->with('nilais');
+                        }
+                    ])
+                    ->get();
+            } else {
+                $user = $request->user();
+                // dd($user->userable);
+                $guruId = $user->userable->id;
+                if ($user->guru->has('juri')) {
+                    $bidangs = Bidang::where('lomba_id', $lomba->id)
+                        ->wherehas('juris', function ($j) use ($guruId) {
+                            $j->where('juris.guru_id', $guruId);
+                        })
+                        ->with('lomba', 'aspeks.nilais')
+                        ->with([
+                            'pesertas' => function ($s) {
+                                $s->with('sekolah');
+                                $s->with('nilais');
+                            }
+                        ])
+                        ->get();
+                }
+            }
 
             return Inertia::render(
                 'Dashboard/FormNilai',
@@ -86,22 +134,46 @@ class LombaController extends Controller
 
     public function storeNilai(Request $request)
     {
-        // dd($request->all());
+        // dd($request->sekolah_id);
         try {
-            foreach ($request->skors as $skor) {
+            if (!$request->sekolah_id) {
+                foreach ($request->skors as $skor) {
 
-                $nilai = Nilai::updateOrCreate(
-                    [
-                        'id' => $skor['id'] ?? null,
-                        'siswa_id' => $request->siswa_id,
-                        'bidang_id' => $request->bidang_id,
-                        'aspek_id' => $skor['aspek_id']
-                    ],
-                    [
-                        'user_id' => $request->user()->id,
-                        'nilai' => $skor['skor']
-                    ]
-                );
+                    $nilai = Nilai::updateOrCreate(
+                        [
+                            'id' => $skor['id'] ?? null,
+                            'siswa_id' => $request->siswa_id,
+                            'bidang_id' => $request->bidang_id,
+                            'aspek_id' => $skor['aspek_id']
+                        ],
+                        [
+                            'user_id' => $request->user()->id,
+                            'nilai' => $skor['skor']
+                        ]
+                    );
+                }
+            } else {
+                $bidang = $request->bidang_id;
+                $pesertas = Peserta::whereHas('bidangs', function ($b) use ($bidang) {
+                    $b->where('bidangs.id', $bidang);
+                })->where('sekolah_id', $request->sekolah_id)->get();
+                // dd($pesertas);
+                foreach ($pesertas as $peserta) {
+                    foreach ($request->skors as $skor) {
+                        $nilai = Nilai::updateOrCreate(
+                            [
+                                'id' => $skor['id'] ?? null,
+                                'siswa_id' => $peserta->nisn,
+                                'bidang_id' => $request->bidang_id,
+                                'aspek_id' => $skor['aspek_id']
+                            ],
+                            [
+                                'user_id' => $request->user()->id,
+                                'nilai' => $skor['skor']
+                            ]
+                        );
+                    }
+                }
             }
 
             return back()->with('message', 'Skor disimpan');
@@ -163,9 +235,13 @@ class LombaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Lomba $lomba)
+    public function showResult(Request $request)
     {
-        //
+        try {
+            return Inertia::render('Dashboard/HasilLomba');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**

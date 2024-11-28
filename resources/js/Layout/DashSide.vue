@@ -97,7 +97,7 @@ const menus = ref([
             },
             {
                 label: "Hasil Lomba",
-                url: "#",
+                url: "dashboard.lomba.hasil",
                 roles: ["admin", "panitia"],
                 icon: "clipboard",
             },

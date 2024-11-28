@@ -1,6 +1,7 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { router, usePage } from "@inertiajs/vue3";
+import { keyBy } from "lodash";
 import { defineAsyncComponent, ref } from "vue";
 
 const Dash = defineAsyncComponent(() => import("@/Layout/Dash.vue"));
@@ -10,37 +11,82 @@ const bg = (kode) => {
     const code = kode.split("-");
     return "/img/" + code[3] + ".png";
 };
+const pesertas = ref([]);
 const nilais = ref([]);
 const loading = ref(false);
 const selectedBidang = ref(null);
-const fillNilai = (item) => {
-    console.log(item);
-    const thisNilais = [];
 
-    item.pesertas.forEach((siswa) => {
-        const skors = [];
-        if (siswa.nilais.length < 1) {
-            item.aspeks.forEach((aspek) => {
-                skors.push({ aspek_id: aspek.id, skor: 0 });
-            });
-        } else {
-            siswa.nilais.forEach((skor) => {
-                skors.push({
-                    id: skor.id,
-                    aspek_id: skor.aspek_id,
-                    skor: skor.nilai,
+const DialogBox = defineAsyncComponent(() =>
+    import("@/Components/General/DialogBox.vue")
+);
+const dialogBox = ref(null);
+const fillNilai = (item) => {
+    // console.log(item);
+    selectedBidang.value = item;
+    const thisNilais = [];
+    let aspekIds = item.aspeks.map((aspek) => aspek.id);
+    if (item.kategori == "tunggal") {
+        pesertas.value = item.pesertas;
+        item.pesertas.forEach((siswa) => {
+            let nilais = siswa.nilais.filter(
+                (nilai) => nilai.bidang_id == selectedBidang.value.id
+            );
+            const skors = [];
+            if (nilais.length < 1) {
+                item.aspeks.forEach((aspek) => {
+                    skors.push({ aspek_id: aspek.id, skor: 0 });
                 });
+            } else {
+                siswa.nilais.forEach((skor) => {
+                    skors.push({
+                        id: skor.id,
+                        aspek_id: skor.aspek_id,
+                        skor: skor.nilai,
+                    });
+                });
+            }
+            thisNilais.push({
+                siswa_id: siswa.nisn,
+                skors: skors,
             });
-        }
-        thisNilais.push({
-            siswa_id: siswa.nisn,
-            skors: skors,
         });
-    });
+    } else {
+        // console.log("Halo");
+        pesertas.value = Object.groupBy(
+            item.pesertas,
+            ({ sekolah }) => sekolah.nama
+        );
+        Object.entries(pesertas.value).forEach(([key, siswas]) => {
+            // console.log(siswas[0]);
+            const skors = [];
+            let nilais = siswas[0].nilais.filter(
+                (nilai) => nilai.bidang_id == selectedBidang.value.id
+            );
+            if (nilais.length < 1) {
+                item.aspeks.forEach((aspek) => {
+                    skors.push({ aspek_id: aspek.id, skor: 0 });
+                });
+            } else {
+                // console.log(siswas[0].nilai);
+                siswas[0].nilais.forEach((skor) => {
+                    skors.push({
+                        id: skor.id,
+                        aspek_id: skor.aspek_id,
+                        skor: skor.nilai,
+                    });
+                });
+            }
+            thisNilais.push({
+                sekolah_id: siswas[0].sekolah.npsn,
+                siswa_id: siswas[0].nisn,
+                skors: skors,
+            });
+        });
+    }
 
     nilais.value = thisNilais;
+    // console.log(nilais.value);
 
-    selectedBidang.value = item;
     showDialog.value = true;
 };
 
@@ -59,12 +105,19 @@ const toggleCollapse = (e) => {
 };
 
 const simpanNilai = async (siswa) => {
-    const nilai = nilais.value.find((nil) => nil.siswa_id == siswa.nisn);
+    const nilai = nilais.value.find((nil) => {
+        if (selectedBidang.value.kategori === "regu") {
+            return nil.siswa_id == siswa[1][0].nisn;
+        } else {
+            return nil.siswa_id == siswa.nisn;
+        }
+    });
     // console.log(nilai);
     await router.post(
         route("dashboard.lomba.nilai.store", {
             _query: {
                 bidang_id: selectedBidang.value.id,
+                sekolah_id: nilai.sekolah_id ?? null,
             },
         }),
         nilai,
@@ -77,12 +130,36 @@ const simpanNilai = async (siswa) => {
         }
     );
 };
+
+const regus = (item) => {
+    // pesertas;
+    const result = Object.groupBy(item.pesertas, ({ sekolah }) => sekolah.nama);
+    // console.log(result);
+    return Object.keys(result).length;
+};
+
+const showConfirm = ref(false);
+const confirmRekap = () => {
+    showConfirm.value = !showConfirm.value;
+};
+
+const rekap = async () => {
+    await dialogBox.value
+        .open("Pastikan nilai peserta sudah tersimpan!")
+        .then((ok) => {
+            console.log(ok);
+        });
+};
 </script>
 
 <template>
     <Dash title="Form Penilaian">
+        <DialogBox ref="dialogBox" />
         <!-- <h1 class="text-center my-4 text-lg fontpbold">Pilih Bidang Lomba</h1> -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 py-4">
+        <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 py-4"
+            v-if="page.props.bidangs.length > 0"
+        >
             <template v-for="c in page.props.bidangs">
                 <div
                     @click="fillNilai(c)"
@@ -110,14 +187,34 @@ const simpanNilai = async (siswa) => {
                             class="content bg-white p-4 rounded shadow-lg text-center"
                         >
                             <h3 class="text-xl">Jumlah Peserta</h3>
-                            <h1 class="text-4xl font-bold">
-                                {{ c.pesertas.length }}
+                            <h1
+                                class="text-4xl font-bold flex items-end justify-center"
+                            >
+                                {{
+                                    c.kategori == "tunggal"
+                                        ? c.pesertas.length
+                                        : regus(c)
+                                }}
                             </h1>
+                            <span class="text-teal-600">
+                                {{ c.kategori == "tunggal" ? "Orang" : "Regu" }}
+                            </span>
                         </div>
                     </div>
                     <div class="card-footer"></div>
                 </div>
             </template>
+        </div>
+        <div v-else class="h-[93vh] flex items-start py-8 justify-center">
+            <h3
+                class="text-center text-slate-800 p-8 bg-white rounded-lg shadow-lg"
+            >
+                <Icon
+                    icon="mdi-alert"
+                    class="mx-auto text-4xl text-orange-400"
+                />
+                Laman ini hanya untuk juri.
+            </h3>
         </div>
 
         <div
@@ -198,7 +295,11 @@ const simpanNilai = async (siswa) => {
                 </table>
 
                 <div class="card block sm:hidden">
-                    <template v-for="(siswa, s) in selectedBidang.pesertas">
+                    <template
+                        v-for="(siswa, s) in selectedBidang.kategori == 'regu'
+                            ? Object.entries(pesertas)
+                            : pesertas"
+                    >
                         <div
                             class="item-collapse my-4 bg-slate-100 px-2 py-4 transition-all duration-300 ease-in-out"
                         >
@@ -206,7 +307,14 @@ const simpanNilai = async (siswa) => {
                                 class="title flex items-center justify-between"
                                 @click.stop="toggleCollapse($event)"
                             >
-                                <h3>{{ s + 1 }}. {{ siswa.nama }}</h3>
+                                <h3>
+                                    {{ s + 1 }}.
+                                    {{
+                                        selectedBidang.kategori == "regu"
+                                            ? siswa[0]
+                                            : siswa.nama
+                                    }}
+                                </h3>
                                 <button
                                     class="p-1 border rounded-full bg-slate-200"
                                 >
@@ -235,6 +343,7 @@ const simpanNilai = async (siswa) => {
                                             class="w-[100px] border-teal-700 rounded-full h-16 text-center text-lg"
                                             v-model="nilais[s].skors[a].skor"
                                         />
+                                        <!-- {{ nilais[s].skors[a].skor }} -->
                                     </div>
                                 </template>
                                 <div class="flex justify-center">
@@ -250,6 +359,21 @@ const simpanNilai = async (siswa) => {
                     </template>
                 </div>
             </div>
+            <button
+                class="right-4 fixed bottom-8 rounded-full shadow-lg bg-teal-500 text-white text-lg font-bold tracking-wide flex items-center gap-2 transition-all ease-in-out duration-300"
+            >
+                <span
+                    v-if="showConfirm"
+                    @click.self="rekap"
+                    class="p-4 bg-pink-400 rounded-full transition-all ease-in-out duration-300"
+                    >Buat Rekap?</span
+                >
+                <Icon
+                    icon="mdi-hdd"
+                    @click="confirmRekap"
+                    class="m-4 text-2xl"
+                />
+            </button>
         </div>
     </Dash>
 </template>
