@@ -40,6 +40,12 @@ const getItem = async () => {
 
 const cetak = () => window.print();
 
+const bendahara = computed(() => {
+    return page.props.panitias.filter(
+        (panitia) => panitia.jabatan == "bendahara1"
+    )[0];
+});
+
 onBeforeMount(async () => {
     await getItem();
 });
@@ -195,15 +201,15 @@ onBeforeMount(async () => {
                                 <div class="col-span-1">
                                     <p>Tanggal, 18 Desember 2024</p>
                                     <p>Bendahara Pentas PAI</p>
-
-                                    <p class="font-bold underline mt-10">
-                                        {{
-                                            page.props.panitias.filter(
-                                                (panitia) =>
-                                                    panitia.jabatan ==
-                                                    "bendahara1"
-                                            )[0]?.guru?.nama
-                                        }}
+                                    <img
+                                        :src="`/img/ttd/${bendahara?.guru?.nip}.png`"
+                                        alt="TTD Bendahara"
+                                        class="h-32 print:h-16 absolute -mt-4 translate-x-8"
+                                    />
+                                    <p
+                                        class="font-bold underline mt-20 print:mt-10"
+                                    >
+                                        {{ bendahara?.guru?.nama }}
                                     </p>
                                 </div>
                             </div>
