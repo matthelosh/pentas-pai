@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, onMounted, ref } from "vue";
 import { terbilang } from "@/Plugins/misc";
 import { usePage } from "@inertiajs/vue3";
 
@@ -38,7 +38,33 @@ const getItem = async () => {
     }
 };
 
-const cetak = () => window.print();
+const cetak = () => {
+    const el = document.querySelector(".content");
+    const cssUrl =
+        page.props.appEnv == "local"
+            ? "http://pentaspai.test:5173/resources/css/app.css"
+            : "/build/assets/app.css";
+
+    let win = window.open("", "_blank", "width=1024,height=1080");
+
+    let html = `
+        <!doctype html>
+        <html>
+            <head>
+                <title>Kuitansi Pentas PAI</title>    
+                <link href="${cssUrl}" rel="stylesheet" />
+            </head>
+            <body>
+                ${el.outerHTML}
+            </body>
+        </html>
+    `;
+    win.document.write(html);
+
+    setTimeout(() => {
+        win.print();
+    }, 1000);
+};
 
 const bendahara = computed(() => {
     return page.props.panitias.filter(
@@ -46,13 +72,14 @@ const bendahara = computed(() => {
     )[0];
 });
 
+onMounted(() => console.log(page.props));
 onBeforeMount(async () => {
     await getItem();
 });
 </script>
 
 <template>
-    <div class="fixed top-0 right-0 bottom-0 left-0 bg-white z-40">
+    <div class="fixed top-0 right-0 left-0 bg-white z-40">
         <div
             class="toolbar flex items-center justify-between h-12 px-2 shadow print:hidden"
         >
@@ -86,7 +113,7 @@ onBeforeMount(async () => {
             </div>
         </div>
         <div
-            class="content bg-slate-400 print:bg-white py-16 px-48 print:px-0 print:py-1 overflow-y-auto max-h-[96vh] print:max-h-auto"
+            class="content bg-slate-400 print:bg-white py-16 px-48 print:px-0 print:py-1 overflow-y-auto h-max-auto"
         >
             <div
                 class="sheet bg-white m-4 break-inside-avoid break-after-always"

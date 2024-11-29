@@ -7,6 +7,7 @@ use App\Models\Panitia;
 use App\Models\Sekolah;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Env;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -38,6 +39,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user() ? $this->user($request->user()) : null,
             ],
+            'appEnv' => \config('app.env'),
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),
@@ -51,6 +53,7 @@ class HandleInertiaRequests extends Middleware
             'panitias' => $request->user() ? $this->panitia() : null,
         ]);
     }
+
 
     public function lomba()
     {
@@ -77,6 +80,6 @@ class HandleInertiaRequests extends Middleware
     }
     public function user($user)
     {
-        return User::where('id', $user->id)->with('userable')->first();
+        return User::where('id', $user->id)->with('userable', 'panitias')->first();
     }
 }
