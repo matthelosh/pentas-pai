@@ -13,7 +13,7 @@ class Hasil extends Model
         'bidang_id',
         'siswa_id',
         'user_id',
-        'nilai'
+        'skor'
     ];
 
     public function siswa()

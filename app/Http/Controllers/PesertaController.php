@@ -54,6 +54,7 @@ class PesertaController extends Controller
     public function getPeserta(Request $request)
     {
         try {
+            $lomba = Lomba::whereStatus('1')->first();
             if ($request->query('bidang')) {
                 // $pesertas = Peserta::where('lomba_id', 'LIKE', '%'.$request->query('bidang').'%')->with('sekolah','bidangs')->get();
                 if ($request->user()->level == 'admin') {
@@ -68,7 +69,7 @@ class PesertaController extends Controller
                     })->with('bidangs', 'sekolah')->get();
                 }
             } else {
-                $pesertas = Peserta::with('sekolah')->get();
+                $pesertas = Peserta::where('lomba_id', $lomba->id)->with('sekolah')->with('bidangs')->get();
             }
             return response()->json(['status' => 'ok', 'pesertas' => $pesertas], 200);
         } catch (\Exception $e) {

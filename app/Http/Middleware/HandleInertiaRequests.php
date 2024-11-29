@@ -48,6 +48,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'lomba' => $this->lomba() ?? null,
             'sekolahs' => $request->user() ? $this->sekolahs($request->user()) : null,
+            'panitias' => $request->user() ? $this->panitia() : null,
         ]);
     }
 
@@ -70,6 +71,10 @@ class HandleInertiaRequests extends Middleware
         return $sekolahs;
     }
 
+    public function panitia()
+    {
+        return Panitia::where('lomba_id', $this->lomba()->id)->with('guru', 'jab')->get();
+    }
     public function user($user)
     {
         return User::where('id', $user->id)->with('userable')->first();

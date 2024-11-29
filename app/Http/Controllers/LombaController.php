@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bidang;
+use App\Models\Hasil;
 use App\Models\Lomba;
 use App\Models\Nilai;
 use App\Models\Peserta;
@@ -244,20 +245,34 @@ class LombaController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Lomba $lomba)
+    public function storeResult(Request $request)
     {
-        //
-    }
+        try {
+            $datas = [];
+            foreach ($request->nilais as $nilai) {
+                $sum = 0;
+                $skorCount = count($nilai['skors']);
+                $sum = array_reduce($nilai['skors'], fn($s, $c) => $s + $c['skor'], 0);
+                $hasil = Hasil::updateOrCreate(
+                    [
+                        'id' => $nilai['id'] ?? null,
+                        'siswa_id' => $nilai['siswa_id'],
+                        'user_id' => $request->user()->id,
+                        'bidang_id' => $request->bidangId,
+                    ],
+                    [
+                        'skor' => $sum / ($skorCount * 100) * 100
+                    ]
+                );
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Lomba $lomba)
-    {
-        //
+                array_push($datas, $hasil);
+            }
+
+            dd($datas);
+            return back()->with('message', $request->bidangId);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**

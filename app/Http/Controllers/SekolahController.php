@@ -19,7 +19,7 @@ class SekolahController extends Controller
         try {
             return response()->json([
                 'status' => 'ok',
-                'sekolahs' => Sekolah::with('pesertas')->get(),
+                'sekolahs' => Sekolah::with('pesertas.bidangs')->get(),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

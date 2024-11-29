@@ -37,7 +37,7 @@ const fillNilai = (item) => {
                     skors.push({ aspek_id: aspek.id, skor: 0 });
                 });
             } else {
-                siswa.nilais.forEach((skor) => {
+                nilais.forEach((skor) => {
                     skors.push({
                         id: skor.id,
                         aspek_id: skor.aspek_id,
@@ -68,7 +68,7 @@ const fillNilai = (item) => {
                 });
             } else {
                 // console.log(siswas[0].nilai);
-                siswas[0].nilais.forEach((skor) => {
+                nilais.forEach((skor) => {
                     skors.push({
                         id: skor.id,
                         aspek_id: skor.aspek_id,
@@ -147,7 +147,15 @@ const rekap = async () => {
     await dialogBox.value
         .open("Pastikan nilai peserta sudah tersimpan!")
         .then((ok) => {
-            console.log(ok);
+            if (ok) {
+                router.post(
+                    route("dashboard.lomba.result.store"),
+                    { bidangId: selectedBidang.value.id, nilais: nilais.value },
+                    {
+                        onSuccess: () => console.log(page.props.flash.message),
+                    }
+                );
+            }
         });
 };
 </script>
@@ -270,7 +278,9 @@ const rekap = async () => {
                             <td class="border px-2 hidden sm:table-cell">
                                 {{ siswa.sekolah.nama }}
                             </td>
-                            <template v-for="aspek in selectedBidang.aspeks">
+                            <template
+                                v-for="(aspek, a) in selectedBidang.aspeks"
+                            >
                                 <td class="text-center border w-[200px]">
                                     <input
                                         type="number"
@@ -278,6 +288,7 @@ const rekap = async () => {
                                         min="0"
                                         placeholder="Nilai"
                                         class="border-slate-200 w-[90px]"
+                                        v-model="nilais[s].skors[a].skor"
                                     />
                                 </td>
                             </template>

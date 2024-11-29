@@ -1,10 +1,14 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-import { computed, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { terbilang } from "@/Plugins/misc";
+import { usePage } from "@inertiajs/vue3";
+
+const page = usePage();
 const props = defineProps({ items: Array, open: Boolean });
 const emit = defineEmits(["close"]);
 const uang = ref(300000);
+const satuan = ref("sekolah");
 const data = computed(() => {
     return Object.groupBy(props.items, ({ sekolah }) => sekolah.nama);
 });
@@ -20,7 +24,25 @@ const generateSerial = () => {
     return result;
 };
 
+const items = ref([]);
+
+const getItem = async () => {
+    if (satuan.value == "peserta") {
+        await axios.post(route("dashboard.peserta.index")).then((res) => {
+            items.value = res.data.pesertas;
+        });
+    } else {
+        await axios.post(route("sekolah.index")).then((res) => {
+            items.value = res.data.sekolahs;
+        });
+    }
+};
+
 const cetak = () => window.print();
+
+onBeforeMount(async () => {
+    await getItem();
+});
 </script>
 
 <template>
@@ -30,6 +52,12 @@ const cetak = () => window.print();
         >
             <h3>Kuitansi Pembayaran Registrasi</h3>
             <div class="flex items-center gap-2">
+                Pilih Satuan:
+                <select placeholder="Satuan" v-model="satuan">
+                    <option value="sekolah">Sekolah</option>
+                    <option value="peserta">Peserta</option>
+                </select>
+
                 Masukkan Nilai Uang:
                 <input
                     type="number"
@@ -52,11 +80,11 @@ const cetak = () => window.print();
             </div>
         </div>
         <div
-            class="content bg-slate-400 print:bg-white py-16 px-48 print:p-0 overflow-y-auto max-h-[96vh]"
+            class="content bg-slate-400 print:bg-white py-16 px-48 print:px-0 print:py-1 overflow-y-auto max-h-[96vh] print:max-h-auto"
         >
             <div
                 class="sheet bg-white m-4 break-inside-avoid break-after-always"
-                v-for="item in Object.entries(data)"
+                v-for="(item, i) in items"
             >
                 <div
                     class="grid grid-cols-12 h-[600px] print:h-[300px] border border-dashed print:border-slate-700"
@@ -114,14 +142,17 @@ const cetak = () => window.print();
                                         <td class="py-4">No</td>
                                         <td class="py-4">:</td>
                                         <td class="py-4 font-black">
-                                            {{ generateSerial() }} / PENTAS-PAI
-                                            / 2024
+                                            {{
+                                                (i < 10 ? "000" : "00") +
+                                                (i + 1)
+                                            }}
+                                            / PENTAS-PAI / 2024
                                         </td>
                                     </tr>
                                     <tr class="border-b">
                                         <td>Telah terima dari</td>
                                         <td>:</td>
-                                        <td>Bendahara {{ item[0] }}</td>
+                                        <td>Bendahara {{ item.nama }}</td>
                                     </tr>
                                     <tr class="border-b">
                                         <td>Terbilang</td>
@@ -142,7 +173,9 @@ const cetak = () => window.print();
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="grid grid-cols-3 print:text-xs mt-16">
+                            <div
+                                class="grid grid-cols-3 print:text-xs mt-16 print:mt-8"
+                            >
                                 <div class="col-span-1">
                                     <div>
                                         <p>
@@ -161,6 +194,17 @@ const cetak = () => window.print();
                                 <div class="col-span-1"></div>
                                 <div class="col-span-1">
                                     <p>Tanggal, 18 Desember 2024</p>
+                                    <p>Bendahara Pentas PAI</p>
+
+                                    <p class="font-bold underline mt-10">
+                                        {{
+                                            page.props.panitias.filter(
+                                                (panitia) =>
+                                                    panitia.jabatan ==
+                                                    "bendahara1"
+                                            )[0]?.guru?.nama
+                                        }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
