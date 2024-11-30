@@ -29,7 +29,7 @@ const toggleNav = (e) => {
                     href="/"
                     class="flex items-end gap-1 cursor-pointer"
                 >
-                    <img src="img/kkg.png" alt="Logo" class="h-9" />
+                    <img src="/img/kkg.png" alt="Logo" class="h-9" />
                     <h1 class="leading-3">
                         <span class="font-extrabold text-teal-600"
                             >PENTAS PAI</span
@@ -88,6 +88,18 @@ const toggleNav = (e) => {
                     >
                         <Link :href="route('peserta')" class="p-2 block"
                             >Data Peserta</Link
+                        >
+                    </li>
+                    <li
+                        class="max-0 my-0 md:mx-1 md:my-0 border-orange-400 hover:rounded duration-100 hover:text-orange-400"
+                        :class="
+                            route().current() == 'lomba.hasil'
+                                ? 'text-orange-600 border-b-4 rounded-b  bg-orange-50 bg-opacity-50 font-bold'
+                                : ''
+                        "
+                    >
+                        <Link :href="route('lomba.hasil')" class="p-2 block"
+                            >Hasil Lomba</Link
                         >
                     </li>
                     <li

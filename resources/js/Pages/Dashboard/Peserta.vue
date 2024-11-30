@@ -163,13 +163,12 @@ const Kuitansi = defineAsyncComponent(() =>
 );
 const kuitansis = ref([]);
 const cetakKuitansi = (item) => {
-    console.log($page.props.auth.user);
-    // if (item != null) {
-    //     kuitansis.value.push(item);
-    // } else {
-    //     console.log($page.props.pesertas);
-    //     kuitansis.value = $page.props.pesertas;
-    // }
+    if (item != null) {
+        kuitansis.value.push(item);
+    } else {
+        console.log($page.props.pesertas);
+        kuitansis.value = $page.props.pesertas;
+    }
     // console.log(item);
 };
 

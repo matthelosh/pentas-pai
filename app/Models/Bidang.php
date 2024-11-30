@@ -32,6 +32,16 @@ class Bidang extends Model
         return $this->hasMany(Aspek::class);
     }
 
+    public function nilais()
+    {
+        return $this->hasMany(Nilai::class);
+    }
+
+    public function results()
+    {
+        return $this->hasMany(Hasil::class);
+    }
+
     public function juris()
     {
         return $this->hasMany(Juri::class, 'lomba_id', 'id');

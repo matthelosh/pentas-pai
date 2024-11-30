@@ -239,7 +239,22 @@ class LombaController extends Controller
     public function showResult(Request $request)
     {
         try {
-            return Inertia::render('Dashboard/HasilLomba');
+            $bidangs = Bidang::whereLombaId($this->lomba()->id)
+                ->with([
+                    'results' => function ($r) {
+                        $r->with('siswa.sekolah');
+                        $r->with('siswa.nilais');
+                        $r->orderBy('skor', 'DESC');
+                    }
+                ])
+                ->with('aspeks', 'nilais')
+                ->get();
+            return Inertia::render(
+                'Dashboard/HasilLomba',
+                [
+                    'bidangs' => $bidangs
+                ]
+            );
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -268,8 +283,26 @@ class LombaController extends Controller
                 array_push($datas, $hasil);
             }
 
-            dd($datas);
+            // dd($datas);
             return back()->with('message', $request->bidangId);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function frontHasil(Request $request)
+    {
+        try {
+            $bidangs = Bidang::whereLombaId($this->lomba()->id)
+                ->with('nilais', function ($n) {
+                    $n->with('siswa', 'aspek');
+                })->get();
+            return Inertia::render(
+                'Hasil',
+                [
+                    'bidangs' => $bidangs
+                ]
+            );
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -281,5 +314,10 @@ class LombaController extends Controller
     public function destroy(Lomba $lomba)
     {
         //
+    }
+
+    public function lomba()
+    {
+        return Lomba::where('status', '1')->first();
     }
 }

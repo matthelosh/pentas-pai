@@ -35,6 +35,7 @@ Route::inertia('/about', 'About')->name('about');
 
 Route::prefix('lomba')->group(function () {
     Route::post('/', [LombaController::class, 'index'])->name('lomba.index');
+    Route::get('/hasil', [LombaController::class, 'frontHasil'])->name('lomba.hasil');
 });
 
 Route::prefix('sekolah')->group(function () {
