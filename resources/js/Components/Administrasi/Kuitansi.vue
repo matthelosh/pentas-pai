@@ -63,7 +63,7 @@ const cetak = () => {
 
     setTimeout(() => {
         win.print();
-        // win.close();
+        win.close();
     }, 1000);
 };
 
@@ -138,8 +138,7 @@ onBeforeMount(async () => {
                                         <h3>KKG PAI Kecamatan Wagir</h3>
                                         <h1>Panitia Pentas PAI</h1>
                                         <p class="print:text-xs">
-                                            Sekretariat: SD Negeri 2
-                                            Mendalanwangi
+                                            Sekretariat: SD Negeri Jedong
                                         </p>
                                     </td>
                                 </tr>
