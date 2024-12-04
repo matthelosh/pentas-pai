@@ -87,6 +87,7 @@ Route::prefix('sekretariat')->middleware(['auth', 'verified'])->group(function (
         Route::post('/', [PesertaController::class, 'getPeserta'])->name('dashboard.peserta.index');
         Route::post('/attach', [PesertaController::class, 'attach'])->name('dashboard.peserta.attach');
         Route::post('/impor', [PesertaController::class, 'impor'])->name('dashboard.peserta.impor');
+        Route::post('/no-urut/store', [NoUrutController::class, 'store'])->name('dashboard.peserta.nourut.simpan');
         Route::delete('/{id}', [PesertaController::class, 'destroy'])->name('dashboard.peserta.destroy');
         Route::post('/{id}', [PesertaController::class, 'update'])->name('dashboard.peserta.update');
     });

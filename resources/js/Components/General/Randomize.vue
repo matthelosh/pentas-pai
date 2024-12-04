@@ -4,7 +4,7 @@ import { ref, computed } from "vue";
 const title = ref("");
 const items = ref(null);
 const show = ref(false);
-const randomNumber = ref(0);
+const bidangId = ref(null);
 const min = ref(1);
 const max = computed(() => items.value.length);
 const uruts = ref([]);
@@ -33,10 +33,12 @@ const setNumber = (item) => {
     }
 };
 
-const open = async (message, data) => {
+const open = async (message, data, bidang_id) => {
+    bidangId.value = bidang_id;
     title.value = message;
     items.value = data;
     show.value = true;
+    // console.log(data);
     acak();
 };
 
@@ -47,6 +49,18 @@ const tutup = () => {
     title.value = "";
     show.value = false;
 };
+
+const storeSort = async () => {
+    axios
+        .post(route("dashboard.peserta.nourut.simpan"), {
+            bidang_id: bidangId.value,
+            datas: results.value,
+        })
+        .then((res) => {
+            console.log(res);
+        });
+};
+
 defineExpose({ open });
 </script>
 
@@ -63,7 +77,12 @@ defineExpose({ open });
                 {{ title }}
             </h3>
             <div class="grid grid-cols-4 gap-4">
-                <template class="item" v-for="item in results">
+                <template
+                    class="item"
+                    v-for="item in results.sort((a, b) =>
+                        a.urut > b.urut ? 1 : -1
+                    )"
+                >
                     <div
                         class="col-span-1 p-2 bg-teal-600 text-white rounded relative"
                         v-if="item"
@@ -94,6 +113,7 @@ defineExpose({ open });
             <div class="w-full flex justify-center pt-8">
                 <button
                     class="bg-sky-500 py-2 px-4 rounded text-white uppercase"
+                    @click="storeSort"
                 >
                     Tetapkan
                 </button>

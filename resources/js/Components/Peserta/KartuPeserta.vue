@@ -108,7 +108,8 @@ const randomize = ref(null);
 const randomNumber = () => {
     randomize.value.open(
         "Acak Nomor Peserta " + props.bidang.label,
-        items.value
+        items.value,
+        props.bidang.id
     );
 };
 </script>
