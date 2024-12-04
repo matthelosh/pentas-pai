@@ -61,7 +61,11 @@ class PesertaController extends Controller
                     $bidangId = $request->query('bidang');
                     $pesertas = Peserta::whereHas('bidangs', function ($q) use ($bidangId) {
                         $q->where('bidangs.id', $bidangId);
-                    })->with('bidangs', 'sekolah')->get();
+                    })
+                        ->with('urutans', function ($u) use ($bidangId) {
+                            $u->where('bidang_id', $bidangId);
+                        })
+                        ->with('bidangs', 'sekolah')->get();
                 } else {
                     $bidangId = $request->query('bidang');
                     $pesertas = Peserta::where('sekolah_id', auth()->user()->userable->sekolah_id)->whereHas('bidangs', function ($q) use ($bidangId) {

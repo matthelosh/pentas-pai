@@ -48,7 +48,8 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'message' => fn() => $request->session()->get('message')
             ],
-            'lomba' => $this->lomba() ?? null,
+            // 'lomba' => $this->lomba() ?? null,
+            'lomba' => 'Tes',
             'sekolahs' => $request->user() ? $this->sekolahs($request->user()) : null,
             'panitias' => $request->user() ? $this->panitia() : null,
         ]);

@@ -42,7 +42,8 @@ class AdministrasiController extends Controller
             'bidangs' => function ($b) {
                 $b->with('aspeks');
                 $b->with('pesertas');
-            }
+            },
+            'sekolah'
         ])->first();
         return $lomba;
     }

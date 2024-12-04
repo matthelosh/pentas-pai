@@ -27,6 +27,12 @@ class Bidang extends Model
         return $this->belongsToMany(Peserta::class, 'bidang_peserta', 'bidang_id', 'peserta_id');
     }
 
+
+    public function urutans()
+    {
+        return $this->hasMany(NoUrut::class);
+    }
+
     public function aspeks()
     {
         return $this->hasMany(Aspek::class);

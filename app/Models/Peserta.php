@@ -43,4 +43,9 @@ class Peserta extends Model
     {
         return $this->belongsToMany(Bidang::class, 'bidang_peserta', 'peserta_id', 'bidang_id');
     }
+
+    public function urutans()
+    {
+        return $this->hasMany(NoUrut::class, 'siswa_id', 'nisn');
+    }
 }

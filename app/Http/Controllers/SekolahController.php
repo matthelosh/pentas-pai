@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bidang;
+use App\Models\Lomba;
 use App\Models\Peserta;
 use Inertia\Inertia;
 use App\Models\Sekolah;
@@ -17,9 +18,14 @@ class SekolahController extends Controller
     public function index(Request $request)
     {
         try {
+            $lombaId = Lomba::whereStatus('1')->value('id');
+            $sekolahs = Sekolah::with([
+                'pesertas' => fn($p) => $p->whereLombaId($lombaId)->with('bidangs')
+            ])->get();
+
             return response()->json([
                 'status' => 'ok',
-                'sekolahs' => Sekolah::with('pesertas.bidangs')->get(),
+                'sekolahs' => $sekolahs,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -87,8 +93,7 @@ class SekolahController extends Controller
     {
         $sekolah =  $sekolah::find($id);
         $npsn = $sekolah->npsn;
-        // $sekolah['pesertas'] = Peserta::where('sekolah_id', $sekolah->npsn)->whereHas('bidangs')->with('bidangs')->get();
-        $sekolah['bidangs'] = Bidang::whereHas('pesertas')->with('pesertas', function ($q) use ($npsn) {
+        $sekolah['bidangs'] = Bidang::whereLombaId($this->lomba()->id)->whereHas('pesertas')->with('pesertas', function ($q) use ($npsn) {
             $q->where('sekolah_id', $npsn);
         })->get();
 
@@ -117,5 +122,10 @@ class SekolahController extends Controller
     public function destroy(Sekolah $sekolah)
     {
         //
+    }
+
+    private function lomba()
+    {
+        return Lomba::whereStatus('1')->first();
     }
 }

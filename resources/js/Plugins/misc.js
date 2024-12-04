@@ -9,6 +9,19 @@ export const imgUrl = (url) => {
     }
 }
 
+export const namaSekolah = (nama) => {
+    const namas = nama.split(" ")
+    // const negeri = namas[1][0] + namas[1].substring(1).toLowerCase()
+    // const desa = namas[3][0] + namas[3].substring(1).toLowerCase()
+    // return namas[0] +" "+negeri+" "+namas[2]+" "+desa
+    let res =''
+    for(let i=0; i < namas.length; i++) {
+        res += i == 0 ? namas[i].toUpperCase() : " "+(namas[i][0].toUpperCase() + namas[i].substring(1).toLowerCase())
+    }
+
+    return res
+}
+
 export const paginate = (datas, currentPage) => {
     let pages = _.chunk(datas, 10)
 
