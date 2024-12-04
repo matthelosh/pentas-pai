@@ -226,7 +226,25 @@ onBeforeMount(async () => {
                                 </div>
                                 <div class="col-span-1"></div>
                                 <div class="col-span-1">
-                                    <p>Tanggal, 18 Desember 2024</p>
+                                    <p>
+                                        Tanggal,
+                                        {{
+                                            new Date(
+                                                // page.props.lomba.tanggal
+                                                2024,
+                                                page.props.lomba.tanggal.split(
+                                                    "-"
+                                                )[1] - 1,
+                                                page.props.lomba.tanggal.split(
+                                                    "-"
+                                                )[2] - 10
+                                            ).toLocaleDateString("id-ID", {
+                                                day: "2-digit",
+                                                month: "long",
+                                                year: "numeric",
+                                            })
+                                        }}
+                                    </p>
                                     <p>Bendahara Pentas PAI</p>
                                     <img
                                         :src="`/img/ttd/${bendahara?.guru?.nip}.png`"
