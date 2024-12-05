@@ -81,7 +81,6 @@ defineExpose({ open });
         @click.self="tutup"
         v-if="show"
     >
-        <DialogBox ref="dialogBox" />
         <div
             class="dialog min-w-[300px] max-w-[65vw] rounded-lg bg-white p-4 relative"
         >
@@ -144,4 +143,5 @@ defineExpose({ open });
             </div>
         </div>
     </div>
+    <DialogBox ref="dialogBox" />
 </template>
