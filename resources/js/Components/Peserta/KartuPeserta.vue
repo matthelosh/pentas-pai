@@ -130,6 +130,12 @@ const randomNumber = () => {
                 <div
                     class="toolbar-items flex justify-between gap-2 items-center"
                 >
+                    <button
+                        class="bg-red-600 hover:bg-red-500 active:bg-red-400 py-1 px-4 text-white rounded-full"
+                        @click="randomNumber"
+                    >
+                        Acak Nomor
+                    </button>
                     <select
                         name="sekolah_id"
                         v-model="sekolah"
@@ -157,7 +163,10 @@ const randomNumber = () => {
                     />
                 </div>
             </div>
-            <div class="w-full" v-if="pesertas.length > 0">
+            <div
+                class="w-full sm:w-[70%] mx-auto py-8"
+                v-if="pesertas.length > 0"
+            >
                 <div
                     class="w-full grid grid-cols-1 md:grid-cols-3 gap-1 print:gap-2 print:p-0 p-3 relative"
                     v-if="props.bidang.kategori !== 'regu'"
@@ -338,13 +347,6 @@ const randomNumber = () => {
                         </div>
                     </div>
                 </div>
-
-                <button
-                    class="fixed bottom-16 right-8 bg-red-600 hover:bg-red-500 active:bg-red-400 py-2 px-4 text-white rounded-full"
-                    @click="randomNumber"
-                >
-                    Acak Nomor
-                </button>
             </div>
             <div
                 class="w-full h-[80vh] flex items-center justify-center"

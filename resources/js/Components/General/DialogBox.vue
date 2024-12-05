@@ -37,25 +37,25 @@ defineExpose({
         v-if="show"
     >
         <div
-            class="dialog w-[95vw] p-3 sm:min-w-[400px] sm:max-w-[600px] sm:min-h-[250px] rounded-xl shadow bg-white flex items-center justify-center"
+            class="dialog w-[95vw] sm:max-w-[400px] sm:min-h-[250px] rounded-lg shadow bg-white flex items-center justify-center p-3"
         >
-            <div class="w-full px-4">
+            <div class="w-full">
                 <QuestionMarkCircleIcon
                     class="text-red-400 h-32 animate-bounce mx-auto"
                 />
                 <h1 class="text-xl text-gray-800 mb-4 text-center">
                     {{ message }}
                 </h1>
-                <div class="flex justify-around gap-2 w-full">
+                <div class="flex justify-end gap-2 w-full">
                     <button
                         @click="nope"
-                        class="px-3 py-2 rounded hover:bg-red-600 active:bg-orange-400 bg-red-400 text-white"
+                        class="px-3 py-2 text-lg text-red-500"
                     >
-                        Batal
+                        Belum
                     </button>
                     <button
                         @click="okey"
-                        class="px-3 py-2 rounded hover:bg-sky-600 active:bg-orange-400 bg-sky-400 text-white"
+                        class="px-3 py-2 text-lg text-teal-600 font-bold"
                     >
                         Yakin
                     </button>

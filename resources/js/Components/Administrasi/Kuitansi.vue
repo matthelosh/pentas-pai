@@ -114,7 +114,7 @@ onBeforeMount(async () => {
             </div>
         </div>
         <div
-            class="content bg-slate-400 print:bg-white py-16 px-48 print:px-0 print:py-1 overflow-y-auto screen:max-h-[96vh]"
+            class="content bg-slate-400 print:bg-white py-16 px-48 print:px-0 print:py-4 overflow-y-auto screen:max-h-[96vh]"
         >
             <div
                 class="sheet bg-white m-4 break-inside-avoid break-after-always"
