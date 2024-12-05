@@ -77,7 +77,7 @@ defineExpose({ open });
 
 <template>
     <div
-        class="backdrop fixed top-0 left-0 h-[95vh] right-0 bg-teal-800 bg-opacity-70 flex items-center justify-center z-40"
+        class="backdrop fixed top-0 left-0 h-[95vh] right-0 bg-teal-800 bg-opacity-70 flex items-start justify-center z-40"
         @click.self="tutup"
         v-if="show"
     >
