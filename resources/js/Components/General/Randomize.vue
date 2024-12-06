@@ -2,7 +2,8 @@
 import { ref, computed, defineAsyncComponent } from "vue";
 import { Icon } from "@iconify/vue";
 import { inject } from "vue";
-
+import { usePage } from "@inertiajs/vue3";
+const page = usePage();
 const kategoriLomba = ref("");
 const title = ref("");
 const items = ref(null);
@@ -111,6 +112,92 @@ const storeSort = async () => {
     // console.log(ok);
 };
 
+const cetak = async () => {
+    let win = window.open("", "_blank", "width=800,height=1200");
+    let tr = "";
+    results.value.forEach((res) => {
+        tr += `
+            <tr>
+            <td style="text-align:center;">${res.urut}</td>
+            <td>${res.nama}</td>
+            <td>${res.sekolah}</td>
+            </tr>
+        `;
+    });
+    let html = `
+            <!doctype html>
+            <html>
+                <head>
+                    <title>Hasil Undian No ${title.value}</title>    
+                    <style>
+                        h3.title {
+                            text-align: center;
+                        }
+                        table {
+                            margin: 20px auto;
+                        }
+                        th,td {
+                            padding: 5px 10px;
+                        }
+                            body {
+                                padding: 20px
+                            }
+                        table {
+                            width: 100%;
+                        }
+                    </style>
+                    </head>
+
+                <body>
+                    <h3 class="title">Hasil Undian  ${title.value}</h3>
+
+                    <table border style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;">Urut</th>
+                                <th>Nama</th>
+                                <th>Lembaga</th>
+                            </tr>
+                        </thead>   
+                        <tbody>
+                            ${tr}
+                        </tbody>
+                    </table>
+
+                    <div class="ttd" style="display: flex; justify-content: space-between; width: 80%; margin: 50px auto 20px auto">
+                        <div style="width: 50%; border: 1px dashed black;padding: 10px; border-radius: 20px;">
+                            <p>Catatan:</p>
+                            <p>Semua Panitia, Peserta dan Pendamping menyentujui hasil undian di atas.</p>
+                        </div>
+                        <div>
+                            <p style="text-align:center; line-height: .3rem">Wagir, ${new Date().toLocaleDateString(
+                                "id-ID",
+                                {
+                                    day: "numeric",
+                                    month: "long",
+                                    year: "numeric",
+                                }
+                            )}</p>
+                            <p style="text-align:center;line-height: .3rem">Ketua Panitia</p>
+
+
+
+                            <p style="text-align:center;line-height: .3rem; margin-top: 60px;">Maa Rizal Ula, S. Pd.I</p>
+                            <p style="text-align:center;line-height: .3rem">NIP. 199303082024211025</p>
+                        </div>
+                    </div>
+                </body>
+            </html>
+    `;
+
+    win.document.write(html);
+
+    setTimeout(() => {
+        win.print();
+        win.close();
+    }, 1000);
+};
+
 defineExpose({ open });
 </script>
 
@@ -124,6 +211,12 @@ defineExpose({ open });
             <div
                 class="dialog min-w-[300px] max-w-[65vw] rounded-lg bg-white p-4 relative"
             >
+                <button
+                    class="bg-sky-400 w-[50px] h-[50px] flex items-center justify-center text-white text-2xl absolute right-14 top-0 translate-x-[6px]"
+                    @click="cetak"
+                >
+                    <Icon icon="mdi-printer" />
+                </button>
                 <button
                     class="bg-red-400 w-[50px] h-[50px] flex items-center justify-center text-white text-2xl absolute right-0 top-0 rounded-tr-lg"
                     @click="tutup"
