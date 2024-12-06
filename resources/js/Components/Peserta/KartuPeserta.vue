@@ -1,5 +1,11 @@
 <script setup>
-import { ref, computed, onMounted, defineAsyncComponent } from "vue";
+import {
+    ref,
+    computed,
+    onMounted,
+    defineAsyncComponent,
+    watchEffect,
+} from "vue";
 import { XCircleIcon } from "@heroicons/vue/20/solid";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 import { imgUrl } from "@/Plugins/misc";
@@ -81,15 +87,16 @@ const label = computed(() => {
 });
 
 const sekolah = ref("0");
-const items = computed(() => {
-    if (sekolah.value == "0") {
-        return grouped.value;
-    } else {
-        return props.bidang.kategori == "regu"
-            ? grouped.value.filter((group) => group.sekolah_id == sekolah.value)
-            : grouped.value;
-    }
-});
+// const items = computed(() => {
+//     if (sekolah.value == "0") {
+//         return grouped.value;
+//     } else {
+//         return props.bidang.kategori == "regu"
+//             ? grouped.value.filter((group) => group.sekolah_id == sekolah.value)
+//             : grouped.value;
+//     }
+// });
+const items = ref(null);
 
 const grouped = computed(() => {
     let groups = _.groupBy(pesertas.value, "sekolah_id");
@@ -109,9 +116,21 @@ const randomNumber = () => {
     randomize.value.open(
         "Acak Nomor Peserta " + props.bidang.label,
         items.value,
-        props.bidang.id
+        props.bidang.id,
+        props.bidang.kategori
     );
 };
+
+watchEffect(async () => {
+    items.value =
+        sekolah.value == "0"
+            ? grouped.value
+            : props.bidang.kategori !== "regu"
+            ? grouped.value.filter((group) => group.sekolah_id == sekolah.value)
+            : grouped.value;
+    // console.log(sekolah.value);
+    // console.log(items.value);
+});
 </script>
 
 <template>
@@ -119,7 +138,7 @@ const randomNumber = () => {
         <Randomize ref="randomize" />
         <Loading v-if="loading" :show="loading" />
         <div
-            class="w-full bg-white rounded shadow print:shadow-none relative print:pt-0 mt-4 md:mt-0 rounded-lg"
+            class="w-full bg-white rounded shadow print:shadow-none relative mt-4 print:m-0 print:p-0 md:mt-0 rounded-lg"
         >
             <div
                 class="toolbar h-12 bg-[#fefefe] shadow items-center p-2 print:hidden flex justify-between sticky w-full z-10 top-0 rounded-t-lg"
@@ -141,7 +160,7 @@ const randomNumber = () => {
                         v-model="sekolah"
                         class="py-1 rounded-full"
                     >
-                        <option value="0">Pilih Sekolah</option>
+                        <option value="0">Semua Lembaga</option>
                         <option
                             v-for="(sekolah, s) in sekolahs"
                             :key="s"
@@ -163,19 +182,19 @@ const randomNumber = () => {
                     />
                 </div>
             </div>
-            <div class="content max-h-[91vh] overflow-y-auto">
+            <div class="content screen:max-h-[91vh] overflow-y-auto">
                 <div
-                    class="w-full sm:w-[70%] mx-auto py-8"
+                    class="w-full sm:w-[70%] print:w-full mx-auto print:m-0 py-8 print:p-0"
                     v-if="pesertas.length > 0"
                 >
                     <div
-                        class="w-full grid grid-cols-1 md:grid-cols-3 gap-1 print:gap-2 print:p-0 p-3 relative"
+                        class="w-full grid grid-cols-1 md:grid-cols-3 gap-1 print:p-1 p-3 relative print:grid-cols-3"
                         v-if="props.bidang.kategori !== 'regu'"
                     >
                         <div
                             v-for="(peserta, p) in items"
                             :key="p"
-                            class="border-gray-800 border shadow print:shadow-none print:break-inside-avoid print:my-1 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[500px] print:h-[350px]"
+                            class="border-gray-800 border shadow print:shadow-none rounded print:break-inside-avoid print:my-1 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[500px] print:h-[100mm] print:w-[68mm]"
                         >
                             <div
                                 class="left h-full relative flex flex-col justify-between p-4 items-center bg-opacity-90"
@@ -285,7 +304,11 @@ const randomNumber = () => {
                                         <h1
                                             class="text-4xl bg-white aspect-square print:w-12 w-20 text-center rounded-full flex justify-center items-center"
                                         >
-                                            {{ group.no }}
+                                            {{
+                                                peserta.urutans.length < 1
+                                                    ? group.no
+                                                    : peserta.urutans[0].ke
+                                            }}
                                         </h1>
                                     </div>
                                     <div class="col-span-3">

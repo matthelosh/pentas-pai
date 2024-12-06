@@ -3,7 +3,7 @@ import { ref, computed, defineAsyncComponent } from "vue";
 import { Icon } from "@iconify/vue";
 import { inject } from "vue";
 
-const $dialog = inject("$dialog");
+const kategoriLomba = ref("");
 const title = ref("");
 const items = ref(null);
 const show = ref(false);
@@ -36,13 +36,31 @@ const setNumber = (item) => {
     }
 };
 
-const open = async (message, data, bidang_id) => {
+const parseGroup = async (regus) => {
+    let results = [];
+    regus.forEach((regu) => {
+        results.push({
+            sekolah: regu.data[0].sekolah,
+            nama: "Regu " + regu.data[0].sekolah.npsn,
+            foto: "/img/peserta.png",
+        });
+    });
+
+    // console.log(results);
+
+    return results;
+};
+
+const raws = ref(null);
+const open = async (message, data, bidang_id, kategori) => {
     bidangId.value = bidang_id;
     title.value = message;
-    items.value = data;
+    kategoriLomba.value = kategori;
+    raws.value = data;
+    items.value = kategori == "regu" ? await parseGroup(data) : data;
     show.value = true;
-    // console.log(data);
     acak();
+    // console.log(items.value);
 };
 
 const tutup = () => {
@@ -58,18 +76,39 @@ const DialogBox = defineAsyncComponent(() =>
 );
 const dialogBox = ref(null);
 const storeSort = async () => {
-    // axios
-    //     .post(route("dashboard.peserta.nourut.simpan"), {
-    //         bidang_id: bidangId.value,
-    //         datas: results.value,
-    //     })
-    //     .then((res) => {
-    //         console.log(res);
-    //     });
     const ok = await dialogBox.value.open(
         "Menerima hasil acak no urut tersebut?"
     );
-    console.log(ok);
+    if (ok) {
+        let payloads = [];
+        if (kategoriLomba.value == "regu") {
+            raws.value.forEach((raw) => {
+                raw.data.forEach((s) => {
+                    payloads.push({
+                        siswa_id: s.nisn,
+                        urut: results.value.filter(
+                            (res) => res.sekolah == s.sekolah.nama
+                        )[0].urut,
+                        nama: s.nama,
+                        foto: s.foto,
+                        sekolah: s.sekolah.nama,
+                    });
+                });
+            });
+        } else {
+            payloads = results.value;
+        }
+        // console.log(payloads);
+        axios
+            .post(route("dashboard.peserta.nourut.simpan"), {
+                bidang_id: bidangId.value,
+                datas: payloads,
+            })
+            .then((res) => {
+                console.log(res);
+            });
+    }
+    // console.log(ok);
 };
 
 defineExpose({ open });
@@ -145,5 +184,7 @@ defineExpose({ open });
             </div>
         </div>
     </Teleport>
-    <DialogBox ref="dialogBox" />
+    <Teleport to="body">
+        <DialogBox ref="dialogBox" />
+    </Teleport>
 </template>

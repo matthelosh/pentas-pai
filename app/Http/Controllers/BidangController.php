@@ -57,7 +57,11 @@ class BidangController extends Controller
     {
         try {
             if (auth()->user()->level == 'admin') {
-                $bidang = Bidang::where('id', $id)->with('pesertas.sekolah')->first();
+                $bidang = Bidang::where('id', $id)->with([
+                    'pesertas' => function ($p) {
+                        $p->with('sekolah', 'urutans');
+                    }
+                ])->first();
             } else {
                 $npsn = auth()->user()->userable->sekolah_id;
                 $bidang = Bidang::where('id', $id)->whereHas('pesertas', function ($q) use ($npsn) {

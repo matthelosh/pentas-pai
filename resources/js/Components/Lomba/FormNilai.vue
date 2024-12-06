@@ -68,13 +68,13 @@ const bidang = computed(() => {
 });
 
 const pesertas = computed(() => {
-    if (
-        props.bidang.kode.includes("bjr") ||
-        props.bidang.kode.includes("lcc")
-    ) {
-        return _.groupBy(selectedBidang.value.pesertas, "sekolah.nama");
+    const items = selectedBidang.value.pesertas?.sort((a, b) =>
+        a.urutans[0]?.ke > b.urutans[0]?.ke ? 1 : -1
+    );
+    if (props.bidang.kategori == "regu") {
+        return _.groupBy(items, "sekolah.nama");
     } else {
-        return selectedBidang.value.pesertas;
+        return items;
     }
 });
 

@@ -296,10 +296,20 @@ const headTitle = ref("Sertifikat Peserta");
                 </div>
 
                 <div
-                    class="w-full flex justify-center py-8 print:p-0"
+                    class="w-full flex justify-center py-8 print:p-0 relative"
                     v-if="mode == 'cetak'"
                 >
-                    <div class="wrapper shadow-lg print:shadow-none">
+                    <button
+                        class="absolute bg-teal-200 hover:bg-teal-500 text-white z-40 top-[50%] -translate-y-[50%] left-4 p-3 rounded-full hover:translate-x-2 transition-all duration-300"
+                    >
+                        <Icon icon="mdi:arrow-left" class="text-xl" />
+                    </button>
+                    <button
+                        class="absolute bg-teal-200 hover:bg-teal-500 text-white z-40 top-[50%] -translate-y-[50%] right-4 p-3 rounded-full hover:-translate-x-2 transition-all duration-300"
+                    >
+                        <Icon icon="mdi:arrow-right" class="text-xl" />
+                    </button>
+                    <div class="wrapper relative shadow-lg print:shadow-none">
                         <div
                             class="paper h-[207mm] w-[294mm] bg-slate-50 print:my-0 rounded print:rounded-0 relative bg-[url('/img/sertifikat/bg.png')]"
                         >
