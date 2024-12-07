@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineAsyncComponent } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { imgUrl } from "@/Plugins/misc";
 import { ArrowPathIcon } from "@heroicons/vue/20/solid";
@@ -8,6 +8,41 @@ import { mdiClose } from "@mdi/js";
 import SvgIcon from "@jamescoyle/vue-icon";
 import Compressor from "compressorjs";
 const page = usePage();
+
+// Img Cropper
+const imgUpload = ref(false);
+const ImageUpload = defineAsyncComponent(() =>
+    import("@/Components/General/ImageUploader.vue")
+);
+const cancelImgUpload = () => {
+    imgUpload.value = false;
+};
+const saveImg = async (fotoBlob) => {
+    new Compressor(fotoBlob, {
+        quality: 0.4,
+        success(res) {
+            fileFoto.value = res;
+            urlFoto.value = URL.createObjectURL(res);
+            cancelImgUpload();
+        },
+        error(err) {
+            console.log(err);
+        },
+    });
+};
+
+const compressImg = async (img) => {
+    new Compressor(img, {
+        quality: 0.4,
+        success(result) {
+            // console.log(result);
+            return result;
+        },
+        error(err) {
+            console.log(err);
+        },
+    });
+};
 
 const fileFoto = ref(null);
 const urlFoto = ref("/img/peserta.png");
@@ -91,13 +126,14 @@ const open = (data) => {
 };
 
 const kirim = async () => {
+    // console.log(fileFoto.value);
     loading.value = true;
     const routeName =
         mode.value == "edit" ? "dashboard.peserta.update" : "peserta.store";
     let formData = new FormData();
     formData.append("data", JSON.stringify(peserta.value));
     if (fileFoto.value !== null) {
-        formData.append("foto", fileFoto.value);
+        formData.append("foto", fileFoto.value, peserta.value.nisn);
     }
     await axios
         .post(route(routeName, { id: peserta.value.id }), formData)
@@ -151,7 +187,7 @@ onMounted(() => {
                     :src="urlFoto"
                     alt="Peserta"
                     class="w-1/2 rounded-full aspect-square object-cover object-top mx-auto shadow transition-all duration-500 hover:shadow-lg hover:shadow-lime-600 cursor-pointer bg-[#fefefe]"
-                    @click="$refs.foto.click()"
+                    @click="imgUpload = true"
                 />
                 <h1 class="text-center text-gray-500 text-lg">
                     <span class="hidden">Foto Peserta<br /></span>
@@ -282,5 +318,13 @@ onMounted(() => {
                 </div>
             </form>
         </div>
+        <Teleport to="body">
+            <ImageUpload
+                v-if="imgUpload"
+                @cancel="cancelImgUpload"
+                @save="saveImg($event)"
+                :fotoUrl="urlFoto"
+            />
+        </Teleport>
     </div>
 </template>

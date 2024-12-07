@@ -92,6 +92,7 @@ class PesertaController extends Controller
             $data = json_decode($request->data);
             if ($request->file('foto')) {
                 $foto = $request->file('foto');
+                // dd($foto);
                 $file = Storage::putFileAs('public/img/peserta', $foto, $data->nisn . '.jpg');
             }
             $peserta = new Peserta();
@@ -184,6 +185,7 @@ class PesertaController extends Controller
             $foto = $data->foto;
             if ($request->file('foto')) {
                 $foto = $request->file('foto');
+                // dd($foto);
                 $delete = Storage::delete('public/img/peserta/' . $data->nisn . '.jpg');
                 $store = Storage::putFileAs('public/img/peserta', $foto, $data->nisn . '.jpg');
                 if ($store) {
