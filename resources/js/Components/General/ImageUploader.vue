@@ -43,29 +43,29 @@ onBeforeMount(() => {
         @click.self="emit('cancel')"
         class="fixed top-0 right-0 bottom-0 left-0 bg-slate-600 bg-opacity-80 backdrop-blur flex items-center justify-center z-[9999]"
     >
-        <div class="dialog min-w-[300px] bg-white rounded-lg">
+        <div class="dialog bg-white rounded-lg my-4 mx-auto overflow-hidden">
+            <input
+                type="file"
+                ref="imgInput"
+                @change="onImgPicked"
+                class="hidden"
+                accept=".webp, .jpg, .JPG, .jpeg, .JPEG, .png, .PNG"
+            />
+            <div class="flex items-center justify-between rounded-t-lg">
+                <button
+                    class="px-2 hover:bg-slate-100"
+                    @click="$refs.imgInput.click()"
+                >
+                    Ambil Foto
+                </button>
+                <button class="px-2 hover:bg-slate-100" @click="simpan">
+                    Simpan
+                </button>
+            </div>
             <div class="dialog-body">
-                <input
-                    type="file"
-                    ref="imgInput"
-                    @change="onImgPicked"
-                    class="hidden"
-                    accept=".webp, .jpg, .JPG, .jpeg, .JPEG, .png, .PNG"
-                />
-                <div class="flex items-center justify-between rounded-t-lg">
-                    <button
-                        class="px-2 hover:bg-slate-100"
-                        @click="$refs.imgInput.click()"
-                    >
-                        Ambil Foto
-                    </button>
-                    <button class="px-2 hover:bg-slate-100" @click="simpan">
-                        Simpan
-                    </button>
-                </div>
                 <Cropper
                     ref="cropper"
-                    :stencil-props="{ aspectRatio: 1 }"
+                    :stencil-props="{ aspectRatio: 10 / 10 }"
                     v-if="img"
                     :src="img"
                     alt="Foto Peserta"
