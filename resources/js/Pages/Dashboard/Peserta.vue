@@ -175,6 +175,91 @@ const cetakKuitansi = (item) => {
 const closeKuitansi = () => {
     kuitansis.value = [];
 };
+
+// Rekap
+const rekap = () => {
+    let win = window.open("", "_blank", "width=1200,height=900");
+
+    const grouped = Object.groupBy(
+        $page.props.pesertas,
+        ({ sekolah }) => sekolah.nama
+    );
+
+    let tr = "";
+
+    Object.entries(grouped).forEach(([k, pesertas]) => {
+        let row = "";
+        pesertas.forEach((peserta, p) => {
+            row += `<tr>
+                    
+                    ${
+                        p === 0
+                            ? '<td class="border p-2" rowspan="' +
+                              pesertas.length +
+                              '">' +
+                              k +
+                              "</td>"
+                            : ""
+                    }
+                    <td class=" p-2 border text-center">${p + 1}</td>
+                    <td class=" p-2 border text-center">${peserta.nisn}</td>    
+                    <td class=" p-2 border flex gap-2 items-center">
+                        <img src="${
+                            peserta.foto
+                        }" class="h-[50px] w-[50px] rounded-full object-center object-cover" />
+                        ${peserta.nama}
+                        </td>    
+                    <td class=" p-2 border">${peserta.bidangs[0].label}</td>    
+            </tr>`;
+        });
+
+        tr += row;
+    });
+
+    const cssUrl =
+        $page.props.appEnv == "local"
+            ? ":5173/resources/css/app.css"
+            : "/build/assets/app.css";
+    let html = `
+        <!doctype html>
+        <html>
+            <head>
+                <title>Rekapitulasi Peserta ${$page.props.lomba.label}</title>  
+                <link rel="stylesheet" href="${
+                    $page.props.appUrl + cssUrl
+                }" />  
+            </head>
+            <body>
+                <h3 class="text-center mt-4 mb-8 font-black">Rekapitulasi Peserta ${
+                    $page.props.lomba.label
+                }</h3>  
+                <h4 class="text-center">Jumlah: ${
+                    $page.props.pesertas.length
+                } orang</h4>
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th class="border px-2 w-[200px]">Lembaga</th>    
+                            <th class="border px-2">No</th>    
+                            <th class="border px-2">NISN</th>    
+                            <th class="border px-2">Nama</th>    
+                            <th class="border px-2">Bidang Lomba</th>    
+                        </tr>    
+                    </thead>  
+                    <tbody>
+                        ${tr}
+                    </tbody>  
+                </table>  
+            </body>
+        </html>
+    `;
+    win.document.write(html);
+    // console.log(grouped);
+    setTimeout(() => {
+        win.print();
+        win.close();
+    }, 1000);
+};
 </script>
 
 <template>
@@ -208,6 +293,12 @@ const closeKuitansi = () => {
                         class="hidden"
                         accept=".xlsx, .xls, .ods, .csv"
                     />
+                    <button
+                        class="bg-teal-400 hover:bg-gretealen-600 active:bg-teal-400 text-white py-1 px-2 rounded"
+                        @click="rekap"
+                    >
+                        Rekap
+                    </button>
                     <button
                         class="bg-green-400 hover:bg-green-600 active:bg-orange-400 text-white py-1 px-2 rounded"
                         @click="edit(null)"

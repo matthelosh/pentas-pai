@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user() ? $this->user($request->user()) : null,
             ],
             'appEnv' => \config('app.env'),
+            'appUrl' => \config('app.url'),
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),
