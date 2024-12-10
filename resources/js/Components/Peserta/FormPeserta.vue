@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, defineAsyncComponent } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { router, usePage } from "@inertiajs/vue3";
 import { imgUrl } from "@/Plugins/misc";
 import { ArrowPathIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
@@ -18,17 +18,20 @@ const cancelImgUpload = () => {
     imgUpload.value = false;
 };
 const saveImg = async (fotoBlob) => {
-    new Compressor(fotoBlob, {
-        quality: 0.4,
-        success(res) {
-            fileFoto.value = res;
-            urlFoto.value = URL.createObjectURL(res);
-            cancelImgUpload();
-        },
-        error(err) {
-            console.log(err);
-        },
-    });
+    // new Compressor(fotoBlob, {
+    //     quality: 0.4,
+    //     success(res) {
+    //         fileFoto.value = res;
+    //         urlFoto.value = URL.createObjectURL(res);
+    //         cancelImgUpload();
+    //     },
+    //     error(err) {
+    //         console.log(err);
+    //     },
+    // });
+    fileFoto.value = fotoBlob;
+    urlFoto.value = URL.createObjectURL(fotoBlob);
+    imgUpload.value = false;
 };
 
 const compressImg = async (img) => {
@@ -139,6 +142,7 @@ const kirim = async () => {
         .post(route(routeName, { id: peserta.value.id }), formData)
         .then((res) => {
             // console.log(res)
+            router.reload({ only: ["pesertas"] });
             loading.value = false;
             resolved.value(res.data.msg);
             show.value = false;

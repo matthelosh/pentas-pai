@@ -53,7 +53,6 @@ onBeforeMount(() => {
                 ref="imgInput"
                 @change="onImgPicked"
                 class="hidden"
-                accept=".webp, .jpg, .JPG, .jpeg, .JPEG, .png, .PNG, capture=camera"
             />
             <div class="flex items-center justify-between rounded-t-lg">
                 <button
