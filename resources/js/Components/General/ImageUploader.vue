@@ -5,7 +5,7 @@ import "vue-advanced-cropper/dist/style.css";
 
 const cropper = ref(null);
 const img = ref("/img/peserta.png");
-const croppedImg = ref(null);
+const croppedImg = ref({ x: 0, y: 0, width: 100, height: 100 });
 const result = ref(null);
 const emit = defineEmits(["save", "cancel"]);
 const props = defineProps({ fotoUrl: String });
@@ -20,8 +20,8 @@ const onImgPicked = (e) => {
 };
 
 const simpan = () => {
-    const croppedCanvas = cropper.value.getResult();
-    // console.log(croppedCanvas);
+    const croppedCanvas = croppedImg.value;
+    console.log(croppedCanvas);
     if (croppedCanvas) {
         croppedCanvas.canvas.toBlob((blob) => {
             if (blob) {
@@ -31,6 +31,10 @@ const simpan = () => {
             }
         });
     }
+};
+
+const onCropChange = (coordinates) => {
+    croppedImg.value = coordinates;
 };
 
 onBeforeMount(() => {
@@ -49,7 +53,7 @@ onBeforeMount(() => {
                 ref="imgInput"
                 @change="onImgPicked"
                 class="hidden"
-                accept=".webp, .jpg, .JPG, .jpeg, .JPEG, .png, .PNG"
+                accept=".webp, .jpg, .JPG, .jpeg, .JPEG, .png, .PNG, capture=camera"
             />
             <div class="flex items-center justify-between rounded-t-lg">
                 <button
@@ -62,13 +66,15 @@ onBeforeMount(() => {
                     Simpan
                 </button>
             </div>
-            <div class="dialog-body">
+            <div class="dialog-body max-h-[80vh] overflow-y-auto">
                 <Cropper
                     ref="cropper"
                     :stencil-props="{ aspectRatio: 10 / 10 }"
                     v-if="img"
                     :src="img"
+                    :coordinates.sync="croppedImg"
                     alt="Foto Peserta"
+                    @change="onCropChange"
                 />
             </div>
         </div>
