@@ -29,7 +29,16 @@ const currentPage = ref(1);
 const search = ref(null);
 const pesertas = ref($page.props.pesertas);
 const loading = ref(false);
-
+const sekolah = ref(null);
+const sekolahs = computed(() =>
+    $page.props.sekolahs.map((sekolah) => {
+        return {
+            npsn: sekolah.npsn,
+            id: sekolah.id,
+            nama: sekolah.nama,
+        };
+    })
+);
 const filter = () => {
     return $page.props.pesertas.filter((peserta) => {
         return (
@@ -58,7 +67,12 @@ const datas = computed(() => {
             );
         });
     } else {
-        datas = $page.props.pesertas;
+        datas =
+            sekolah.value == null
+                ? $page.props.pesertas
+                : $page.props.pesertas.filter(
+                      (siswa) => siswa.sekolah_id == sekolah.value
+                  );
     }
     return paginate(datas, currentPage.value);
 });
@@ -321,7 +335,20 @@ const rekap = () => {
                         Kuitansi
                         <Icon icon="mdi:cash-check" class="text-xl" />
                     </button>
-                    <button
+                    <select
+                        v-model="sekolah"
+                        placeholder="Pilih Sekolah"
+                        class="py-1 rounded"
+                    >
+                        <option :value="null">Pilih Sekolah</option>
+                        <option
+                            v-for="(sekolah, s) in sekolahs"
+                            :value="sekolah.npsn"
+                        >
+                            {{ sekolah.nama }}
+                        </option>
+                    </select>
+                    <!--<button
                         class="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded shadow uppercase flex items-center active:bg-sky-800"
                         :disabled="loading"
                         @click="fixData"
@@ -338,7 +365,7 @@ const rekap = () => {
                             class="w-6 text-white"
                             :class="loading ? 'animate-spin' : ''"
                         />
-                    </button>
+                    </button> -->
                     <input
                         type="text"
                         placeholder="Cari"
