@@ -95,7 +95,9 @@ const list = async () => {
                             {{ peserta.nisn }}
                         </td>
                         <td class="border px-2 py-2">
-                            <span class="flex items-center h-full">
+                            <span
+                                class="flex items-center print:items-start gap-1 h-full"
+                            >
                                 <span>
                                     <img
                                         :src="imgUrl(peserta.foto)"
