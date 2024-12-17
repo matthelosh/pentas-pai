@@ -285,7 +285,7 @@ watchEffect(async () => {
                     <div v-else>
                         <div v-for="(group, g) in items" :key="g">
                             <div
-                                class="w-full grid grid-cols-3 gap-1 print:gap-2 print:p-0 p-3 relative"
+                                class="w-full grid grid-cols-1 gap-1 print:gap-2 print:p-0 p-3 relative break-inside-avoid flex items-center justify-center print:h-[330mm]"
                             >
                                 <!-- <div
                                     v-for="(peserta, p) in group.data"
@@ -293,7 +293,7 @@ watchEffect(async () => {
                                     class="border-gray-800 border shadow print:shadow-none print:break-inside-avoid print:my-1 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[500px] print:h-[350px]"
                                 > -->
                                 <div
-                                    class="border-gray-800 border shadow print:shadow-none print:break-inside-avoid print:my-1 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[290mm] print:h-[270mm] w-[206mm]"
+                                    class="border-gray-800 border shadow print:shadow-none print:break-inside-avoid print:my-1 print:mx-0 mx-auto grid grid-cols-4 relative bg-[url('/img/kartupeserta-bg.png')] bg-cover w-full h-[300mm] print:h-[300mm] w-[206mm]"
                                 >
                                     <div
                                         class="left h-full relative flex flex-col justify-between p-4 items-center bg-opacity-90"
