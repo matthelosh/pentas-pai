@@ -282,14 +282,14 @@ const rekap = async () => {
                                 v-for="(aspek, a) in selectedBidang.aspeks"
                             >
                                 <td class="text-center border w-[200px]">
-                                    <input
+                                    <!-- <input
                                         type="number"
                                         max="100"
                                         min="0"
                                         placeholder="Nilai"
                                         class="border-slate-200 w-[90px]"
                                         v-model="nilais[s].skors[a].skor"
-                                    />
+                                    /> -->
                                 </td>
                             </template>
                             <td class="border text-center p-2">
