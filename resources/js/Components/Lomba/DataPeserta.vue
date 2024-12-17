@@ -102,6 +102,7 @@ const list = async () => {
                                 <span>
                                     <img
                                         :src="imgUrl(peserta.foto)"
+                                        onerror="this.error = null;this.src='/img/peserta.png'"
                                         alt="Foto"
                                         class="h-10 rounded-full aspect-square print:aspect-square object-cover object-top mr-2"
                                     />

@@ -43,7 +43,11 @@ const page = usePage();
         <div
             class="logo-kkg col-span-1 flex justify-center items-center h-full"
         >
-            <img src="/img/kkg.png" alt="Logo KKG" class="h-24 print:h-20" />
+            <img
+                src="/img/logo_kkg.png"
+                alt="Logo KKG"
+                class="h-24 print:h-20"
+            />
         </div>
     </div>
 </template>
