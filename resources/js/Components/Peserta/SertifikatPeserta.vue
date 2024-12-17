@@ -497,7 +497,7 @@ const headTitle = ref("Sertifikat Peserta");
                                             >
                                                 <div class="kkg">
                                                     <p>
-                                                        KKG PAI Kecamatan Wagi
+                                                        KKG PAI Kecamatan Wagir
                                                     </p>
                                                     <p>Ketua,</p>
                                                     <img
