@@ -89,7 +89,7 @@ const list = async () => {
                             {{ p + 1 }}
                         </td>
                         <td class="border px-2 py-2 text-center font-bold">
-                            {{ peserta.urutans[0].ke }}
+                            {{ peserta.urutans[0]?.ke }}
                         </td>
                         <td class="border px-2 py-2">
                             {{ peserta.nisn }}
