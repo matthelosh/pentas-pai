@@ -503,7 +503,7 @@ const headTitle = ref("Sertifikat Peserta");
                                                             .nama
                                                     )
                                                 }}. Semoga dapat menjadi
-                                                motivasi dalam mengingkatkan
+                                                motivasi dalam meningkatkan
                                                 prestasi di masa mendatang.
                                             </div>
                                             <div
