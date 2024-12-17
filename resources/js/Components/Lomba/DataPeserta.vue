@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, defineAsyncComponent } from "vue";
+import { ref, onMounted, computed, defineAsyncComponent } from "vue";
 import { XCircleIcon } from "@heroicons/vue/20/solid";
 import { imgUrl } from "@/Plugins/misc";
 import { usePage } from "@inertiajs/vue3";
@@ -10,6 +10,12 @@ const props = defineProps({
 });
 
 const selectedBidang = ref({});
+
+const pesertas = computed(() => {
+    selectedBidang.value.pesertas.sort((a, b) =>
+        a.bidangs[0].ke < b.bidangs[0].ke ? -1 : 1
+    );
+});
 
 onMounted(() => {
     list();
@@ -62,7 +68,7 @@ const list = async () => {
                 class="table border border-collapse w-10/12 mx-auto print:w-full"
             >
                 <caption class="text-center text-xl my-6 uppercase font-bold">
-                    Daftar Hadir Peserta Lomba
+                    Data Peserta Lomba
                     {{
                         props.bidang.label
                     }}
@@ -70,14 +76,11 @@ const list = async () => {
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="border px-2 py-3">No</th>
-                        <th class="border px-2 py-3">No. Urut</th>
+                        <th class="border px-2 py-3">No Urut</th>
                         <th class="border px-2 py-3">NISN</th>
                         <th class="border px-2 py-3">Nama</th>
                         <th class="border px-2 py-3">JK</th>
-                        <th class="border px-2 py-3">Sekolah</th>
-                        <th class="border px-2 py-3" style="width: 20%">
-                            TTD / Paraf
-                        </th>
+                        <th class="border px-2 py-3">Lembaga</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,11 +112,6 @@ const list = async () => {
                         <td class="border px-2 py-2">{{ peserta.jk }}</td>
                         <td class="border px-2 py-2">
                             {{ peserta.sekolah.nama }}
-                        </td>
-                        <td class="border px-2 py-2 w-[150px] align-text-top">
-                            <span class="text-xs text-gray-400">{{
-                                p + 1
-                            }}</span>
                         </td>
                     </tr>
                 </tbody>

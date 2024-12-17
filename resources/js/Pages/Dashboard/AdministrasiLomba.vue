@@ -22,6 +22,9 @@ const FormNilai = defineAsyncComponent(() =>
 const PresensiPeserta = defineAsyncComponent(() =>
     import("@/Components/Lomba/PresensiPeserta.vue")
 );
+const DataPeserta = defineAsyncComponent(() =>
+    import("@/Components/Lomba/DataPeserta.vue")
+);
 
 const mode = ref("list");
 const contentShow = ref(false);
@@ -49,6 +52,10 @@ const formNilai = async (bidang) => {
 
 const presensiPeserta = (bidang) => {
     mode.value = "presensi-peserta";
+    selectedBidang.value = bidang;
+};
+const dataPeserta = (bidang) => {
+    mode.value = "data-peserta";
     selectedBidang.value = bidang;
 };
 </script>
@@ -112,6 +119,12 @@ const presensiPeserta = (bidang) => {
                                 >
                                     Presensi Peserta
                                 </button>
+                                <button
+                                    class="bg-teal-600 border border-teal-400 shadow py-1 px-3 rounded-full hover:bg-sky-400 hover:shadow-md active:bg-sky-300 hover:text-white duration-150 text-teal-50"
+                                    @click="dataPeserta(bidang)"
+                                >
+                                    Data Peserta
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -124,6 +137,11 @@ const presensiPeserta = (bidang) => {
             />
             <PresensiPeserta
                 v-else-if="mode == 'presensi-peserta'"
+                :bidang="selectedBidang"
+                @close="mode = 'list'"
+            />
+            <DataPeserta
+                v-else-if="mode == 'data-peserta'"
                 :bidang="selectedBidang"
                 @close="mode = 'list'"
             />

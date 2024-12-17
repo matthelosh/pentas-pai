@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, usePage } from "@inertiajs/vue3";
 import { XCircleIcon } from "@heroicons/vue/20/solid";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiTypewriter } from "@mdi/js";
@@ -8,7 +8,7 @@ import VueQrcode from "@chenfengyuan/vue-qrcode";
 import axios from "axios";
 
 const panitias = ref([]);
-
+const page = usePage();
 const list = async () => {
     await axios
         .post(route("panitia.index"))
@@ -18,6 +18,10 @@ const list = async () => {
             // alert('yes')
         })
         .catch((err) => console.log(err));
+};
+
+const cetak = () => {
+    window.print();
 };
 
 onMounted(() => {
@@ -34,6 +38,7 @@ onMounted(() => {
         >
             Kartu Panitia
             <div class="toolbar-items flex items-center gap-2">
+                <button class="mr-4" @click="cetak">Cetak</button>
                 <button class="rounded-full p-0" @click="$emit('close')">
                     <XCircleIcon
                         class="h-8 text-red-400 hover:text-red-600 active:text-orange-400"
@@ -47,19 +52,19 @@ onMounted(() => {
             <div
                 v-for="(panitia, p) in panitias"
                 :key="p"
-                class="shadow-lg border p-4 print:p-2 relative w-full bg-white h-[124mm] print:h-[94mm] print:shadow-none print:border-1 print:border-gray-200 overflow-y-hidden box-border"
+                class="shadow-lg border p-4 print:p-2 relative w-full bg-white h-[124mm] print:h-[94mm] print:shadow-none print:border-1 print:border-gray-200 overflow-y-hidden box-border break-inside-avoid"
             >
                 <!-- <div class="w-8 rounded-e-full h-2/3 top-20 print:top-20 bg-teal-600 absolute left-0">
                     &nbsp;
                 </div> -->
                 <div class="content pt-2">
                     <div class="header mt-4 print:mt-2">
-                        <h2 class="leading-4 text-center">PANITIA PELAKSANA</h2>
-                        <h2 class="leading-4 text-center font-extrabold">
-                            PENTAS PAIS 2023 <br />
-                            <small class="leading-4 text-center"
+                        <h2 class="text-center">PANITIA PELAKSANA</h2>
+                        <h2 class="text-center font-extrabold uppercase">
+                            {{ page.props.lomba.label }} <br />
+                            <!-- <small class="leading-4 text-center"
                                 >KEC. WAGIR</small
-                            >
+                            > -->
                         </h2>
                     </div>
                     <div
@@ -76,7 +81,7 @@ onMounted(() => {
                             <small>{{ panitia.guru.nama }}</small>
                         </h1>
                         <h2 class="leading-4 print:text-sm print:leading-3">
-                            <code>{{ panitia.jabatan }}</code>
+                            <code>{{ panitia.jab.label }}</code>
                         </h2>
                         <p class="leading-4 text-sm">
                             <code>{{ panitia.guru.hp }}</code>
@@ -93,13 +98,13 @@ onMounted(() => {
                         class="absolute right-0 bottom-2 text-gray-100"
                         size="90"
                     />
-                    <div
+                    <!-- <div
                         class="footer absolute left-0 right-0 bottom-0 flex justify-between p-3 print:p-1"
                     >
                         <p class="text-sm text-teal-800 print:text-xs">
                             https://pentaspai.kkgpaiwagir.or.id
                         </p>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
