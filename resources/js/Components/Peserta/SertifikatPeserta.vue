@@ -495,7 +495,7 @@ const headTitle = ref("Sertifikat Peserta");
                                                         class="absolute h-[150px] -translate-x-[60px]"
                                                     />
                                                     <img
-                                                        src="/img/ttd-kkg.png"
+                                                        src="/img/ttd_ketua_kkg.png"
                                                         alt="TTD KKG"
                                                         class="absolute h-[100px]"
                                                     />
