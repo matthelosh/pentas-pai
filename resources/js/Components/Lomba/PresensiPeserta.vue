@@ -4,6 +4,7 @@ import { XCircleIcon } from "@heroicons/vue/20/solid";
 import { imgUrl } from "@/Plugins/misc";
 import { usePage } from "@inertiajs/vue3";
 const Kop = defineAsyncComponent(() => import("@/Components/General/Kop.vue"));
+import * as _ from "lodash-es";
 const page = usePage();
 const props = defineProps({
     bidang: Object,
@@ -60,6 +61,7 @@ const list = async () => {
             <Kop />
             <table
                 class="table border border-collapse w-10/12 mx-auto print:w-full"
+                v-if="props.bidang.kategori !== 'regu'"
             >
                 <caption class="text-center text-xl my-6 uppercase font-bold">
                     Daftar Hadir Peserta Lomba
@@ -117,6 +119,63 @@ const list = async () => {
                             <span class="text-xs text-gray-400">{{
                                 p + 1
                             }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table
+                class="table border border-collapse w-10/12 mx-auto print:w-full"
+                v-else
+            >
+                <caption class="text-center text-xl my-6 uppercase font-bold">
+                    Daftar Hadir Peserta Lomba
+                    {{
+                        props.bidang.label
+                    }}
+                </caption>
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="border px-2 py-3">No. Urut</th>
+                        <th class="border px-2 py-3">NPSN</th>
+                        <th class="border px-2 py-3">Nama Lembaga</th>
+                        <th class="border px-2 py-3" style="width: 20%">
+                            TTD / Paraf
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="(peserta, p) in _.groupBy(
+                            selectedBidang.pesertas,
+                            'sekolah_id'
+                        )"
+                        :key="p"
+                    >
+                        <td class="border px-2 py-2 text-center">
+                            {{ peserta[0].urutans[0]?.ke }}
+                        </td>
+                        <td class="border px-2 py-2">
+                            {{ peserta[0].sekolah.npsn }}
+                        </td>
+                        <td class="border px-2 py-2">
+                            <span
+                                class="flex items-center print:items-start gap-1 h-full"
+                            >
+                                <span>
+                                    <!-- <img
+                                        :src="imgUrl(peserta.foto)"
+                                        alt="Foto"
+                                        onerror="this.error = null;this.src='/img/peserta.png'"
+                                        class="h-10 rounded-full aspect-square print:aspect-square object-cover object-top mr-2"
+                                    /> -->
+                                </span>
+                                {{ peserta[0].sekolah.nama }}
+                            </span>
+                        </td>
+                        <td class="border px-2 py-2 w-[150px] align-text-top">
+                            <span class="text-xs text-gray-400">
+                                {{ p + 1 }}
+                            </span>
                         </td>
                     </tr>
                 </tbody>
