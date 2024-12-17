@@ -248,6 +248,7 @@ watchEffect(async () => {
                                         :src="imgUrl(peserta.foto)"
                                         alt="Foto"
                                         class="aspect-square object-cover rounded-full w-[100px] print:w-[75px] mx-auto object-top border"
+                                        onerror="this.error=null;this.src='/img/peserta.png'"
                                     />
                                 </div>
                                 <div
