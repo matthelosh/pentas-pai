@@ -463,9 +463,11 @@ const headTitle = ref("Sertifikat Peserta");
                                                 class="text text-justify text-sky-900 text-lg mt-4"
                                             >
                                                 Atas partisipasi dalam kegiatan
-                                                "<span class="font-bold">{{
-                                                    page.props.lomba.label
-                                                }}</span
+                                                "<span
+                                                    class="font-bold uppercase"
+                                                    >{{
+                                                        page.props.lomba.label
+                                                    }}</span
                                                 >" yang diselenggarakan pada
                                                 tanggal
                                                 {{
@@ -491,14 +493,17 @@ const headTitle = ref("Sertifikat Peserta");
                                                 prestasi di masa mendatang.
                                             </div>
                                             <div
-                                                class="ttd w-[80%] flex justify-between mt-10"
+                                                class="ttd w-[90%] flex justify-between mt-10"
                                             >
                                                 <div class="kkg">
-                                                    <p>Ketua KKG PAI</p>
+                                                    <p>
+                                                        KKG PAI Kecamatan Wagi
+                                                    </p>
+                                                    <p>Ketua,</p>
                                                     <img
                                                         src="/img/stempel.png"
                                                         alt="Stemple KKG"
-                                                        class="absolute h-[150px] -translate-x-[60px]"
+                                                        class="absolute h-[120px] -translate-x-[60px] -translate-y-[25px]"
                                                     />
                                                     <img
                                                         src="/img/ttd_ketua_kkg.png"
@@ -518,7 +523,21 @@ const headTitle = ref("Sertifikat Peserta");
                                                     </p>
                                                 </div>
                                                 <div class="panitia">
-                                                    <p>Ketua Panitia</p>
+                                                    <p>
+                                                        Panitia
+                                                        {{
+                                                            page.props.lomba.label
+                                                                .split(" ")
+                                                                .splice(0, 4)
+                                                                .join(" ")
+                                                        }}
+                                                    </p>
+                                                    <p>Ketua,</p>
+                                                    <img
+                                                        src="/img/stempel_panitia.png"
+                                                        alt="Stemple KKG"
+                                                        class="absolute h-[120px] -translate-x-[60px] -translate-y-[25px] mix-blend-multiply opacity-80"
+                                                    />
                                                     <img
                                                         src="/img/ttd-ketua.jpg"
                                                         alt="TTD KKG"
