@@ -468,7 +468,21 @@ const headTitle = ref("Sertifikat Peserta");
                                                     >{{
                                                         page.props.lomba.label
                                                     }}</span
-                                                >" yang diselenggarakan pada
+                                                >" bidang lomba
+                                                {{
+                                                    props.bidang.label.split(
+                                                        " "
+                                                    ).length > 2
+                                                        ? props.bidang.label
+                                                              .split(" ")
+                                                              .splice(0, 2)
+                                                              .join(" ")
+                                                        : props.bidang.label
+                                                              .split(" ")
+                                                              .splice(0, 1)
+                                                              .join(" ")
+                                                }}
+                                                yang diselenggarakan pada
                                                 tanggal
                                                 {{
                                                     new Date(
