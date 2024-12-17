@@ -25,9 +25,7 @@ class PanitiaController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->level == 'admin') {
-            $panitias = Panitia::with('guru.sekolah', 'lomba')->with('jab', function ($q) {
-                $q->where('jabatans.kode', '=', 'ketua1');
-            })->get();
+            $panitias = Panitia::with('guru.sekolah', 'lomba')->with('jab')->get();
         } else {
             $panitias = Panitia::where('user_id', $request->user()->id)->with('guru.sekolah', 'jab')->get();
         }

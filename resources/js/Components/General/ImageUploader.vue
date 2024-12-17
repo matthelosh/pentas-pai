@@ -45,7 +45,7 @@ onBeforeMount(() => {
 <template>
     <div
         @click.self="emit('cancel')"
-        class="fixed top-0 right-0 bottom-0 left-0 bg-slate-600 bg-opacity-80 backdrop-blur flex items-center justify-center z-[9999]"
+        class="fixed top-0 right-0 bottom-0 left-0 bg-slate-600 bg-opacity-80 backdrop-blur flex items-center justify-center z-[999999]"
     >
         <div class="dialog bg-white rounded-lg my-4 mx-auto overflow-hidden">
             <input

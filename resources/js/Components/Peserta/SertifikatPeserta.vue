@@ -350,6 +350,12 @@ const headTitle = ref("Sertifikat Peserta");
                                                 )
                                             }}
                                         </h3>
+                                        <VueQrcode
+                                            :value="`https://pentaspai.kkgpaiwagir.or.id/peserta/detail/${selectedPeserta.nisn}`"
+                                            class="absolute rounded-xl left-[50%] -translate-x-[50%] z-40 bottom-14"
+                                            :scale="2"
+                                            width="40"
+                                        />
                                         <img
                                             src="/img/sertifikat/dots.png"
                                             alt=""
@@ -529,13 +535,6 @@ const headTitle = ref("Sertifikat Peserta");
                                                     </p>
                                                 </div>
                                             </div>
-
-                                            <VueQrcode
-                                                :value="`https://pentaspai.kkgpaiwagir.or.id/peserta/detail/${selectedPeserta.nisn}`"
-                                                class="absolute left-38 ml-40"
-                                                :scale="2"
-                                                width="50"
-                                            />
                                         </div>
                                     </div>
                                 </div>
