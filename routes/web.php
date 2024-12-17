@@ -62,6 +62,7 @@ Route::prefix('daftar')->group(function () {
 Route::prefix('peserta')->group(function () {
 
     Route::get('/', [PesertaController::class, 'index'])->name('peserta');
+    Route::get('/detail/{nisn}', [PesertaController::class, 'detail'])->name('peserta.detail');
     Route::post('/{id}/detail', [PesertaController::class, 'show'])->name('peserta.show');
 });
 
@@ -71,7 +72,7 @@ Route::prefix('verifikasi')->group(function () {
     Route::get('/{id}', [SertifikatController::class, 'verify'])->name('verifikasi.sertifikat');
 });
 
-
+// Sekretariat
 Route::prefix('sekretariat')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashController::class, 'index'])->name('dashboard');
 

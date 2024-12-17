@@ -51,6 +51,21 @@ class PesertaController extends Controller
         }
     }
 
+    // Detail Peserta Front
+    public function detail(Request $request, $nisn)
+    {
+        try {
+            return Inertia::render(
+                'DetailPeserta',
+                [
+                    'peserta' => Peserta::whereNisn($nisn)->with('sekolah', 'bidangs')->first(),
+                ]
+            );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     public function getPeserta(Request $request)
     {
         try {

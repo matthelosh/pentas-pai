@@ -531,7 +531,7 @@ const headTitle = ref("Sertifikat Peserta");
                                             </div>
 
                                             <VueQrcode
-                                                value="https://pentaspai.kkgpaiwagir.or.id"
+                                                :value="`https://pentaspai.kkgpaiwagir.or.id/peserta/detail/${selectedPeserta.nisn}`"
                                                 class="absolute left-38 ml-40"
                                                 :scale="2"
                                                 width="50"
