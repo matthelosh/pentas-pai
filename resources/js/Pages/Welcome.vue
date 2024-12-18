@@ -14,7 +14,7 @@ const tes = (e) => {
     <Halo />
     <div class="w-full p-4 md:p-10">
         <div class="w-auto bg-white p-2 md:p-8 shadow relative rounded-lg">
-            <img src="img/foto-pentaspai-2023.jpg" alt="Foto GPAI" class="shadow-lg object-cover mx-auto">
+            <a href="https://lh3.googleusercontent.com/pw/AP1GczOC6anPjeWNzjsTigrlowc7-Yij3cCFsIVC8Om-fJ2VlphYRd-N3Kkk4DR2AdnkZrS7n4sGXV24HXouhmwZbAUAAX6D2vqgkhD0c564npQKxqXAOQI=w2400?source=screenshot.guru"> <img src="https://lh3.googleusercontent.com/pw/AP1GczOC6anPjeWNzjsTigrlowc7-Yij3cCFsIVC8Om-fJ2VlphYRd-N3Kkk4DR2AdnkZrS7n4sGXV24HXouhmwZbAUAAX6D2vqgkhD0c564npQKxqXAOQI=w600-h315-p-k" /> </a>
         </div>
     </div>
 </Front>
